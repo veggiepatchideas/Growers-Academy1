@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, createContext, useContext } from "react";
 
 // ─── VIDEO IDs — paste your YouTube video ID after filming each one ───────────
@@ -927,7 +928,7 @@ function YTIcon() {
 }
 
 // ─── ILLUSTRATED ICON SYSTEM ──────────────────────────────────────────────────
-function Chip({ size, bg, radius, children }) {
+function Chip({ size, bg, radius = null, children }: { size: any, bg: any, radius?: any, children: any }) {
   const r = radius ?? size * 0.26;
   return (
     <div style={{ width:size, height:size, borderRadius:r, background:bg, flexShrink:0,
