@@ -2307,4 +2307,1181 @@ function LessonPage() {
 
         {lesson.cl && <div className="card">
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:9 }}>
-            <h2 style={{ fontSize:14, fontWeight:
+            <h2 style={{ fontSize:14, fontWeight:800 }}>✅ Action checklist</h2>
+            {checklistDone && <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g7)", padding:"3px 10px", borderRadius:999, fontWeight:700 }}>+15 XP!</span>}
+          </div>
+          {lesson.cl.map((item, i) => <div key={i} className="crow" onClick={() => handleCheck(i)}>
+            <div className={`ccirc${checked[i]?" on":""}`}>{checked[i] && "✓"}</div>
+            <span style={{ fontSize:13, fontWeight:600, textDecoration:checked[i]?"line-through":"none", color:checked[i]?"var(--tmut)":"var(--td)" }}>{item}</span>
+          </div>)}
+        </div>}
+
+        {lesson.tip && <div className="tip"><div style={{ fontWeight:800, color:"var(--g8)", marginBottom:4, fontSize:13 }}>💡 Pro tip</div><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{lesson.tip}</p></div>}
+
+        {lesson.mistakes && <div className="card">
+          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:9 }}>⚠️ Common mistakes</h2>
+          {lesson.mistakes.map((m, i) => <div key={i} style={{ display:"flex", gap:8, marginBottom:7, alignItems:"flex-start" }}>
+            <span style={{ color:"#E53935", fontSize:14, flexShrink:0, marginTop:1 }}>✗</span>
+            <span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{m}</span>
+          </div>)}
+        </div>}
+
+        {/* Quiz */}
+        {quizzes.length > 0 && !quizComplete && currentQ && <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)", position:"relative", animation: answerAnim==="correct" ? "correctBounce .4s ease" : answerAnim==="wrong" ? "wrongShake .4s ease" : "none" }}>
+          {/* Floating XP */}
+          {xpFloats.map(f => (
+            <div key={f.id} style={{ position:"absolute", top:10, right:10, color:"#F9A825", fontWeight:900, fontSize:18, pointerEvents:"none", animation:"xpFloat 1.2s ease forwards", zIndex:10 }}>+{f.amount} ⭐</div>
+          ))}
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
+            <h2 style={{ fontSize:14, fontWeight:800, color:"var(--g8)" }}>🧠 Quiz</h2>
+            <Hearts count={hearts} prevCount={prevHearts}/>
+          </div>
+          {/* Question progress dots */}
+          <div style={{ display:"flex", gap:6, alignItems:"center", marginBottom:10 }}>
+            {quizzes.map((_, i) => (
+              <div key={i} style={{ width: i===qIdx?22:8, height:8, borderRadius:999, background: i<qIdx?"var(--g5)":i===qIdx?"var(--g6)":"var(--cdk)", transition:"all .3s" }}/>
+            ))}
+            <span style={{ fontSize:11, color:"var(--tl)", marginLeft:4, fontWeight:600 }}>Question {qIdx+1} of {totalQ}</span>
+          </div>
+          <p style={{ fontWeight:700, marginBottom:10, fontSize:14 }}>{currentQ.q}</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
+            {currentQ.opts.map((opt, i) => {
+              const ic = i === currentQ.a, ch = qa === i;
+              let bd = "var(--cdk)", bg = "#fff";
+              if (qd) { if (ic) { bg="#E8F5E9"; bd="#4CAF50"; } else if (ch&&!ic) { bg="#FFEBEE"; bd="#EF5350"; } }
+              return <button key={i} onClick={() => !qd && setQa(i)} style={{ padding:"10px 14px", border:`2px solid ${ch&&!qd?"var(--g5)":bd}`, borderRadius:11, background:ch&&!qd?"var(--g0)":bg, cursor:qd?"default":"pointer", textAlign:"left", fontSize:13, fontWeight:600, fontFamily:"var(--ff)" }}>{qd&&ic&&"✅ "}{qd&&ch&&!ic&&"❌ "}{opt}</button>;
+            })}
+          </div>
+          {!qd && qa !== null && <button className="btn bp bsm" style={{ marginTop:10, width:"100%" }} onClick={handleQuizSubmit}>Submit Answer</button>}
+          {qd && <div style={{ marginTop:12, borderRadius:14, overflow:"hidden", border:`2px solid ${quizPerfect?"#4CAF50":"#EF5350"}` }}>
+            {/* Correct */}
+            {quizPerfect && <div style={{ padding:"16px", background:"linear-gradient(135deg,#E8F5E9,#F1F8E9)", textAlign:"center" }}>
+              <div style={{ fontSize:32, marginBottom:6 }}>🎉</div>
+              <div style={{ fontWeight:900, fontSize:16, color:"#2E7D32", marginBottom:4 }}>Correct! Well done!</div>
+              <div style={{ fontSize:13, color:"#388E3C", fontWeight:700, marginBottom:12 }}>+10 XP bonus! 🌟</div>
+              <button className="btn bp bsm" style={{ width:"100%", background:"#4CAF50" }} onClick={handleNextQuestion}>
+                {qIdx < totalQ - 1 ? `Next Question (${qIdx+2}/${totalQ}) →` : "See Results →"}
+              </button>
+            </div>}
+            {/* Wrong */}
+            {!quizPerfect && <div style={{ padding:"16px", background:"linear-gradient(135deg,#FFEBEE,#FCE4EC)" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+                <div style={{ fontSize:32 }}>❌</div>
+                <div>
+                  <div style={{ fontWeight:900, fontSize:16, color:"#C62828" }}>Not quite!</div>
+                  <div style={{ fontSize:12, color:"#B71C1C", fontWeight:600 }}>You lost a ❤️ heart</div>
+                </div>
+              </div>
+              <div style={{ background:"rgba(255,255,255,.7)", borderRadius:10, padding:"10px 12px", marginBottom:12 }}>
+                <div style={{ fontSize:11, fontWeight:700, color:"#B71C1C", marginBottom:3 }}>✅ The correct answer was:</div>
+                <div style={{ fontSize:13, fontWeight:800, color:"#1a1a1a" }}>{currentQ.opts[currentQ.a]}</div>
+              </div>
+              <button className="btn bp bsm" style={{ width:"100%", background:"#EF5350" }} onClick={handleNextQuestion}>
+                {qIdx < totalQ - 1 ? `Try Next Question (${qIdx+2}/${totalQ}) →` : "See Results →"}
+              </button>
+            </div>}
+          </div>}
+        </div>}
+
+        {/* Quiz Complete Summary */}
+        {quizComplete && <div id="quiz-results" className="card" style={{ border:"2px solid #4CAF50", background:"var(--g0)", textAlign:"center" }}>
+          <div style={{ fontSize:36, marginBottom:8 }}>{quizScore === totalQ ? "🏆" : quizScore >= totalQ/2 ? "🎉" : "📚"}</div>
+          <h2 style={{ fontSize:16, fontWeight:900, marginBottom:4 }}>Quiz complete!</h2>
+          <p style={{ fontSize:22, fontWeight:900, color:"var(--g6)", marginBottom:4 }}>{quizScore}/{totalQ} correct</p>
+          <p style={{ fontSize:13, color:"var(--tl)", marginBottom:10, lineHeight:1.5 }}>
+            {quizScore === totalQ ? "Perfect score! Full XP bonus earned! 🌟" : quizScore >= totalQ/2 ? "Good effort! Keep learning and you'll nail it next time." : "Review the lesson and give it another go!"}
+          </p>
+          {quizScore === totalQ && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:12, color:"#E65100", fontWeight:700, marginBottom:12 }}>+{quizScore * 10} XP bonus earned!</div>}
+          {!isDone && <button className="btn bp blg" style={{ width:"100%", marginTop:4 }} onClick={handleComplete}>
+            ✅ Mark Lesson Complete — +{lesson.xp} XP
+          </button>}
+          {isDone && <div style={{ background:"#E8F5E9", borderRadius:12, padding:"10px 14px", fontSize:13, fontWeight:700, color:"#2E7D32" }}>✅ Lesson already completed!</div>}
+        </div>}
+
+        {/* Affiliate Products */}
+        {(() => {
+          const products = (LESSON_PRODUCTS[lesson.id] || []).map(k => AFFILIATE_PRODUCTS[k]).filter(Boolean);
+          if (!products.length) return null;
+          return (
+            <div style={{ background:"#fff", border:"1px solid var(--cdk)", borderRadius:20, padding:18 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:14 }}>
+                <div style={{ fontSize:20 }}>🛒</div>
+                <div>
+                  <h2 style={{ fontSize:14, fontWeight:900 }}>Recommended kit</h2>
+                  <p style={{ fontSize:11, color:"var(--tl)" }}>Handpicked by Glen · Affiliate links help support this free app · Opens in Amazon</p>
+                </div>
+              </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                {products.map((p,i) => (
+                  <a key={i} href={p.url} target="_blank" rel="noopener noreferrer sponsored"
+                    style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 14px", background:"var(--cream)", borderRadius:14, textDecoration:"none", border:"1px solid var(--cdk)" }}>
+                    <div style={{ width:40, height:40, background:"linear-gradient(135deg,#FF9900,#FF6600)", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>📦</div>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontWeight:800, fontSize:13, color:"var(--td)", marginBottom:2 }}>{p.name}</div>
+                      <div style={{ fontSize:11, color:"var(--tl)", lineHeight:1.4 }}>{p.why}</div>
+                      <div style={{ fontSize:10, background:"#FF990022", color:"#CC6600", borderRadius:999, padding:"2px 8px", display:"inline-block", marginTop:4, fontWeight:700 }}>{p.tag}</div>
+                    </div>
+                    <div style={{ color:"#FF9900", fontSize:11, fontWeight:700, flexShrink:0, textAlign:"center" }}>View on<br/>Amazon →</div>
+                  </a>
+                ))}
+              </div>
+              <p style={{ fontSize:10, color:"var(--tmut)", marginTop:12, textAlign:"center", lineHeight:1.5 }}>
+                As an Amazon Associate, {CHANNEL_NAME} earns from qualifying purchases at no extra cost to you.{" "}
+                <button onClick={() => navigate("legal")} style={{ background:"none", border:"none", color:"var(--tl)", textDecoration:"underline", cursor:"pointer", fontSize:10, fontFamily:"var(--ff)", padding:0 }}>Legal info</button>
+              </p>
+            </div>
+          );
+        })()}
+
+        {/* Glen channel footer */}
+        <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a3a08)", borderRadius:20, padding:18, textAlign:"center" }}>
+          <div style={{ display:"flex", justifyContent:"center", marginBottom:10 }}><VPILogo size={40}/></div>
+          <div style={{ color:"var(--g3)", fontWeight:800, fontSize:13, marginBottom:4 }}>More from {CHANNEL_NAME}</div>
+          <p style={{ color:"rgba(255,255,255,.6)", fontSize:12, marginBottom:12, lineHeight:1.4 }}>{HOST}'s channel has growing videos, allotment diaries and DIY builds.</p>
+          <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+            <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#FF0000", color:"#fff", borderRadius:999, padding:"8px 15px", fontSize:12, fontWeight:700, textDecoration:"none" }}><YTIcon/> YouTube</a>
+            <button onClick={() => navigate("videos")} style={{ border:"2px solid rgba(255,255,255,.2)", background:"transparent", color:"#fff", borderRadius:999, padding:"8px 15px", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>All Videos</button>
+          </div>
+        </div>
+
+        {isDone ? (
+          <div style={{ background:"var(--g0)", border:"2px solid var(--g3)", borderRadius:20, padding:18, textAlign:"center" }}>
+            <div style={{ fontSize:30, marginBottom:6 }}>🌟</div>
+            <div style={{ fontWeight:800, color:"var(--g8)", fontSize:14 }}>Lesson already complete!</div>
+            <button className="btn bs bsm" style={{ marginTop:10 }} onClick={() => navigate("courses")}>Back to courses</button>
+          </div>
+        ) : (
+          <button className="btn bp blg" style={{ width:"100%" }} onClick={handleComplete}>✓ Complete Lesson & Earn {lesson.xp} XP</button>
+        )}
+      </div>
+
+      {/* Celebration overlay */}
+      {celebrating && <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,.55)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:9999, padding:24 }}>
+        <div style={{ background:"#fff", borderRadius:26, padding:"28px 22px", textAlign:"center", animation:"pop .4s ease", maxWidth:290, width:"100%" }}>
+          <div style={{ display:"flex", justifyContent:"center", marginBottom:12 }}><VPILogo size={52}/></div>
+          <div style={{ fontSize:46, marginBottom:10 }}>🎉</div>
+          <h2 style={{ fontWeight:900, fontSize:18, marginBottom:6, color:"var(--g8)" }}>Lesson Complete!</h2>
+          <div style={{ fontSize:24, fontWeight:900, color:"var(--golddk)", marginBottom:6 }}>+{lesson.xp} XP ⭐</div>
+          <p style={{ color:"var(--tl)", fontSize:13 }}>Great work! Keep growing with {HOST}.</p>
+        </div>
+      </div>}
+    </div>
+  );
+}
+
+// ─── VIDEOS PAGE ──────────────────────────────────────────────────────────────
+function VideosPage() {
+  const { navigate, awardBadge, badges, addXP } = useApp();
+  const [pk, setPk] = useState(null);
+  const handlePlay = k => { setPk(k); if (!badges.includes("glens-student")) { awardBadge("glens-student"); addXP(10); } };
+  const LABELS = { "fix-slugs":"Slug Control","soil-basics":"Soil & Compost","grow-tomatoes":"Growing Tomatoes","containers-beds":"Containers & Beds","sunlight-watering":"Sunlight & Watering","tools-guide":"Gardening Tools","sowing-seeds":"Sowing Seeds","grow-lettuce":"Growing Lettuce","grow-herbs":"Potting On","grow-radish":"Radishes","grow-carrots":"Carrots","grow-spring-onions":"Spring Onions","grow-peas":"Peas","grow-cucumbers":"Cucumbers","grow-courgettes":"Courgettes","grow-beans":"French Beans","grow-beetroot":"Beetroot","grow-onions-garlic":"Onions & Garlic","grow-potatoes":"Growing Potatoes","seasonal-planning":"Seasonal Planning","winter-growing":"Winter Growing","succession-sowing":"Successional Sowing","green-manures":"Green Manures","plot-planning":"Plot Planning","irrigation":"Irrigation","polytunnel":"Polytunnel & Greenhouse","pest-management":"Pest Management","seed-saving":"Seed Saving","composting":"Composting","crop-rotation":"Crop Rotation","no-dig":"No-Dig Growing","fix-aphids":"Controlling Aphids" };
+  const sections = [
+    {title:"🌱 Level 1: Getting Started",keys:["soil-basics","containers-beds","sunlight-watering","tools-guide","sowing-seeds"]},
+    {title:"🥬 Level 2: Easy Wins",keys:["grow-lettuce","grow-herbs","grow-radish","grow-carrots","grow-spring-onions","grow-peas"]},
+    {title:"🍅 Level 3: Grow Like a Pro",keys:["grow-tomatoes","grow-potatoes","grow-cucumbers","grow-courgettes","grow-beans","grow-beetroot","grow-onions-garlic"]},
+    {title:"🗓️ Level 4: Grow All Year",keys:["seasonal-planning","winter-growing","succession-sowing","green-manures"]},
+    {title:"🏡 Level 5: Allotment Master",keys:["plot-planning","irrigation","polytunnel","pest-management","seed-saving","composting","crop-rotation","no-dig"]},
+    {title:"🔍 Problem Fixes",keys:["fix-slugs","fix-aphids"]},
+  ];
+  const totalVideos = Object.values(MY_VIDEOS).filter(Boolean).length;
+  const totalSlots  = Object.keys(MY_VIDEOS).length;
+  const pct = Math.round((totalVideos / totalSlots) * 100);
+
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a2a10)", padding:"22px 16px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+          <button onClick={() => navigate("home")} style={{ border:"none", background:"rgba(255,255,255,.08)", borderRadius:10, width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"#fff" }}>←</button>
+          <VPILogo size={28}/>
+          <div>
+            <h1 style={{ color:"#fff", fontSize:18, fontWeight:900, lineHeight:1.1 }}>Video Lessons</h1>
+            <p style={{ color:"rgba(255,255,255,.4)", fontSize:11 }}>by {HOST} · {CHANNEL_NAME}</p>
+          </div>
+        </div>
+        <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+            <span style={{ color:"rgba(255,255,255,.7)", fontSize:12, fontWeight:700 }}>📺 {totalVideos} of {totalSlots} videos live</span>
+            <span style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>{pct}%</span>
+          </div>
+          <div style={{ height:6, background:"rgba(255,255,255,.15)", borderRadius:999, overflow:"hidden" }}>
+            <div style={{ height:"100%", width:`${pct}%`, background:"linear-gradient(90deg,#7CB342,#9CCC65)", borderRadius:999 }}/>
+          </div>
+          <p style={{ color:"rgba(255,255,255,.4)", fontSize:11, marginTop:6 }}>Glen is filming more — subscribe to be notified!</p>
+        </div>
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(255,0,0,.85)", color:"#fff", borderRadius:999, padding:"9px 18px", fontSize:13, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe to {CHANNEL_NAME}</a>
+      </div>
+      <div style={{ padding:"16px" }}>
+        <div style={{ background:"var(--g0)", border:"2px solid var(--g2)", borderRadius:14, padding:"11px 15px", marginBottom:18, display:"flex", gap:10, alignItems:"flex-start" }}>
+          <VPILogo size={22}/>
+          <p style={{ fontSize:13, color:"var(--g8)", lineHeight:1.5 }}><strong>Watch {HOST}'s videos to earn +10 XP each!</strong> Videos pair with written lessons for the full experience.</p>
+        </div>
+        {sections.map(sec => {
+          const liveCount = sec.keys.filter(k => MY_VIDEOS[k]).length;
+          return (
+            <div key={sec.title} style={{ marginBottom:24 }}>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+                <h2 style={{ fontSize:15, fontWeight:800 }}>{sec.title}</h2>
+                <span style={{ fontSize:11, background: liveCount === sec.keys.length ? "#E8F5E9" : "var(--cdk)", color: liveCount === sec.keys.length ? "#2E7D32" : "var(--tmut)", borderRadius:999, padding:"3px 10px", fontWeight:700 }}>{liveCount}/{sec.keys.length} live</span>
+              </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                {sec.keys.map(key => {
+                  const id = MY_VIDEOS[key]; const isPlaying = pk === key; const label = LABELS[key] || key;
+                  return (
+                    <div key={key} style={{ background:"#fff", borderRadius:22, overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,.07)", border:"1px solid var(--cdk)" }}>
+                      {id ? (
+                        <div style={{ position:"relative", paddingTop:"56.25%", background:"#000" }}>
+                          {isPlaying
+                            ? <iframe style={{ position:"absolute", inset:0, width:"100%", height:"100%", border:"none" }} src={`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={label}/>
+                            : <div style={{ position:"absolute", inset:0, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => handlePlay(key)}>
+                                <img src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`} alt={label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+                                <div style={{ position:"absolute", inset:0, background:"rgba(0,0,0,.22)" }}/>
+                                <div style={{ position:"relative", zIndex:2, width:52, height:52, background:"rgba(255,0,0,.92)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                                  <svg width="19" height="19" viewBox="0 0 24 24" fill="white" style={{ marginLeft:3 }}><polygon points="5,3 19,12 5,21"/></svg>
+                                </div>
+                              </div>
+                          }
+                        </div>
+                      ) : (
+                        <div style={{ background:"linear-gradient(135deg,#1a1a2e,#16213e)", padding:"28px", textAlign:"center" }}>
+                          <div style={{ fontSize:32, marginBottom:8 }}>🎬</div>
+                          <div style={{ color:"rgba(255,255,255,.6)", fontSize:13, fontWeight:700, marginBottom:4 }}>{label}</div>
+                          <div style={{ color:"rgba(255,255,255,.3)", fontSize:11, marginBottom:10 }}>Glen is filming this soon — subscribe to be notified</div>
+                          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,0,0,.7)", color:"#fff", borderRadius:999, padding:"7px 14px", fontSize:11, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe</a>
+                        </div>
+                      )}
+                      {id && <div style={{ padding:"11px 15px 13px" }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
+                          <VPILogo size={16}/>
+                          <span style={{ fontSize:10, fontWeight:700, color:"var(--tmut)", textTransform:"uppercase", letterSpacing:".05em" }}>{CHANNEL_NAME}</span>
+                          <span style={{ marginLeft:"auto", fontSize:10, background:"#E8F5E9", color:"#2E7D32", padding:"2px 8px", borderRadius:999, fontWeight:700 }}>✅ Live</span>
+                        </div>
+                        <div style={{ fontWeight:800, fontSize:14 }}>{label}</div>
+                      </div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PlannerPage() {
+  const curM = new Date().getMonth() + 1;
+  const [sel, setSel] = useState(curM);
+  const [tab, setTab] = useState("sow");
+  const data = MONTHLY[sel] || MONTHLY[1];
+  const tabs = [{id:"sow",l:"🌱 Sow",k:"s"},{id:"plant",l:"🌿 Plant",k:"po"},{id:"harvest",l:"🌾 Harvest",k:"h"},{id:"jobs",l:"🔧 Jobs",k:"j"}];
+  const active = data[tabs.find(t => t.id === tab)?.k] || [];
+
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#0a1a05,#2D5016)", padding:"20px 16px 17px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>📅 Monthly Planner</h1></div>
+        <p style={{ color:"rgba(255,255,255,.55)", fontSize:12 }}>Know exactly what to do each month — by {HOST}</p>
+      </div>
+      <div style={{ background:"#fff", borderBottom:"1px solid var(--cdk)", padding:"8px 0", overflowX:"auto" }}>
+        <div style={{ display:"flex", gap:5, padding:"0 14px", width:"max-content" }}>
+          {MN.map((m, i) => { const mo = i+1, isSel=mo===sel, isCur=mo===curM; return (
+            <button key={m} onClick={() => setSel(mo)} style={{ padding:"6px 11px", border:`2px solid ${isSel?"var(--g5)":isCur?"var(--g2)":"transparent"}`, borderRadius:999, background:isSel?"var(--g5)":isCur?"var(--g0)":"transparent", color:isSel?"#fff":isCur?"var(--g7)":"var(--tl)", cursor:"pointer", fontWeight:isSel||isCur?800:600, fontSize:11, fontFamily:"var(--ff)", whiteSpace:"nowrap" }}>{m.slice(0,3)}{isCur&&<span style={{ marginLeft:2, fontSize:8 }}>●</span>}</button>
+          ); })}
+        </div>
+      </div>
+      <div style={{ padding:"14px 16px" }}>
+        <div className="tip" style={{ marginBottom:13 }}><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{data.tip}</p></div>
+        <div style={{ display:"flex", background:"#fff", borderRadius:16, padding:3, gap:3, marginBottom:11, boxShadow:"0 1px 4px rgba(0,0,0,.07)" }}>
+          {tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} style={{ flex:1, padding:"8px 2px", border:"none", borderRadius:12, background:tab===t.id?"var(--g6)":"transparent", color:tab===t.id?"#fff":"var(--tl)", cursor:"pointer", fontWeight:700, fontSize:10, fontFamily:"var(--ff)", transition:"all .15s" }}>{t.l}</button>)}
+        </div>
+        <div className="card">
+          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11, color:"var(--g8)" }}>{MN[sel-1]} — {tabs.find(t=>t.id===tab)?.l}</h2>
+          {active.length === 0
+            ? <div style={{ textAlign:"center", padding:"28px 18px", color:"var(--tmut)" }}><span style={{ fontSize:34, display:"block", marginBottom:8 }}>😴</span><p style={{ fontWeight:600, fontSize:13 }}>Nothing this month for this category</p></div>
+            : <div style={{ display:"flex", flexDirection:"column", gap:7 }}>{active.map((item,i) => <div key={i} style={{ display:"flex", gap:9, alignItems:"center", padding:"10px", background:"var(--cream)", borderRadius:11, border:"1px solid var(--cdk)" }}><div style={{ width:27, height:27, background:"var(--g1)", borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, flexShrink:0 }}>{tab==="sow"?"🌱":tab==="plant"?"🌿":tab==="harvest"?"🌾":"🔧"}</div><span style={{ fontSize:13, fontWeight:600 }}>{item}</span></div>)}</div>}
+        </div>
+        <div style={{ marginTop:13 }}>
+          <div className="card" style={{ background:"linear-gradient(135deg,#0a1a05,#2D5016)" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}><VPILogo size={22}/><h3 style={{ fontSize:14, fontWeight:800, color:"#fff" }}>{HOST}'s priority list for {MN[sel-1]}</h3></div>
+            <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
+              {[...(data.s.slice(0,2).map(s=>`Sow: ${s}`)),...(data.j.slice(0,2)),...(data.h.slice(0,1).map(h=>`Harvest: ${h}`))].slice(0,4).map((task,i) =>
+                <div key={i} style={{ display:"flex", gap:7 }}><span style={{ opacity:.5, color:"#fff" }}>→</span><span style={{ fontSize:12, fontWeight:600, color:"rgba(255,255,255,.82)" }}>{task}</span></div>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── PROBLEMS PAGE ────────────────────────────────────────────────────────────
+function ProblemsPage() {
+  const { awardBadge, badges } = useApp();
+  const [sel, setSel] = useState(null);
+  const [search, setSearch] = useState("");
+  const [aiAnswer, setAiAnswer] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState(false);
+  const [asked, setAsked] = useState("");
+
+  if (!badges.includes("problem-solver")) setTimeout(() => awardBadge("problem-solver"), 500);
+
+  const sevStyles = { low:{ c:"#4CAF50",l:"Low risk",bg:"#E8F5E9" }, medium:{ c:"#FF9800",l:"Worth fixing",bg:"#FFF3E0" }, high:{ c:"#F44336",l:"Act quickly",bg:"#FFEBEE" } };
+  const filtered = PROBLEMS.filter(p =>
+    !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.looks.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const askAI = async () => {
+    if (!search.trim() || search.trim().length < 5) return;
+    setAiLoading(true);
+    setAiAnswer(null);
+    setAiError(false);
+    setAsked(search.trim());
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+          model:"claude-sonnet-4-20250514",
+          max_tokens:1000,
+          system:`You are Glen, an experienced allotment manager and vegetable grower with 20+ years of experience. You run an 80-plot allotment site in the UK and teach growing through your YouTube channel Veggie Patch Ideas. You are warm, practical and straight-talking. You answer growing questions with real, actionable advice based on UK growing conditions. Always structure your answer with: a brief diagnosis of the likely cause, a practical fix, and a prevention tip. Keep answers concise — under 200 words. Use plain language, no jargon. Speak as Glen would — knowledgeable but friendly, like advice from a trusted allotment neighbour.`,
+          messages:[{ role:"user", content:`Growing question from one of my Growers Academy students: "${search.trim()}"` }],
+        }),
+      });
+      const data = await res.json();
+      const text = data?.content?.[0]?.text;
+      if (text) setAiAnswer(text);
+      else { setAiError(true); }
+    } catch(e) {
+      setAiError(true);
+    }
+    setAiLoading(false);
+  };
+
+  if (sel) {
+    const p = PROBLEMS.find(x => x.id === sel);
+    const s = sevStyles[p.sev];
+    return (
+      <div style={{ minHeight:"100vh" }}>
+        <div style={{ background:"#fff", padding:"14px", borderBottom:"1px solid var(--cdk)", position:"sticky", top:0, zIndex:10, display:"flex", alignItems:"center", gap:11 }}>
+          <button onClick={() => setSel(null)} style={{ border:"none", background:"var(--cream)", borderRadius:10, width:35, height:35, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:17 }}>←</button>
+          <div><div style={{ fontSize:9, color:"var(--tmut)", fontWeight:700 }}>Problem Solver</div><h1 style={{ fontSize:15, fontWeight:900 }}>{p.emoji} {p.title}</h1></div>
+        </div>
+        <div style={{ padding:"14px", display:"flex", flexDirection:"column", gap:11 }}>
+          <div style={{ background:s.bg, border:`2px solid ${s.c}44`, borderRadius:11, padding:"8px 14px", display:"flex", alignItems:"center", gap:8 }}><div style={{ width:8, height:8, borderRadius:"50%", background:s.c }}/><span style={{ fontWeight:700, fontSize:12, color:s.c }}>{s.l}</span></div>
+          {p.vk && <div>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}>
+              <div style={{ width:23, height:23, background:"#FF0000", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+              <h2 style={{ fontSize:13, fontWeight:800 }}>{HOST}'s fix video</h2>
+            </div>
+            <YTPlayer videoKey={p.vk}/>
+          </div>}
+          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔍 What it looks like</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.looks}</p></div>
+          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:8 }}>🤔 Likely causes</h2>{p.causes.map((c,i)=><div key={i} style={{ display:"flex", gap:7, marginBottom:6 }}><span style={{ color:"#FF7043", fontSize:12, flexShrink:0, marginTop:2 }}>•</span><span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{c}</span></div>)}</div>
+          <div style={{ background:"linear-gradient(135deg,var(--g0),#fff)", border:"2px solid var(--g3)", borderRadius:16, padding:14 }}><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔧 Easy fix</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{p.fix}</p></div>
+          <div className="tip"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:5, color:"var(--g8)" }}>🛡️ Prevention</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.prev}</p></div>
+          <button className="btn bs" style={{ width:"100%" }} onClick={() => setSel(null)}>← Back to Problem Solver</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", padding:"20px 16px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
+          <VPILogo size={24}/>
+          <h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>🔍 Problem Solver</h1>
+        </div>
+        <p style={{ color:"rgba(255,255,255,.75)", fontSize:12 }}>Ask any growing question — powered by Glen's 20 years of expertise.</p>
+      </div>
+
+      {/* AI Search bar */}
+      <div style={{ padding:"14px 16px 0", background:"#fff", borderBottom:"1px solid var(--cdk)" }}>
+        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+          <div style={{ flex:1, display:"flex", alignItems:"center", gap:8, background:"var(--cream)", borderRadius:12, padding:"10px 14px" }}>
+            <span style={{ fontSize:16 }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Ask Glen anything — e.g. why are my tomato leaves curling?"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setAiAnswer(null); }}
+              onKeyDown={e => e.key === "Enter" && askAI()}
+              style={{ flex:1, border:"none", background:"transparent", fontSize:13, fontFamily:"var(--ff)", outline:"none", color:"var(--td)" }}
+            />
+            {search && <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ border:"none", background:"none", cursor:"pointer", fontSize:14, color:"var(--tmut)" }}>✕</button>}
+          </div>
+          <button onClick={askAI} disabled={aiLoading || search.trim().length < 5}
+            style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", border:"none", borderRadius:12, padding:"11px 14px", color:"#fff", fontWeight:800, fontSize:13, cursor:"pointer", fontFamily:"var(--ff)", flexShrink:0, opacity:search.trim().length < 5 ? .5 : 1 }}>
+            {aiLoading ? "..." : "Ask"}
+          </button>
+        </div>
+        <div style={{ fontSize:10, color:"var(--tmut)", padding:"6px 4px 10px", fontWeight:600 }}>Powered by AI · Answers in Glen's voice · Type and press Ask or Enter</div>
+      </div>
+
+      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:12 }}>
+
+        {/* AI Answer */}
+        {aiLoading && (
+          <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18 }}>
+            <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}>
+              <VPILogo size={32}/>
+              <div>
+                <div style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>Glen is thinking...</div>
+                <div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div>
+              </div>
+            </div>
+            <div style={{ display:"flex", gap:4 }}>
+              {[0,1,2].map(i => <div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#9CCC65", animation:`pulse 1s ${i*.2}s infinite` }}/>)}
+            </div>
+          </div>
+        )}
+
+        {aiAnswer && !aiLoading && (
+          <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18, border:"1px solid rgba(156,204,101,.3)" }}>
+            <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:12 }}>
+              <VPILogo size={36}/>
+              <div>
+                <div style={{ color:"#9CCC65", fontWeight:800, fontSize:12, marginBottom:2 }}>Glen's Answer</div>
+                <div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div>
+              </div>
+            </div>
+            <div style={{ color:"rgba(255,255,255,.88)", fontSize:14, lineHeight:1.8, whiteSpace:"pre-wrap" }}>{aiAnswer}</div>
+            <div style={{ marginTop:14, paddingTop:12, borderTop:"1px solid rgba(255,255,255,.1)", fontSize:11, color:"rgba(255,255,255,.35)" }}>
+              AI advice based on Glen's growing expertise · Always use your own judgement
+            </div>
+            <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ marginTop:10, border:"1px solid rgba(255,255,255,.2)", background:"transparent", borderRadius:999, padding:"7px 14px", color:"rgba(255,255,255,.6)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>
+              Ask another question
+            </button>
+          </div>
+        )}
+
+        {aiError && !aiLoading && (
+          <div style={{ background:"#FFF3E0", border:"1px solid #FFB74D", borderRadius:14, padding:"14px 16px" }}>
+            <div style={{ fontWeight:800, fontSize:13, color:"#E65100", marginBottom:4 }}>⚠️ Couldn't get an answer right now</div>
+            <div style={{ fontSize:12, color:"#BF360C" }}>Check your connection and try again, or browse the common problems below.</div>
+          </div>
+        )}
+
+        {/* Common problems list — shown when no AI answer */}
+        {!aiAnswer && !aiLoading && <>
+          <div className="warn"><p style={{ fontSize:13, color:"#5D4037", lineHeight:1.5 }}><strong>Good news:</strong> Most plant problems have simple causes and easy fixes. Don't panic!</p></div>
+          {filtered.length === 0 && search && (
+            <div style={{ textAlign:"center", padding:"24px 16px" }}>
+              <div style={{ fontSize:36, marginBottom:10 }}>🤔</div>
+              <div style={{ fontWeight:800, fontSize:15, marginBottom:6 }}>No match for "{search}"</div>
+              <div style={{ fontSize:13, color:"var(--tl)", marginBottom:12 }}>Try pressing Ask to get an AI answer from Glen!</div>
+              <button onClick={askAI} style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", border:"none", borderRadius:999, padding:"10px 20px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)" }}>
+                🔍 Ask Glen about this
+              </button>
+            </div>
+          )}
+          <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
+            {filtered.map(p => { const s = sevStyles[p.sev]; return (
+              <button key={p.id} className="card tap" onClick={() => setSel(p.id)} style={{ display:"flex", alignItems:"center", gap:11, textAlign:"left", border:"1px solid var(--cdk)", fontFamily:"var(--ff)", padding:"12px 14px" }}>
+                <div style={{ width:46, height:46, background:s.bg, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:21, flexShrink:0 }}>{p.emoji}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontWeight:800, fontSize:13, marginBottom:2 }}>{p.title}</div>
+                  <div style={{ fontSize:11, color:"var(--tl)", lineHeight:1.4 }}>{p.looks.slice(0,60)}...</div>
+                  <div style={{ marginTop:4, display:"flex", alignItems:"center", gap:7 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:3 }}><div style={{ width:6, height:6, borderRadius:"50%", background:s.c }}/><span style={{ fontSize:10, fontWeight:700, color:s.c }}>{s.l}</span></div>
+                    {p.vk && MY_VIDEOS[p.vk] && <span style={{ fontSize:9, background:"#FFEBEE", color:"#FF0000", padding:"2px 6px", borderRadius:999, fontWeight:700 }}>📺 Video fix</span>}
+                  </div>
+                </div>
+                <span style={{ fontSize:16, color:"var(--tmut)" }}>→</span>
+              </button>
+            ); })}
+          </div>
+        </>}
+      </div>
+    </div>
+  );
+}
+
+// ─── PROGRESS PAGE ────────────────────────────────────────────────────────────
+function ProgressPage() {
+  const { done, badges, streak, profile, navigate, reset, xp, hearts, frostAlert, postcode, savePostcode, checkFrost, darkMode, toggleDarkMode } = useApp();
+  const [pcInput, setPcInput] = useState(postcode || "");
+  const [pcSaving, setPcSaving] = useState(false);
+  const handleSavePostcode = async () => {
+    setPcSaving(true);
+    savePostcode(pcInput);
+    await checkFrost(pcInput);
+    setPcSaving(false);
+  };
+  const actualTotal = COURSES.filter(c=>!c.comingSoon).reduce((a,c) => a+c.lessons.length, 0);
+  const pct = actualTotal > 0 ? Math.round((done.length/actualTotal)*100) : 0;
+  const league = getLeague(xp);
+  const cats = ["learning","level","streak","special"];
+  const catLabels = { learning:"📚 Lesson Badges", level:"🏆 Level Badges", streak:"🔥 Streak Badges", special:"⭐ Special Badges" };
+
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(155deg,#1a0a00,#5D4037)", padding:"20px 16px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>⭐ My Progress</h1></div>
+        <p style={{ color:"rgba(255,255,255,.55)", fontSize:12 }}>Your journey through {HOST}'s Academy</p>
+      </div>
+
+      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:14 }}>
+        {/* League card */}
+        <div className="card" style={{ background:`linear-gradient(135deg,${league.color}22,${league.color}11)`, border:`2px solid ${league.color}44`, textAlign:"center" }}>
+          <div style={{ fontSize:48, marginBottom:6 }}>{league.emoji}</div>
+          <div style={{ fontWeight:900, fontSize:20, color:league.color, marginBottom:4 }}>{league.name}</div>
+          <XPBar xp={xp}/>
+          <div style={{ marginTop:10, display:"flex", justifyContent:"center", gap:8 }}>
+            <Hearts count={hearts}/>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10 }}>
+          {[{e:"📚",v:done.length,sub:`of ${actualTotal}`,l:"Lessons"},{e:"🔥",v:streak.count,sub:"day streak",l:"Streak"},{e:"🏅",v:badges.length,sub:`of ${BADGES.length}`,l:"Badges"}].map((s,i) =>
+            <div key={i} className="card" style={{ textAlign:"center" }}>
+              <div style={{ fontSize:22, marginBottom:3 }}>{s.e}</div>
+              <div style={{ fontWeight:900, fontSize:20, color:"var(--g7)", lineHeight:1 }}>{s.v}</div>
+              <div style={{ fontSize:9, color:"var(--tmut)", fontWeight:600, marginTop:2 }}>{s.sub}</div>
+              <div style={{ fontSize:11, fontWeight:700, color:"var(--tl)" }}>{s.l}</div>
+            </div>)}
+        </div>
+
+        {/* Progress bar */}
+        <div className="card">
+          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:10 }}>Overall progress</h2>
+          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}><span style={{ fontSize:12, color:"var(--tl)" }}>{done.length} lessons done</span><span style={{ fontSize:15, fontWeight:900, color:"var(--g7)" }}>{pct}%</span></div>
+          <div className="pb" style={{ height:10 }}><div className="pf" style={{ width:`${pct}%` }}/></div>
+          {pct === 100 && <div style={{ marginTop:10, textAlign:"center", color:"var(--g7)", fontWeight:800 }}>🎉 Free Academy Complete!</div>}
+        </div>
+
+        {/* Level progress */}
+        <div>
+          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11 }}>Progress by level</h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
+            {COURSES.map(c => {
+              const d2 = c.lessons.filter(l => done.includes(l.id)).length;
+              const p  = c.lessons.length > 0 ? Math.round((d2/c.lessons.length)*100) : 0;
+              return (
+                <div key={c.id} className="card" style={{ padding:"12px 14px", opacity:c.comingSoon?.5:1 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:c.comingSoon?0:8 }}>
+                    <div style={{ width:34, height:34, background:c.color, borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, flexShrink:0 }}>{c.emoji}</div>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontWeight:800, fontSize:13, marginBottom:1 }}>{c.title}</div>
+                      <div style={{ fontSize:11, color:"var(--tmut)" }}>{c.comingSoon ? "Coming soon" : `${d2}/${c.lessons.length} lessons · ${p}%`}</div>
+                    </div>
+                    {!c.free && <span style={{ fontSize:9, background:"linear-gradient(135deg,var(--gold),var(--golddk))", color:"#111", padding:"2px 8px", borderRadius:999, fontWeight:700 }}>PREMIUM</span>}
+                    {p===100&&!c.comingSoon&&<span style={{ fontSize:17 }}>✅</span>}
+                  </div>
+                  {!c.comingSoon && c.lessons.length > 0 && <div style={{ height:5, background:"#eee", borderRadius:999, overflow:"hidden" }}><div style={{ height:"100%", width:`${p}%`, background:c.color, borderRadius:999 }}/></div>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Badges by category */}
+        {cats.map(cat => (
+          <div key={cat}>
+            <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11 }}>{catLabels[cat]}</h2>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:9 }}>
+              {BADGES.filter(b => b.cat === cat).map(b => { const earned = badges.includes(b.id); return (
+                <div key={b.id} className="card" style={{ textAlign:"center", opacity:earned?1:.36, border:earned?"2px solid var(--g2)":"1px solid var(--cdk)", background:earned?"linear-gradient(135deg,var(--g0),white)":"#fff" }}>
+                  <div style={{ fontSize:24, marginBottom:4, filter:earned?"none":"grayscale(100%)" }}>{b.e}</div>
+                  <div style={{ fontWeight:800, fontSize:11, marginBottom:2, color:earned?"var(--g8)":"var(--tmut)" }}>{b.t}</div>
+                  <div style={{ fontSize:10, color:"var(--tmut)", lineHeight:1.4 }}>{b.d}</div>
+                  {earned && <div style={{ marginTop:6, background:"var(--g5)", color:"#fff", borderRadius:999, padding:"2px 10px", fontSize:9, fontWeight:700, display:"inline-block" }}>Earned ✓</div>}
+                </div>
+              ); })}
+            </div>
+          </div>
+        ))}
+
+        {profile && <div className="card">
+          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:10 }}>My grower profile</h2>
+          {/* Space */}
+          {profile.space?.length > 0 && <div style={{ padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}>
+            <div style={{ fontSize:12, color:"var(--tl)", marginBottom:6 }}>Growing space</div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+              {profile.space.map(s => {
+                const spE = {garden:"🌳",greenhouse:"🏠","raised-beds":"📦",allotment:"🌾",containers:"🪴",balcony:"🌇",windowsill:"🪟"};
+                return <span key={s} style={{ background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:999, padding:"3px 10px", fontSize:11, fontWeight:700, color:"var(--g8)" }}>{spE[s]||"🌱"} {s.replace("-"," ")}</span>;
+              })}
+            </div>
+          </div>}
+          {/* Crops */}
+          {profile.crops?.length > 0 && <div style={{ padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}>
+            <div style={{ fontSize:12, color:"var(--tl)", marginBottom:6 }}>Wants to grow</div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+              {profile.crops.map(c => {
+                const crE = {tomatoes:"🍅",potatoes:"🥔",lettuce:"🥬",carrots:"🥕",cucumbers:"🥒",herbs:"🌿",beans:"🫘",courgettes:"🫑",onions:"🧅","all-veg":"🌈"};
+                return <span key={c} style={{ background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:999, padding:"3px 10px", fontSize:11, fontWeight:700, color:"var(--g8)" }}>{crE[c]||"🌱"} {c.replace("-"," ")}</span>;
+              })}
+            </div>
+          </div>}
+          {[{l:"Experience",v:profile.experience==="beginner"?"🌱 Beginner":profile.experience==="some"?"🌿 Some experience":"🌾 Confident"},{l:"Time/week",v:profile.time==="30min"?"⚡ <30 min":profile.time==="1hour"?"⏰ 30–60 min":profile.time==="2hours"?"⏱ 1–2 hrs":"🕐 2+ hrs"},{l:"Main goal",v:profile.goal==="save-money"?"💰 Save money":profile.goal==="health"?"💚 Healthier food":profile.goal==="skill"?"📚 New skill":profile.goal==="self-sufficient"?"🏡 Self-sufficiency":"🌈 Enjoyment"},{l:"Member since",v:new Date(profile.startedAt).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}].map((row,i) =>
+            <div key={i} style={{ display:"flex", justifyContent:"space-between", padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}><span style={{ fontSize:12, color:"var(--tl)" }}>{row.l}</span><span style={{ fontSize:12, fontWeight:700 }}>{row.v}</span></div>)}
+          <button className="btn bs bsm" style={{ width:"100%", marginTop:10 }} onClick={() => navigate("onboarding")}>Update profile</button>
+        </div>}
+
+        <BrandFooter/>
+        <div style={{ textAlign:"center", paddingBottom:8 }}>
+        {/* Frost Alert — Premium Feature */}
+        <div style={{ background:"linear-gradient(135deg,#1A237E,#283593)", borderRadius:20, padding:18 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+            <div style={{ fontSize:28 }}>🌡️</div>
+            <div>
+              <div style={{ color:"#90CAF9", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em", marginBottom:2 }}>Premium Feature</div>
+              <h3 style={{ color:"#fff", fontWeight:900, fontSize:15 }}>Frost Alert</h3>
+            </div>
+          </div>
+          <p style={{ color:"rgba(255,255,255,.7)", fontSize:13, lineHeight:1.5, marginBottom:14 }}>
+            Enter your UK postcode and we'll warn you when frost is forecast in your area — so you can protect your plants before it's too late.
+          </p>
+          {frostAlert && (
+            <div style={{ background:"rgba(255,255,255,.1)", borderRadius:12, padding:"10px 14px", marginBottom:12, border:"1px solid #5C6BC0" }}>
+              <div style={{ color:"#90CAF9", fontWeight:800, fontSize:12, marginBottom:3 }}>⚠️ Current Alert</div>
+              <div style={{ color:"#fff", fontWeight:700, fontSize:13 }}>Frost risk {frostAlert.night} — {frostAlert.temp}°C near {frostAlert.postcode}</div>
+            </div>
+          )}
+          {!frostAlert && postcode && (
+            <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}>
+              <div style={{ color:"#A5D6A7", fontWeight:700, fontSize:13 }}>✅ No frost risk in the next 48 hours near {postcode}</div>
+            </div>
+          )}
+          <div style={{ display:"flex", gap:8 }}>
+            <input
+              type="text"
+              placeholder="Enter postcode e.g. TA6 3AB"
+              value={pcInput}
+              onChange={e => setPcInput(e.target.value.toUpperCase())}
+              maxLength={8}
+              style={{ flex:1, padding:"10px 14px", borderRadius:999, border:"1px solid #5C6BC0", background:"rgba(255,255,255,.1)", color:"#fff", fontSize:13, fontFamily:"var(--ff)", outline:"none" }}
+            />
+            <button onClick={handleSavePostcode} disabled={pcSaving || !pcInput}
+              style={{ background:"#5C6BC0", border:"none", borderRadius:999, padding:"10px 18px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)", opacity:pcSaving||!pcInput?.5:1, whiteSpace:"nowrap" }}>
+              {pcSaving ? "Checking..." : "Check"}
+            </button>
+          </div>
+          <div style={{ marginTop:8, fontSize:11, color:"rgba(255,255,255,.4)", textAlign:"center" }}>Uses your postcode to check local overnight temperatures · Updates on each visit</div>
+        </div>
+
+        <BrandFooter/>
+        <div style={{ textAlign:"center", paddingBottom:8 }}>
+            {/* Dark mode toggle */}
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:14, padding:"12px 16px" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                <span style={{ fontSize:18 }}>{darkMode ? "🌙" : "☀️"}</span>
+                <span style={{ fontSize:13, fontWeight:700, color:"var(--td)" }}>Dark Mode</span>
+              </div>
+              <button onClick={toggleDarkMode} style={{ width:48, height:26, borderRadius:999, border:"none", cursor:"pointer", background: darkMode ? "var(--g5)" : "var(--cdk)", position:"relative", transition:"background .3s", flexShrink:0 }}>
+                <div style={{ width:20, height:20, borderRadius:"50%", background:"white", position:"absolute", top:3, left: darkMode ? 25 : 3, transition:"left .3s", boxShadow:"0 1px 4px rgba(0,0,0,.2)" }}/>
+              </button>
+            </div>
+
+            <div style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap" }}>
+              <button onClick={() => navigate("daily")} style={{ border:"none", background:"none", color:"var(--g6)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline", fontWeight:700 }}>🌱 Daily Challenge</button>
+              <button onClick={() => navigate("legal")} style={{ border:"none", background:"none", color:"var(--tl)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>📋 Legal & Disclaimers</button>
+              <button onClick={() => { if (window.confirm("Reset all progress? This cannot be undone.")) reset(); }} style={{ border:"none", background:"none", color:"var(--tmut)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>Reset all progress</button>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── BOTTOM NAV ───────────────────────────────────────────────────────────────
+function BottomNav() {
+  const { page, navigate, profile } = useApp();
+  if (!profile) return null;
+  const NAV_ICONS = { dashboard: INavHome, courses: INavLearn, videos: INavVideos, planner: INavPlanner, progress: INavProgress, problems: INavProblems };
+  const items = [{id:"dashboard",l:"Home"},{id:"courses",l:"Learn"},{id:"videos",l:"Videos"},{id:"planner",l:"Planner"},{id:"problems",l:"Fix It 🔍"},{id:"progress",l:"Progress"}];
+  const isActive = id => page === id || (id === "courses" && page === "lesson");
+
+  return (
+    <nav style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, height:"var(--nav)", background:"#fff", borderTop:"1px solid var(--cdk)", display:"flex", alignItems:"center", justifyContent:"space-around", zIndex:100, boxShadow:"0 -4px 18px rgba(0,0,0,.06)", overflowX:"auto", overflowY:"hidden" }}>
+      {items.map(item => {
+        const active = isActive(item.id);
+        const IC = NAV_ICONS[item.id];
+        return (
+          <button key={item.id} onClick={() => navigate(item.id)} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:4, padding:"6px 4px", border:"none", background:"transparent", cursor:"pointer", fontFamily:"var(--ff)", transition:"all .2s" }}>
+            <div style={{ transform: active ? "scale(1.12)" : "scale(0.88)", transition:"transform .2s", opacity: active ? 1 : 0.45 }}>
+              <IC size={38}/>
+            </div>
+            <span style={{ fontSize:9, fontWeight:active?800:600, color:active?"var(--g7)":"var(--tmut)", letterSpacing:".02em" }}>{item.l}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+// ─── LEVEL COMPLETE PAGE ──────────────────────────────────────────────────────
+function LevelCompletePage() {
+  const { course, navigate, xp, badges } = useApp();
+  const [showDance, setShowDance] = useState(true);
+  if (!course) { navigate("courses"); return null; }
+
+  const LEVEL_MSGS = {
+    "level-1": { msg:"You've got the foundations! You now understand what every plant needs to thrive.", next:"Level 2: Easy Wins — let's grow something delicious.", emoji:"🌱" },
+    "level-2": { msg:"Brilliant work! You've grown some of the most rewarding beginner crops there are.", next:"Level 3: Grow Like a Pro — time for the big leagues.", emoji:"🥬" },
+    "level-3": { msg:"Incredible — you're no longer a beginner. Tomatoes, potatoes, cucumbers and more.", next:"Level 4: Grow All Year — never a bare patch again.", emoji:"🍅" },
+    "level-4": { msg:"You think like a real grower now. Planning, succession, soil care — all mastered.", next:"Level 5: Allotment Master — advanced skills await.", emoji:"🗓️" },
+    "level-5": { msg:"You've reached Allotment Master level. Crop rotation, no-dig, composting — all yours.", next:"Level 6: Glen's Expert Secrets — unlock the premium tier.", emoji:"🏡" },
+    "level-6": { msg:"You've completed the entire Growers Academy. Glen is proud. You're a proper grower.", next:"Share your achievement and keep growing!", emoji:"👨‍🌾" },
+  };
+
+  const isLastLevel = course.id === "level-6";
+  const info = LEVEL_MSGS[course.id] || LEVEL_MSGS["level-1"];
+  const nextCourse = COURSES[COURSES.findIndex(c => c.id === course.id) + 1];
+
+  // Dancing veg characters per level
+  const LEVEL_DANCERS = {
+    "level-1": ["🌱","🌿","🫘"],
+    "level-2": ["🥬","🥕","🌿"],
+    "level-3": ["🍅","🥔","🥒"],
+    "level-4": ["🗓️","❄️","🔄"],
+    "level-5": ["🏡","♻️","💧"],
+    "level-6": ["👨‍🌾","🌟","🏆"],
+  };
+  const dancers = LEVEL_DANCERS[course.id] || ["🌱","🍅","🥕"];
+
+  // Confetti pieces
+  const confetti = [...Array(24)].map((_, i) => ({
+    id: i,
+    color: ["#FF5252","#FF9800","#FFEB3B","#4CAF50","#2196F3","#9C27B0","#FF4081","#00BCD4"][i % 8],
+    left: `${(i * 4.2) % 100}%`,
+    delay: `${(i * 0.08) % 1.5}s`,
+    duration: `${1.2 + (i % 6) * 0.2}s`,
+    size: `${8 + (i % 5) * 3}px`,
+    shape: i % 3 === 0 ? "50%" : i % 3 === 1 ? "2px" : "0%",
+  }));
+
+  return (
+    <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", background:"var(--cream)" }}>
+      {/* Hero with confetti */}
+      <div style={{ background:`linear-gradient(155deg,${course.color}DD,${course.color})`, padding:"52px 24px 44px", textAlign:"center", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", top:-40, right:-40, width:180, height:180, borderRadius:"50%", background:"rgba(255,255,255,.08)" }}/>
+        <div style={{ position:"absolute", bottom:-60, left:-30, width:220, height:220, borderRadius:"50%", background:"rgba(255,255,255,.05)" }}/>
+
+        {/* Confetti burst */}
+        <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
+          {confetti.map(c => (
+            <div key={c.id} style={{
+              position:"absolute", top:-10, left:c.left,
+              width:c.size, height:c.size,
+              background:c.color, borderRadius:c.shape,
+              animation:`confettiFall ${c.duration} ${c.delay} ease-in forwards, confettiSway ${c.duration} ${c.delay} ease-in-out infinite`,
+            }}/>
+          ))}
+        </div>
+
+        <div style={{ position:"relative", zIndex:1 }}>
+          <div style={{ fontSize:64, marginBottom:12, animation:"pop .5s ease" }}>🎉</div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,255,255,.2)", borderRadius:999, padding:"5px 14px", marginBottom:14 }}>
+            <span style={{ fontSize:14 }}>{info.emoji}</span>
+            <span style={{ color:"#fff", fontSize:12, fontWeight:800, textTransform:"uppercase", letterSpacing:".06em" }}>Level Complete!</span>
+          </div>
+          <h1 style={{ color:"#fff", fontSize:26, fontWeight:900, lineHeight:1.2, marginBottom:10 }}>
+            You've completed<br/>{course.title}!
+          </h1>
+          <p style={{ color:"rgba(255,255,255,.85)", fontSize:15, lineHeight:1.5, maxWidth:300, margin:"0 auto 20px" }}>
+            {info.msg}
+          </p>
+
+          {/* Dancing vegetables */}
+          <div style={{ display:"flex", justifyContent:"center", gap:20, marginBottom:20 }}>
+            {dancers.map((veg, i) => (
+              <div key={i} style={{
+                fontSize:46,
+                animation:`${["vegDance","vegDance2","vegDance3"][i]} ${1.4 + i*0.15}s ${i*0.2}s ease-in-out infinite`,
+                display:"inline-block",
+                filter:"drop-shadow(0 4px 8px rgba(0,0,0,.2))",
+              }}>{veg}</div>
+            ))}
+          </div>
+
+          {/* XP earned */}
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(0,0,0,.2)", borderRadius:999, padding:"10px 20px" }}>
+            <span style={{ fontSize:20 }}>⭐</span>
+            <span style={{ color:"#fff", fontWeight:900, fontSize:16 }}>{xp} Total XP</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding:"24px 18px", display:"flex", flexDirection:"column", gap:16, flex:1 }}>
+        {/* Next level card */}
+        {!isLastLevel && nextCourse && (
+          <div className="card" style={{ border:`2px solid ${nextCourse.color}44`, background:`${nextCourse.color}0A` }}>
+            <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:14 }}>
+              <div style={{ width:46, height:46, background:nextCourse.color, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextCourse.emoji}</div>
+              <div>
+                <div style={{ fontSize:10, fontWeight:700, color:nextCourse.color, textTransform:"uppercase", letterSpacing:".05em", marginBottom:2 }}>Up next</div>
+                <h2 style={{ fontSize:16, fontWeight:900, marginBottom:2 }}>{nextCourse.title}</h2>
+                <p style={{ fontSize:13, color:"var(--tl)", lineHeight:1.4 }}>{nextCourse.desc}</p>
+              </div>
+            </div>
+            <button className="btn bp blg" style={{ width:"100%", background:nextCourse.color }} onClick={() => navigate("courses")}>
+              Start {nextCourse.title} →
+            </button>
+          </div>
+        )}
+
+        {/* Glen's channel card */}
+        <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a3a08)", borderRadius:20, padding:20 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+            <VPILogo size={36}/>
+            <div>
+              <div style={{ color:"var(--g3)", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em", marginBottom:3 }}>Catch up with {HOST}</div>
+              <h3 style={{ color:"#fff", fontWeight:900, fontSize:16 }}>Latest from {CHANNEL_NAME}</h3>
+            </div>
+          </div>
+          <p style={{ color:"rgba(255,255,255,.65)", fontSize:13, lineHeight:1.6, marginBottom:16 }}>
+            Head over to {HOST}'s YouTube channel for the latest growing videos, allotment diaries and seasonal tips — updated regularly throughout the year.
+          </p>
+          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer"
+            style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"14px 20px", fontSize:15, fontWeight:800, textDecoration:"none", boxShadow:"0 4px 18px rgba(255,0,0,.4)" }}>
+            <YTIcon/> Visit {CHANNEL_NAME} on YouTube
+          </a>
+          <div style={{ marginTop:10, textAlign:"center", color:"rgba(255,255,255,.35)", fontSize:11 }}>
+            New videos added regularly · Subscribe so you never miss one
+          </div>
+        </div>
+
+        {/* ── PLANNER PROMOTION ── */}
+        <a href="https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/"
+          target="_blank" rel="noopener noreferrer"
+          style={{ textDecoration:"none", display:"block" }}>
+          <div style={{ background:"linear-gradient(135deg,#111,#1a2a10)", borderRadius:20, overflow:"hidden", boxShadow:"0 6px 24px rgba(0,0,0,.25)" }}>
+            {/* Product image */}
+            <img
+              src="https://veggiepatchideas.co.uk/wp-content/uploads/2024/11/small-image-planner.png"
+              alt="Veggie Patch Ideas Season Planner"
+              style={{ width:"100%", display:"block", borderRadius:"20px 20px 0 0" }}
+              onError={e => { e.target.style.display="none"; }}
+            />
+            <div style={{ padding:"18px 18px 20px" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
+                <VPILogo size={26}/>
+                <div style={{ fontSize:10, color:"var(--g3)", fontWeight:800, textTransform:"uppercase", letterSpacing:".08em" }}>{CHANNEL_NAME} · Recommended</div>
+              </div>
+              <h3 style={{ color:"#fff", fontSize:17, fontWeight:900, lineHeight:1.3, marginBottom:10 }}>
+                Your Guide Through the Season
+              </h3>
+              <p style={{ color:"rgba(255,255,255,.75)", fontSize:13, lineHeight:1.6, marginBottom:16 }}>
+                The best growers write everything down. What worked, what failed, when they sowed and when they harvested. Over time your notes become your most powerful growing tool — more valuable than any book or video.
+              </p>
+              <div style={{ background:"rgba(255,255,255,.06)", border:"1px solid rgba(255,255,255,.12)", borderRadius:12, padding:"12px 14px", marginBottom:16 }}>
+                <div style={{ color:"var(--g3)", fontWeight:800, fontSize:12, marginBottom:6 }}>💡 Glen's advice</div>
+                <p style={{ color:"rgba(255,255,255,.7)", fontSize:13, lineHeight:1.5, margin:0 }}>
+                  "I've kept a growing notebook every year for 20 years. Looking back at what I wrote last season is still the fastest way I know to improve. Don't skip this — it makes a real difference."
+                </p>
+              </div>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <div>
+                  <div style={{ color:"rgba(255,255,255,.45)", fontSize:11, fontWeight:600 }}>Use every year</div>
+                  <div style={{ color:"#fff", fontSize:14, fontWeight:800 }}>Season Planner & Diary →</div>
+                </div>
+                <div style={{ background:"linear-gradient(135deg,var(--g4),var(--g6))", borderRadius:999, padding:"10px 18px", fontSize:13, fontWeight:800, color:"#fff", whiteSpace:"nowrap" }}>
+                  Get it now
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        {/* Share achievement */}
+        <div className="card" style={{ textAlign:"center" }}>
+          <div style={{ fontSize:32, marginBottom:8 }}>{info.emoji}</div>
+          <h3 style={{ fontSize:15, fontWeight:800, marginBottom:4 }}>Share your achievement</h3>
+          <p style={{ fontSize:13, color:"var(--tl)", marginBottom:14, lineHeight:1.5 }}>
+            Completed {course.title} on The Growers Academy by {CHANNEL_NAME}!
+          </p>
+          <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
+            <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(course.title)}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱+${encodeURIComponent(WEBSITE_URL)}`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#000", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
+              𝕏 Share
+            </a>
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}&quote=Just+completed+${encodeURIComponent(course.title)}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#1877F2", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/veggiepatchideas"
+              target="_blank" rel="noopener noreferrer"
+              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+
+        {/* Back to courses */}
+        <button className="btn bs" style={{ width:"100%" }} onClick={() => navigate("courses")}>
+          ← Back to all courses
+        </button>
+      </div>
+    </div>
+  );
+}
+// ─── DAILY CHALLENGE PAGE ─────────────────────────────────────────────────────
+function DailyChallengePage() {
+  const { navigate, dailyDone, setDailyDone, addXP, haptic } = useApp();
+  const [qa, setQa] = useState(null);
+  const [done, setDone] = useState(false);
+  const [correct, setCorrect] = useState(null);
+
+  const today = new Date().toDateString();
+  const alreadyDone = dailyDone.date === today && dailyDone.done;
+
+  // Pick a daily question based on the day of year
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const ALL_QUESTIONS = [
+    { q:"What is the ideal soil pH for most vegetables?", opts:["4.0–5.0","6.0–7.0","7.5–8.5","Doesn't matter"], a:1 },
+    { q:"When is the best time to water your plants?", opts:["Midday","Evening","Morning","Any time"], a:2 },
+    { q:"What does 'hardening off' seedlings mean?", opts:["Cutting back growth","Gradually acclimatising indoor plants to outdoor conditions","Adding grit to compost","Letting roots dry out"], a:1 },
+    { q:"Which vegetable is best sown directly and hates being transplanted?", opts:["Tomatoes","Carrots","Lettuce","Courgettes"], a:1 },
+    { q:"What should you do the moment peas start flowering?", opts:["Feed with nitrogen","Stop watering","Start picking daily as soon as pods form","Cut back the plant"], a:2 },
+    { q:"What causes tomato leaves to curl upward?", opts:["Too much water","Heat stress or inconsistent watering","Too much nitrogen","Blight"], a:1 },
+    { q:"How deep should you plant garlic cloves?", opts:["On the surface","2–3cm deep, pointy end up","10cm deep","Doesn't matter"], a:1 },
+    { q:"What is the purpose of earthing up potatoes?", opts:["To add nutrients","To prevent tubers turning green","To improve drainage","To speed up growth"], a:1 },
+    { q:"Which green manure fixes nitrogen from the air?", opts:["Mustard","Phacelia","Red clover","Buckwheat"], a:2 },
+    { q:"When should you pinch out basil to keep it bushy?", opts:["Never — leave it to grow","Pinch out flowers as soon as they appear","Only in autumn","Cut the roots back"], a:1 },
+    { q:"What does succession sowing prevent?", opts:["Pests","Gluts and gaps in harvest","Weeds","Root disease"], a:1 },
+    { q:"What is the main advantage of no-dig growing?", opts:["Cheaper tools needed","Preserves soil structure and beneficial organisms","Needs less watering","Grows vegetables faster"], a:1 },
+    { q:"Why shouldn't you plant brassicas in the same spot each year?", opts:["They look better elsewhere","Clubroot and other diseases build up in the soil","They prefer shade","They use all the nutrients"], a:1 },
+    { q:"What temperature is needed for chilli seeds to germinate reliably?", opts:["10–15°C","15–20°C","25–28°C","Any temperature"], a:2 },
+    { q:"When is garlic traditionally planted in the UK?", opts:["March","May","October to December","February"], a:2 },
+  ];
+
+  const q = ALL_QUESTIONS[dayOfYear % ALL_QUESTIONS.length];
+
+  const handleSubmit = () => {
+    const isCorrect = qa === q.a;
+    setCorrect(isCorrect);
+    setDone(true);
+    haptic(isCorrect ? "medium" : "light");
+    if (isCorrect) addXP(15);
+    setDailyDone({ date: today, done: true, score: isCorrect ? 1 : 0 });
+  };
+
+  return (
+    <div style={{ minHeight:"100vh", background:"var(--cream)", paddingBottom:40 }}>
+      {/* Header */}
+      <div style={{ background:"linear-gradient(135deg,#0f2206,#2d5016)", padding:"20px 18px 24px" }}>
+        <button onClick={() => navigate("dashboard")} style={{ display:"flex", alignItems:"center", gap:6, border:"none", background:"rgba(255,255,255,.15)", borderRadius:10, padding:"7px 12px", color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", marginBottom:16 }}>← Back</button>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
+          <span style={{ fontSize:28 }}>🌱</span>
+          <div>
+            <div style={{ color:"rgba(255,255,255,.55)", fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em" }}>Daily Challenge</div>
+            <h1 style={{ color:"#fff", fontWeight:900, fontSize:18 }}>Today's Growing Question</h1>
+          </div>
+        </div>
+        <div style={{ color:"rgba(255,255,255,.5)", fontSize:12, marginTop:6 }}>
+          {new Date().toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"long" })} · +15 XP if correct
+        </div>
+      </div>
+
+      <div style={{ padding:"24px 18px", display:"flex", flexDirection:"column", gap:16 }}>
+        {alreadyDone && !done ? (
+          <div className="card" style={{ textAlign:"center" }}>
+            <div style={{ fontSize:40, marginBottom:12 }}>{dailyDone.score === 1 ? "🎉" : "💡"}</div>
+            <h2 style={{ fontSize:17, fontWeight:900, marginBottom:8 }}>Already done today!</h2>
+            <p style={{ fontSize:13, color:"var(--tl)", lineHeight:1.6, marginBottom:16 }}>
+              {dailyDone.score === 1 ? "You got it right! Come back tomorrow for a new question." : "Come back tomorrow and try again — there's a new question every day."}
+            </p>
+            <button className="btn bp" onClick={() => navigate("dashboard")} style={{ width:"100%" }}>Back to Dashboard</button>
+          </div>
+        ) : !done ? (
+          <>
+            <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)" }}>
+              <div style={{ fontSize:11, color:"var(--g6)", fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", marginBottom:10 }}>🧠 Question of the day</div>
+              <p style={{ fontWeight:800, fontSize:16, lineHeight:1.5, marginBottom:16, color:"var(--td)" }}>{q.q}</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                {q.opts.map((opt, i) => (
+                  <button key={i} onClick={() => setQa(i)} style={{ padding:"13px 16px", border:`2px solid ${qa===i?"var(--g5)":"var(--cdk)"}`, borderRadius:12, background:qa===i?"var(--g0)":"#fff", cursor:"pointer", textAlign:"left", fontSize:14, fontWeight:600, fontFamily:"var(--ff)", transition:"all .15s", transform:qa===i?"scale(1.01)":"scale(1)" }}>{opt}</button>
+                ))}
+              </div>
+              {qa !== null && <button className="btn bp" style={{ width:"100%", marginTop:14 }} onClick={handleSubmit}>Submit Answer</button>}
+            </div>
+          </>
+        ) : (
+          <div className="card" style={{ textAlign:"center", border:`2px solid ${correct?"#4CAF50":"#EF5350"}`, background:correct?"#E8F5E9":"#FFEBEE" }}>
+            <div style={{ fontSize:44, marginBottom:12 }}>{correct ? "🎉" : "💡"}</div>
+            <h2 style={{ fontSize:18, fontWeight:900, marginBottom:6, color:correct?"#2E7D32":"#C62828" }}>{correct ? "Correct!" : "Not quite!"}</h2>
+            {correct && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:12, display:"inline-block" }}>+15 XP earned! 🌟</div>}
+            {!correct && <div style={{ background:"rgba(255,255,255,.7)", borderRadius:10, padding:"10px 14px", marginBottom:12 }}>
+              <div style={{ fontSize:11, fontWeight:700, color:"#B71C1C", marginBottom:3 }}>✅ The correct answer was:</div>
+              <div style={{ fontSize:14, fontWeight:800 }}>{q.opts[q.a]}</div>
+            </div>}
+            <p style={{ fontSize:13, color:"var(--tl)", marginBottom:16 }}>Come back tomorrow for a new question!</p>
+            <button className="btn bp" style={{ width:"100%" }} onClick={() => navigate("dashboard")}>Back to Dashboard</button>
+          </div>
+        )}
+
+        {/* Streak reminder */}
+        <div style={{ background:"linear-gradient(135deg,#1a3a08,#2d5016)", borderRadius:16, padding:"14px 16px", display:"flex", gap:12, alignItems:"center" }}>
+          <span style={{ fontSize:28 }}>🔥</span>
+          <div>
+            <div style={{ color:"#9CCC65", fontWeight:800, fontSize:13 }}>Daily questions keep your streak alive!</div>
+            <div style={{ color:"rgba(255,255,255,.55)", fontSize:12 }}>Answer every day to build your growing knowledge</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Router() {
+  const { page, profile, darkMode, newBadge, pageAnim, navigate } = useApp();
+  const noNav  = ["home","onboarding","welcome","level-complete"];
+  const showNav = profile && !noNav.includes(page);
+  const Page = () => {
+    switch (page) {
+      case "level-complete":return <LevelCompletePage/>;
+      case "home":       return <HomePage/>;
+      case "onboarding": return <OnboardingPage/>;
+      case "welcome":    return <WelcomePage/>;
+      case "dashboard":  return <DashboardPage/>;
+      case "courses":    return <CoursesPage/>;
+      case "lesson":     return <LessonPage/>;
+      case "videos":     return <VideosPage/>;
+      case "planner":    return <PlannerPage/>;
+      case "problems":   return <ProblemsPage/>;
+      case "progress":   return <ProgressPage/>;
+      case "legal":      return <LegalPage/>;
+      case "daily":      return <DailyChallengePage/>;
+      default:           return <HomePage/>;
+    }
+  };
+
+  // Dark mode CSS overrides
+  const darkCss = darkMode ? `
+    body, .wrap { background: #0f1a0a !important; }
+    .card { background: #1a2d12 !important; border-color: #2d4a1e !important; }
+    body { color: #e8f5e0 !important; }
+    :root {
+      --cream: #0f1a0a;
+      --cdk: #2d4a1e;
+      --td: #e8f5e0;
+      --tm: #c8e6b0;
+      --tl: #8ab878;
+      --tmut: #5a7a4a;
+      --g0: #1a2d12;
+    }
+  ` : "";
+
+  return (
+    <div className="wrap" style={{ background: darkMode ? "#0f1a0a" : undefined }}>
+      <style>{css + darkCss}</style>
+
+      {/* Page transition overlay */}
+      {pageAnim && <div style={{ position:"fixed", inset:0, background: darkMode ? "#0f1a0a" : "var(--cream)", opacity:.6, zIndex:9998, pointerEvents:"none", animation:"fadeUp .12s ease" }}/>}
+
+      {/* Badge earned popup */}
+      {newBadge && (
+        <div style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", zIndex:9999, animation:"badgePop .4s cubic-bezier(.34,1.56,.64,1)", maxWidth:320, width:"90%" }}>
+          <div style={{ background:"linear-gradient(135deg,#1a3a08,#2d5016)", border:"2px solid #7CB342", borderRadius:20, padding:"14px 18px", display:"flex", gap:12, alignItems:"center", boxShadow:"0 8px 32px rgba(0,0,0,.4)" }}>
+            <div style={{ width:52, height:52, borderRadius:"50%", background:"linear-gradient(135deg,#5E9E2E,#9CCC65)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:26, flexShrink:0, boxShadow:"0 0 0 3px rgba(156,204,101,.3)" }}>{newBadge.e}</div>
+            <div>
+              <div style={{ color:"#9CCC65", fontSize:10, fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", marginBottom:3 }}>🏅 Badge Unlocked!</div>
+              <div style={{ color:"#fff", fontWeight:900, fontSize:15, marginBottom:2 }}>{newBadge.t}</div>
+              <div style={{ color:"rgba(255,255,255,.6)", fontSize:12 }}>{newBadge.d}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{ paddingBottom: showNav ? "var(--nav)" : 0, opacity: pageAnim ? 0.4 : 1, transition:"opacity .12s ease" }}>
+        <Page/>
+      </div>
+      <BottomNav/>
+    </div>
+  );
+}
+
+// ─── LEGAL PAGE ───────────────────────────────────────────────────────────────
+function LegalPage() {
+  const { navigate } = useApp();
+  const sections = [
+    {
+      title:"Affiliate Links Disclosure",
+      icon:"🛒",
+      body:`The Growers Academy contains affiliate links to products on Amazon and other retailers. When you click one of these links and make a purchase, ${CHANNEL_NAME} may earn a small commission at no extra cost to you.\n\nAll products recommended in this app are genuinely used and trusted by Glen. We only recommend products we believe will help your growing. Affiliate income helps keep the free lessons in this app free.`,
+    },
+    {
+      title:"Frost Alert & Weather Data",
+      icon:"🌡️",
+      body:`The frost alert feature uses your UK postcode to retrieve weather forecast data from Open-Meteo (open-meteo.com), a free and openly licensed weather service. Your postcode is stored only on your device and is never transmitted to any ${CHANNEL_NAME} server.\n\nFrost alerts are provided as general guidance only. Weather forecasts are not guaranteed to be accurate. Always use your own judgement when deciding whether to protect plants. ${CHANNEL_NAME} accepts no responsibility for crop losses resulting from reliance on frost alert data.`,
+    },
+    {
+      title:"Growing Advice Disclaimer",
+      icon:"🌱",
+      body:`All growing advice in this app is provided for general informational and educational purposes only. Results will vary depending on your location, soil, climate, experience and many other factors.\n\n${CHANNEL_NAME} and Glen accept no liability for crop failures, losses or damage arising from following advice in this app. Gardening involves real-world variables that no app can fully account for. Always apply your own judgement and seek local advice where needed.`,
+    },
+    {
+      title:"Data Storage & Privacy",
+      icon:"🔒",
+      body:`The Growers Academy stores your progress, profile and preferences in your browser's local storage only. This data never leaves your device and is never sent to any external server.\n\nNo personal data is collected, stored or processed by ${CHANNEL_NAME}. Your postcode (if entered for frost alerts) is stored locally on your device only and is used solely to fetch publicly available weather data.\n\nThis app does not use cookies, tracking pixels, or any third-party analytics.`,
+    },
+    {
+      title:"Premium Content & Payments",
+      icon:"💳",
+      body:`Access to premium levels (Levels 4, 5 and 6) requires a one-time payment processed through a third-party payment provider. ${CHANNEL_NAME} does not store payment information.\n\nPremium access is granted on a lifetime basis — there are no recurring charges. ${CHANNEL_NAME} reserves the right to update, modify or add to premium content at any time.\n\nFor payment queries please email glen@veggiepatchideas.co.uk.`,
+    },
+    {
+      title:"Privacy Notice (UK GDPR)",
+      icon:"🔐",
+      body:`This privacy notice explains how The Growers Academy by ${CHANNEL_NAME} handles your personal data in accordance with the UK Data Protection Act 2018 and UK GDPR.\n\nData controller: Glen, ${CHANNEL_NAME} · glen@veggiepatchideas.co.uk\n\nWhat data we collect and why:\n• Postcode (optional) — collected only if you choose to use the Frost Alert feature. Used solely to retrieve publicly available local weather data. Legal basis: Legitimate interest in providing the service you requested.\n• Growing profile and preferences — stored locally on your device only. Used to personalise your experience. Legal basis: Consent (you provide this voluntarily during onboarding).\n• App progress — stored locally on your device only. Used to track your lesson completion and achievements.\n\nWhere your data is stored:\nAll data is stored exclusively in your device's local storage. None of your data is transmitted to or stored on any ${CHANNEL_NAME} server. Your postcode is sent only to the third-party weather service open-meteo.com and postcodes.io to retrieve forecast data — neither service stores or processes your postcode beyond the immediate request.\n\nHow long we keep your data:\nData is retained on your device until you choose to clear it using the "Reset all progress" option in the app, or until you clear your browser or app storage.\n\nYour rights:\nUnder UK GDPR you have the right to access, correct or delete your personal data at any time. Since all data is stored locally on your device, you can exercise these rights by using the Reset option in the app. For any queries contact glen@veggiepatchideas.co.uk.\n\nWe do not sell, share or transfer your personal data to any third party for marketing purposes. We do not use cookies or any third-party tracking or analytics tools.\n\nTo report a data concern or make a complaint you may also contact the Information Commissioner's Office (ICO) at ico.org.uk.`,
+    },
+    {
+      title:"Contact",
+      icon:"📬",
+      body:`For any questions about these terms, affiliate partnerships, or the app in general, please get in touch by email at glen@veggiepatchideas.co.uk or via our website at ${WEBSITE_URL}.`,
+    },
+  ];
+
+  return (
+    <div style={{ minHeight:"100vh", background:"var(--cream)", paddingBottom:40 }}>
+      {/* Header */}
+      <div style={{ background:"linear-gradient(135deg,#1a3a08,#4e8226)", padding:"20px 18px 24px" }}>
+        <button onClick={() => navigate("progress")} style={{ display:"flex", alignItems:"center", gap:6, border:"none", background:"rgba(255,255,255,.15)", borderRadius:10, padding:"7px 12px", color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", marginBottom:16 }}>← Back</button>
+        <VPILogo size={36}/>
+        <h1 style={{ color:"#fff", fontSize:22, fontWeight:900, marginTop:12, marginBottom:4 }}>Legal Information</h1>
+        <p style={{ color:"rgba(255,255,255,.65)", fontSize:13 }}>The Growers Academy by {CHANNEL_NAME}</p>
+      </div>
+
+      <div style={{ padding:"20px 18px", display:"flex", flexDirection:"column", gap:16 }}>
+        <div style={{ background:"#FFF8E1", border:"1px solid #FFE082", borderRadius:14, padding:"12px 14px" }}>
+          <p style={{ fontSize:12, color:"#6D4C00", lineHeight:1.6, fontWeight:600 }}>
+            Please read this information carefully. By using The Growers Academy you agree to the terms described below. Last updated: {new Date().toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" })}.
+          </p>
+        </div>
+
+        {sections.map((s, i) => (
+          <div key={i} className="card">
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+              <div style={{ fontSize:22 }}>{s.icon}</div>
+              <h2 style={{ fontSize:15, fontWeight:900, color:"var(--td)" }}>{s.title}</h2>
+            </div>
+            {s.body.split("\n\n").map((para, j) => (
+              <p key={j} style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7, marginBottom: j < s.body.split("\n\n").length - 1 ? 10 : 0 }}>{para}</p>
+            ))}
+          </div>
+        ))}
+
+        <div style={{ textAlign:"center", padding:"8px 0" }}>
+          <p style={{ fontSize:12, color:"var(--tmut)", lineHeight:1.6 }}>
+            © {new Date().getFullYear()} {CHANNEL_NAME} · All rights reserved
+          </p>
+          <a href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize:12, color:"var(--g6)", textDecoration:"none", fontWeight:700 }}>{WEBSITE_URL}</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return <Provider><Router/></Provider>;
+}
