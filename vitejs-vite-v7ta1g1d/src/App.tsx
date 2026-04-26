@@ -1587,9 +1587,11 @@ function HomePage() {
       {/* Featured video */}
       <div style={{ padding:"0 18px 22px" }}>
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:13 }}>
-          <VPILogo size={26}/><h2 style={{ fontSize:16, fontWeight:800, color:"var(--g8)" }}>{HOST}'s featured video</h2>
+          <VPILogo size={26}/><h2 style={{ fontSize:16, fontWeight:800, color:"var(--g8)" }}>Welcome to The Growers Academy</h2>
         </div>
-        <YTPlayer videoKey="grow-tomatoes"/>
+        <div style={{ position:"relative", paddingTop:"56.25%", background:"#000", borderRadius:16, overflow:"hidden" }}>
+          <iframe style={{ position:"absolute", inset:0, width:"100%", height:"100%", border:"none" }} src="https://www.youtube.com/embed/tYjY0Zjpt8Y?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Welcome to The Growers Academy"/>
+        </div>
         <button className="btn bs bsm" style={{ width:"100%", marginTop:11 }} onClick={() => navigate("videos")}>View all video lessons →</button>
       </div>
 
