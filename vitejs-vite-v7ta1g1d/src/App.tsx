@@ -1681,7 +1681,7 @@ function OnboardingPage() {
             By tapping "I Agree & Continue" you confirm you have read and understood these terms. For the full legal information visit{" "}
             <a href={WEBSITE_URL} target="_blank" rel="noopener noreferrer" style={{ color:"var(--g6)", fontWeight:700 }}>veggiepatchideas.co.uk</a>
             {" "}or email{" "}
-            <a href="mailto:glen@veggiepatchideas.co.uk" style={{ color:"var(--g6)", fontWeight:700 }}>glen@veggiepatchideas.co.uk</a>
+            <a href={`${WEBSITE_URL}/contact`} target="_blank" rel="noopener noreferrer" style={{ color:"var(--g6)", fontWeight:700 }}>our contact form</a>
           </p>
         </div>
 
@@ -3431,17 +3431,17 @@ function LegalPage() {
     {
       title:"Premium Content & Payments",
       icon:"💳",
-      body:`Access to premium levels (Levels 4, 5 and 6) requires a one-time payment processed through a third-party payment provider. ${CHANNEL_NAME} does not store payment information.\n\nPremium access is granted on a lifetime basis — there are no recurring charges. ${CHANNEL_NAME} reserves the right to update, modify or add to premium content at any time.\n\nFor payment queries please email glen@veggiepatchideas.co.uk.`,
+      body:`Access to premium levels (Levels 4, 5 and 6) requires a one-time payment processed through a third-party payment provider. ${CHANNEL_NAME} does not store payment information.\n\nPremium access is granted on a lifetime basis — there are no recurring charges. ${CHANNEL_NAME} reserves the right to update, modify or add to premium content at any time.\n\nFor payment queries please contact us via the contact form at ${WEBSITE_URL}.`,
     },
     {
       title:"Privacy Notice (UK GDPR)",
       icon:"🔐",
-      body:`This privacy notice explains how The Growers Academy by ${CHANNEL_NAME} handles your personal data in accordance with the UK Data Protection Act 2018 and UK GDPR.\n\nData controller: Glen, ${CHANNEL_NAME} · glen@veggiepatchideas.co.uk\n\nWhat data we collect and why:\n• Postcode (optional) — collected only if you choose to use the Frost Alert feature. Used solely to retrieve publicly available local weather data. Legal basis: Legitimate interest in providing the service you requested.\n• Growing profile and preferences — stored locally on your device only. Used to personalise your experience. Legal basis: Consent (you provide this voluntarily during onboarding).\n• App progress — stored locally on your device only. Used to track your lesson completion and achievements.\n\nWhere your data is stored:\nAll data is stored exclusively in your device's local storage. None of your data is transmitted to or stored on any ${CHANNEL_NAME} server. Your postcode is sent only to the third-party weather service open-meteo.com and postcodes.io to retrieve forecast data — neither service stores or processes your postcode beyond the immediate request.\n\nHow long we keep your data:\nData is retained on your device until you choose to clear it using the "Reset all progress" option in the app, or until you clear your browser or app storage.\n\nYour rights:\nUnder UK GDPR you have the right to access, correct or delete your personal data at any time. Since all data is stored locally on your device, you can exercise these rights by using the Reset option in the app. For any queries contact glen@veggiepatchideas.co.uk.\n\nWe do not sell, share or transfer your personal data to any third party for marketing purposes. We do not use cookies or any third-party tracking or analytics tools.\n\nTo report a data concern or make a complaint you may also contact the Information Commissioner's Office (ICO) at ico.org.uk.`,
+      body:`Veggie Patch Ideas is committed to protecting your privacy. This is a summary of how we handle your data in The Growers Academy app.\n\nData controller: Veggie Patch Ideas, England (sole trader)\nContact: Via the contact form at ${WEBSITE_URL}\n\nWhat data the app collects:\n• App progress, profile and preferences — stored only on your device in local storage. Never transmitted to any server.\n• Postcode (optional, Frost Alert) — stored on your device only. Sent solely to Open-Meteo and postcodes.io to retrieve local weather data. Never stored or shared by us.\n• The app does not use cookies, tracking pixels or third-party analytics.\n\nYour rights:\nUnder UK GDPR you have the right to access, correct or delete your data at any time. Since all app data is stored locally on your device, you can exercise these rights using the Reset option in the app or by clearing your browser storage.\n\nFor our full Privacy Notice covering our website, shop, newsletter and all services visit:\n${WEBSITE_URL}/privacy-policy\n\nTo make a complaint contact the ICO at ico.org.uk.`,
     },
     {
       title:"Contact",
       icon:"📬",
-      body:`For any questions about these terms, affiliate partnerships, or the app in general, please get in touch by email at glen@veggiepatchideas.co.uk or via our website at ${WEBSITE_URL}.`,
+      body:`For any questions about these terms, affiliate partnerships, or the app in general, please get in touch via the contact form at ${WEBSITE_URL}.`,
     },
   ];
 
