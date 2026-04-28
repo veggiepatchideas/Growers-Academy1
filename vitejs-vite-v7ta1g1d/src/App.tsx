@@ -196,7 +196,7 @@ const COURSES = [
         cl:["Buy a bag of multi-purpose compost","Test your soil by feel or with a pH kit","Clear weeds from your growing area","Mark out your first bed or container"],
         tip:"Used coffee grounds are brilliant for soil structure — worms absolutely love them!",
         mistakes:["Using soil straight from a bag without mixing","Compacting soil by walking on beds","Adding uncomposted kitchen scraps directly — they need to rot first"],
-        quiz:[{q:"What pH do most vegetables prefer?",opts:["4.0–5.0","6.0–7.0","7.5–8.5","Doesn't matter"],a:1},{q:"What do worms in your soil indicate?",opts:["Poor drainage","A pest problem","Healthy, fertile soil","Too much clay"],a:2},{q:"What should you add to improve heavy clay soil?",opts:["Sand only","Compost or organic matter","Lime only","Nothing — clay is fine"],a:1}],
+        quiz:[{q:"What pH do most vegetables prefer?",opts:["4.0–5.0","6.0–7.0","7.5–8.5","Doesn't matter"],a:1},{q:"What do worms in your soil indicate?",opts:["Poor drainage","A pest problem","Healthy, fertile soil","Too much clay"],a:2},{q:"What should you add to improve heavy clay soil?",opts:["Sand only","Compost or organic matter","Lime only","Nothing — clay is fine"],a:1},{q:"True or False: You should dig over your soil every year to improve it.",opts:["True", "False"],a:1},{q:"True or False: Worms in your soil are a sign of good soil health.",opts:["True", "False"],a:0}],
         badge:"soil-expert",
       },
       {
@@ -214,7 +214,7 @@ const COURSES = [
         cl:["Measure your growing space","Choose at least one container or bed","Ensure drainage holes are in place","Buy a bag of potting compost"],
         tip:"Self-watering containers have a base reservoir — absolute game changer for tomatoes on a hot patio!",
         mistakes:["Using garden soil in containers — it compacts and drowns roots","Undersizing containers","Forgetting drainage holes"],
-        quiz:[{q:"What goes at the bottom of a container for drainage?",opts:["Kitchen paper","Gravel or broken crockery","Sand only","Nothing needed"],a:1},{q:"What is the minimum depth for a container growing tomatoes?",opts:["10cm","20cm","30cm or more","5cm is fine"],a:2},{q:"Why do containers dry out faster than beds?",opts:["The soil is different","Limited volume and no connection to ground water","Containers get more sun","The plastic heats up"],a:1}],
+        quiz:[{q:"What goes at the bottom of a container for drainage?",opts:["Kitchen paper","Gravel or broken crockery","Sand only","Nothing needed"],a:1},{q:"What is the minimum depth for a container growing tomatoes?",opts:["10cm","20cm","30cm or more","5cm is fine"],a:2},{q:"Why do containers dry out faster than beds?",opts:["The soil is different","Limited volume and no connection to ground water","Containers get more sun","The plastic heats up"],a:1},{q:"True or False: Any container with drainage holes can be used to grow vegetables.",opts:["True", "False"],a:0},{q:"True or False: You should use the same compost in containers every year without changing it.",opts:["True", "False"],a:1}],
         badge:"container-king",
       },
       {
@@ -232,7 +232,7 @@ const COURSES = [
         cl:["Map the sunniest spots in your garden","Get a watering can with a rose attachment","Set a soil-check reminder","Buy some mulch for your beds"],
         tip:"A cheap rain gauge tells you exactly how much natural water your garden is getting — really useful in wet UK summers!",
         mistakes:["Watering a little every day instead of deeply","Watering in midday sun — scorches leaves","Ignoring rainfall in wet weeks and overwatering"],
-        quiz:[{q:"Best time to water your plants?",opts:["Midday sun","Evening only","Morning","Doesn't matter at all"],a:2},{q:"How do you check if a plant needs watering?",opts:["Check the leaves colour","Push finger 2cm into soil — dry means water","Water every day regardless","Lift the pot"],a:1},{q:"What does mulching around plants do?",opts:["Makes the garden look tidy","Reduces evaporation and retains moisture","Adds nutrients immediately","Prevents all weeds permanently"],a:1}],
+        quiz:[{q:"Best time to water your plants?",opts:["Midday sun","Evening only","Morning","Doesn't matter at all"],a:2},{q:"How do you check if a plant needs watering?",opts:["Check the leaves colour","Push finger 2cm into soil — dry means water","Water every day regardless","Lift the pot"],a:1},{q:"What does mulching around plants do?",opts:["Makes the garden look tidy","Reduces evaporation and retains moisture","Adds nutrients immediately","Prevents all weeds permanently"],a:1},{q:"True or False: Most vegetables need at least 6 hours of sunlight per day.",opts:["True", "False"],a:0},{q:"True or False: It is better to water plants a little every day than deeply less often.",opts:["True", "False"],a:1}],
         badge:"sun-chaser",
       },
       {
@@ -250,7 +250,7 @@ const COURSES = [
         cl:["Buy a quality trowel and hand fork","Get a watering can (8–10L is ideal)","Find gloves that actually fit your hands","Grab a kneeling pad"],
         tip:"Car boot sales are brilliant for tools — vintage metal tools often outlast cheap modern ones by decades!",
         mistakes:["Buying cheap tools that break in week one","Leaving tools outside to rust in the rain","Skipping gloves — always protect your hands"],
-        quiz:[{q:"Most essential tool for a beginner?",opts:["Electric strimmer","Trowel","Full-size spade","Wheelbarrow"],a:1},{q:"What is a dibber used for?",opts:["Digging large holes","Making planting holes for seeds and seedlings","Mixing compost","Cutting roots"],a:1},{q:"How should you store metal garden tools?",opts:["Leave them outside — they're weatherproof","Clean off soil and store dry to prevent rust","Submerge in water","It doesn't matter"],a:1}],
+        quiz:[{q:"Most essential tool for a beginner?",opts:["Electric strimmer","Trowel","Full-size spade","Wheelbarrow"],a:1},{q:"What is a dibber used for?",opts:["Digging large holes","Making planting holes for seeds and seedlings","Mixing compost","Cutting roots"],a:1},{q:"How should you store metal garden tools?",opts:["Leave them outside — they're weatherproof","Clean off soil and store dry to prevent rust","Submerge in water","It doesn't matter"],a:1},{q:"True or False: Expensive tools are always better than cheaper ones.",opts:["True", "False"],a:1},{q:"True or False: Garden tools should be cleaned and dried after use to prevent rust.",opts:["True", "False"],a:0}],
         badge:"tool-master",
       },
       {
@@ -269,7 +269,7 @@ const COURSES = [
         cl:["Buy easy seeds (radish or lettuce are perfect starters)","Get dedicated seed compost — not regular potting compost","Find small pots or a module tray","Buy plant labels and a waterproof marker"],
         tip:"Window ledges work brilliantly for germination — the warmth from central heating really speeds things up in early spring!",
         mistakes:["Sowing too deep — most small seeds need just 1–2cm cover","Letting compost dry out completely after sowing","Not labelling — you will never guess correctly"],
-        quiz:[{q:"Best germination temperature for most veg seeds?",opts:["5–10°C","15–22°C","28–35°C","Temperature doesn't matter"],a:1},{q:"Why sow seeds in modules rather than open trays?",opts:["Modules look neater","Less root disturbance when transplanting","Seeds germinate faster","You use less compost"],a:1},{q:"What should you always do immediately after sowing seeds?",opts:["Feed with liquid fertiliser","Label with the variety name and date","Move to a cold spot","Water with hot water"],a:1}],
+        quiz:[{q:"Best germination temperature for most veg seeds?",opts:["5–10°C","15–22°C","28–35°C","Temperature doesn't matter"],a:1},{q:"Why sow seeds in modules rather than open trays?",opts:["Modules look neater","Less root disturbance when transplanting","Seeds germinate faster","You use less compost"],a:1},{q:"What should you always do immediately after sowing seeds?",opts:["Feed with liquid fertiliser","Label with the variety name and date","Move to a cold spot","Water with hot water"],a:1},{q:"True or False: All seeds need light to germinate.",opts:["True", "False"],a:1},{q:"True or False: Seeds sown too deep may fail to germinate.",opts:["True", "False"],a:0}],
         badge:"sow-and-grow",
       },
     ],
@@ -293,7 +293,7 @@ const COURSES = [
         cl:["Buy loose-leaf lettuce seeds (or a mixed salad leaf packet)","Prepare a container, window box or small bed","Set a daily watering check reminder","Sow your first row or pot this weekend!"],
         tip:"Scatter crushed eggshells or copper rings around lettuce to create a barrier that slugs really don't like crossing.",
         mistakes:["Letting the soil dry out even once — it goes bitter almost instantly","Sowing too thickly — thin ruthlessly to give plants room","Leaving bolted plants in — they take up space and seed everywhere"],
-        quiz:[{q:"How do you keep a loose-leaf lettuce producing all season?",opts:["Pull the whole plant when ready","Cut outer leaves and leave the heart growing","Stop watering once it's big","Feed with extra nitrogen"],a:1},{q:"What causes lettuce to bolt?",opts:["Too much watering","Hot weather and long days trigger it to flower and go bitter","Not enough sun","Root damage from pests"],a:1},{q:"What is succession sowing and why is lettuce perfect for it?",opts:["Growing different varieties at once","Sowing small amounts every 2–3 weeks for a continuous harvest — lettuce grows fast","Sowing in different containers","Sowing after another crop finishes"],a:1}],
+        quiz:[{q:"How do you keep a loose-leaf lettuce producing all season?",opts:["Pull the whole plant when ready","Cut outer leaves and leave the heart growing","Stop watering once it's big","Feed with extra nitrogen"],a:1},{q:"What causes lettuce to bolt?",opts:["Too much watering","Hot weather and long days trigger it to flower and go bitter","Not enough sun","Root damage from pests"],a:1},{q:"What is succession sowing and why is lettuce perfect for it?",opts:["Growing different varieties at once","Sowing small amounts every 2–3 weeks for a continuous harvest — lettuce grows fast","Sowing in different containers","Sowing after another crop finishes"],a:1},{q:"True or False: Lettuce can be harvested multiple times using cut-and-come-again.",opts:["True", "False"],a:0},{q:"True or False: Lettuce grows best in full midday sun with no shade.",opts:["True", "False"],a:1}],
         badge:"salad-days",
       },
       {
@@ -310,7 +310,7 @@ const COURSES = [
         cl:["Choose 2–3 herbs to start with","Get pots with drainage holes","Position in your sunniest available spot","Learn the correct harvesting technique before you start cutting"],
         tip:"Supermarket herb plants are almost always 3–4 plants crammed into one pot. Split them apart gently, repot individually, and you've got 4 plants for the price of one!",
         mistakes:["Overwatering — herbs in waterlogged compost rot incredibly quickly","Letting herbs flower without pinching — they stop producing leaves","Growing mint in an open bed — it will completely take over within a season"],
-        quiz:[{q:"Which herb absolutely must be grown in its own pot to stop it spreading?",opts:["Basil","Chives","Mint","Flat-leaf parsley"],a:2},{q:"Where should you cut when harvesting herbs to encourage bushy regrowth?",opts:["At the base of the whole plant","Just above a leaf node","From the roots upward","It doesn't matter where you cut"],a:1},{q:"Why does basil struggle in UK outdoor conditions?",opts:["It prefers clay soil","It's a tropical plant needing warmth above 10°C that UK summers can't guarantee","It needs very acidic soil","It grows too fast outdoors"],a:1}],
+        quiz:[{q:"Which herb absolutely must be grown in its own pot to stop it spreading?",opts:["Basil","Chives","Mint","Flat-leaf parsley"],a:2},{q:"Where should you cut when harvesting herbs to encourage bushy regrowth?",opts:["At the base of the whole plant","Just above a leaf node","From the roots upward","It doesn't matter where you cut"],a:1},{q:"Why does basil struggle in UK outdoor conditions?",opts:["It prefers clay soil","It's a tropical plant needing warmth above 10°C that UK summers can't guarantee","It needs very acidic soil","It grows too fast outdoors"],a:1},{q:"True or False: Most herbs prefer well-drained soil rather than wet conditions.",opts:["True", "False"],a:0},{q:"True or False: You should let herbs flower to get the best leaf flavour.",opts:["True", "False"],a:1}],
         badge:"herb-garden",
       },
       {
@@ -327,7 +327,7 @@ const COURSES = [
         cl:["Buy radish seeds (Cherry Belle or French Breakfast are classics)","Clear a small patch of bed or fill a container","Sow directly this weekend — you'll see germination in days"],
         tip:"Sow a short row every two weeks from March to May, then again August to October. You'll have radishes for months with almost no effort.",
         mistakes:["Growing in the heat of midsummer — they bolt and go pithy in heat","Not thinning properly — crowded radishes give all leaf and no root","Waiting too long to harvest — check them every few days once they're sizing up"],
-        quiz:[{q:"How quickly can you harvest summer radishes after sowing?",opts:["6–8 weeks","3–4 weeks","12 weeks","2 days"],a:1},{q:"What happens if you leave radishes in the ground too long?",opts:["They grow bigger and tastier","They become hollow, pithy and too hot to eat","They turn white","Nothing — they keep indefinitely"],a:1},{q:"What are radish thinnings good for?",opts:["Nothing — discard them","Eating raw in salads — they're delicious","Replanting elsewhere","Composting only"],a:1}],
+        quiz:[{q:"How quickly can you harvest summer radishes after sowing?",opts:["6–8 weeks","3–4 weeks","12 weeks","2 days"],a:1},{q:"What happens if you leave radishes in the ground too long?",opts:["They grow bigger and tastier","They become hollow, pithy and too hot to eat","They turn white","Nothing — they keep indefinitely"],a:1},{q:"What are radish thinnings good for?",opts:["Nothing — discard them","Eating raw in salads — they're delicious","Replanting elsewhere","Composting only"],a:1},{q:"True or False: Radishes can be harvested in as little as 3 weeks from sowing.",opts:["True", "False"],a:0},{q:"True or False: Radishes left in the ground too long become soft and sweet.",opts:["True", "False"],a:1}],
         badge:"speedy-grower",
       },
       {
@@ -345,7 +345,7 @@ const COURSES = [
         cl:["Choose a carrot variety (Nantes or Chantenay for heavy soils)","Prepare deep, stone-free soil or a deep container","Buy fine mesh or fleece to protect against carrot fly","Plan to sow from March onwards"],
         tip:"Mix carrot seeds with a little dry sand before sowing — it helps you sow much more thinly and evenly, which makes a huge difference to your final crop.",
         mistakes:["Adding fresh manure — makes roots fork badly","Sowing too thickly and not thinning — causes small, twisted carrots","Thinning in the heat of the day — the smell attracts carrot fly","Giving up after 2 weeks with no germination — they're just slow!"],
-        quiz:[{q:"What is the main pest threat to carrots?",opts:["Slugs","Aphids","Carrot fly","Rabbits"],a:2},{q:"Why should you thin carrots in the evening rather than the morning?",opts:["Easier to see in low light","Carrot fly is attracted to the smell — evening reduces the risk of attracting them","Evening soil is softer","Cooler temperatures help roots recover"],a:1},{q:"What soil condition gives you the best shaped, straightest carrots?",opts:["Heavy clay soil","Deep, stone-free, loose soil","Very fertile soil with lots of manure","Waterlogged conditions"],a:1}],
+        quiz:[{q:"What is the main pest threat to carrots?",opts:["Slugs","Aphids","Carrot fly","Rabbits"],a:2},{q:"Why should you thin carrots in the evening rather than the morning?",opts:["Easier to see in low light","Carrot fly is attracted to the smell — evening reduces the risk of attracting them","Evening soil is softer","Cooler temperatures help roots recover"],a:1},{q:"What soil condition gives you the best shaped, straightest carrots?",opts:["Heavy clay soil","Deep, stone-free, loose soil","Very fertile soil with lots of manure","Waterlogged conditions"],a:1},{q:"True or False: Carrots grow best in heavy clay soil.",opts:["True", "False"],a:1},{q:"True or False: Carrot fly can be prevented by covering with fine mesh.",opts:["True", "False"],a:0}],
         badge:"root-worker",
       },
       {
@@ -362,7 +362,7 @@ const COURSES = [
         cl:["Buy spring onion seeds (White Lisbon is the classic)","Find a small patch or container","Plan succession sowings every 3 weeks","Add spring onions to your weekly planting schedule"],
         tip:"Spring onions make brilliant companion plants for carrots — the onion smell confuses and deters carrot fly. Sow them in alternating rows for double the benefit!",
         mistakes:["Sowing too thickly — leads to weak, spindly plants","Only sowing once — one big harvest instead of a continuous supply","Harvesting too late — they become tough and hollow quickly"],
-        quiz:[{q:"How often should you sow spring onions for a continuous supply?",opts:["Once a year","Every 3 weeks","Every day","Only in spring"],a:1},{q:"Which crop makes an excellent companion plant alongside spring onions?",opts:["Tomatoes","Carrots — spring onions help deter carrot fly","Courgettes","Potatoes"],a:1},{q:"When should you harvest spring onions for the best flavour?",opts:["When fully mature and forming large bulbs","When pencil-thick — don't wait for them to bulb up","Only in summer","After they flower"],a:1}],
+        quiz:[{q:"How often should you sow spring onions for a continuous supply?",opts:["Once a year","Every 3 weeks","Every day","Only in spring"],a:1},{q:"Which crop makes an excellent companion plant alongside spring onions?",opts:["Tomatoes","Carrots — spring onions help deter carrot fly","Courgettes","Potatoes"],a:1},{q:"When should you harvest spring onions for the best flavour?",opts:["When fully mature and forming large bulbs","When pencil-thick — don't wait for them to bulb up","Only in summer","After they flower"],a:1},{q:"True or False: Spring onions can be sown every 3 weeks for a continuous harvest.",opts:["True", "False"],a:0},{q:"True or False: Spring onions must be grown in full shade to develop properly.",opts:["True", "False"],a:1}],
         badge:null,
       },
       {
@@ -380,7 +380,7 @@ const COURSES = [
         cl:["Buy mangetout or sugar snap seeds (Oregon Sugar Pod is excellent)","Prepare a sunny spot with supports ready","Plan your sowing for March–May","Set a daily picking reminder when they're in full production"],
         tip:"Pre-soak pea seeds in water for 12–24 hours before sowing. Germination is much faster and more even — especially useful in cold spring soil.",
         mistakes:["Not supporting plants early enough — they fall over and become a tangled mess","Forgetting to pick daily — one missed day can slow production significantly","Sowing in hot midsummer — peas dislike heat and will bolt immediately","Overwatering before flowering — save the extra water for when pods are forming"],
-        quiz:[{q:"What happens if you leave pea pods to mature on the plant?",opts:["The plant produces even more pods","The plant stops producing entirely","The pods taste better","Nothing changes"],a:1},{q:"What is the guttering technique for sowing peas?",opts:["A watering method","Pre-sowing in guttering indoors then sliding into a trench — no root disturbance","A way of building raised beds","A pest control method"],a:1},{q:"Why do peas need support?",opts:["To keep them warm","They are climbing plants that use tendrils to grip upward","To prevent carrot fly","Purely for visual effect"],a:0}],
+        quiz:[{q:"What happens if you leave pea pods to mature on the plant?",opts:["The plant produces even more pods","The plant stops producing entirely","The pods taste better","Nothing changes"],a:1},{q:"What is the guttering technique for sowing peas?",opts:["A watering method","Pre-sowing in guttering indoors then sliding into a trench — no root disturbance","A way of building raised beds","A pest control method"],a:1},{q:"Why do peas need support?",opts:["To keep them warm","They are climbing plants that use tendrils to grip upward","To prevent carrot fly","Purely for visual effect"],a:0},{q:"True or False: Pea plants need support to climb.",opts:["True", "False"],a:0},{q:"True or False: Leaving pea pods on the plant encourages more production.",opts:["True", "False"],a:1}],
         badge:"pod-person",
       },
     ],
@@ -405,7 +405,7 @@ const COURSES = [
         cl:["Choose your tomato variety — bush or cordon?","Sow indoors in March or buy plants from a garden centre in May","Set up canes and supports before plants need them","Buy a bottle of liquid tomato feed","Set a weekly feeding reminder on your phone"],
         tip:"Put a ripe banana skin at the bottom of your planting hole before planting. The potassium it releases as it breaks down genuinely supercharges fruit production.",
         mistakes:["Planting outside before the last frost — one cold night can kill young plants overnight","Skipping the weekly feed — the single biggest beginner mistake with tomatoes","Inconsistent watering — causes blossom end rot and splitting fruits","Not pinching out sideshoots on cordon types — plants become unmanageable"],
-        quiz:[{q:"What should you do with sideshoots on a cordon tomato plant?",opts:["Leave them to grow naturally","Pinch them out every week","Tie them to the cane","Water them separately"],a:1},{q:"What does stopping a cordon tomato plant in August mean?",opts:["Stopping all watering","Pinching out the top growing tip so energy goes to ripening existing fruit","Removing all remaining flowers","Cutting the plant back by half"],a:1},{q:"What type of tomato does NOT need to have sideshoots removed?",opts:["Cordon varieties","All tomatoes need sideshoots removed","Bush and tumbling varieties — they grow naturally without training","Only heritage varieties"],a:2}],
+        quiz:[{q:"What should you do with sideshoots on a cordon tomato plant?",opts:["Leave them to grow naturally","Pinch them out every week","Tie them to the cane","Water them separately"],a:1},{q:"What does stopping a cordon tomato plant in August mean?",opts:["Stopping all watering","Pinching out the top growing tip so energy goes to ripening existing fruit","Removing all remaining flowers","Cutting the plant back by half"],a:1},{q:"What type of tomato does NOT need to have sideshoots removed?",opts:["Cordon varieties","All tomatoes need sideshoots removed","Bush and tumbling varieties — they grow naturally without training","Only heritage varieties"],a:2},{q:"True or False: Cordon tomatoes need sideshoots removing regularly.",opts:["True", "False"],a:0},{q:"True or False: Tomatoes should be fed high-nitrogen feed once flowering begins.",opts:["True", "False"],a:1}],
         badge:"tomato-master",
       },
       {
@@ -423,7 +423,7 @@ const COURSES = [
         cl:["Buy first early seed potatoes in January or February","Start chitting on a cool, light windowsill","Prepare your bed or fill grow bags with compost","Mark your planting date on the calendar","Get a garden fork ready for harvest"],
         tip:"Grow bags on a patio are brilliant for potatoes — no digging at harvest time, just roll back the bag and your potatoes are right there. So satisfying and so easy.",
         mistakes:["Forgetting to earth up — green potatoes contain solanine and are mildly toxic. Never eat green potatoes","Planting unchitted potatoes — they take much longer to establish","Harvesting maincrop too early — wait for the foliage to die back","Ignoring blight signs — act immediately if you see them"],
-        quiz:[{q:"What is 'chitting' a potato?",opts:["Cutting it into pieces before planting","Letting it develop sprouts in the light before planting","Soaking it in water overnight","Removing the skin before planting"],a:1},{q:"Why must you earth up potatoes as they grow?",opts:["To add nutrients","To prevent tubers turning green and producing solanine","To keep them warm","To improve drainage"],a:1},{q:"What is the most reliable sign that first early potatoes are ready to harvest?",opts:["The flowers open","When you count 10 weeks from planting","When the foliage starts to die back and flowers appear","After a hard frost"],a:2}],
+        quiz:[{q:"What is 'chitting' a potato?",opts:["Cutting it into pieces before planting","Letting it develop sprouts in the light before planting","Soaking it in water overnight","Removing the skin before planting"],a:1},{q:"Why must you earth up potatoes as they grow?",opts:["To add nutrients","To prevent tubers turning green and producing solanine","To keep them warm","To improve drainage"],a:1},{q:"What is the most reliable sign that first early potatoes are ready to harvest?",opts:["The flowers open","When you count 10 weeks from planting","When the foliage starts to die back and flowers appear","After a hard frost"],a:2},{q:"True or False: Chitting means allowing seed potatoes to sprout before planting.",opts:["True", "False"],a:0},{q:"True or False: Green potatoes are safe to eat once cooked.",opts:["True", "False"],a:1}],
         badge:"spud-king",
       },
       {
@@ -441,7 +441,7 @@ const COURSES = [
         cl:["Choose a variety suitable for your growing conditions","Sow indoors in April in warmth","Set up a vertical support structure","Plan daily watering and weekly feeding routine","Set a daily checking reminder during peak season"],
         tip:"Remove any flowers from outdoor cucumber plants for the first 4–5 weeks. This encourages the plant to put its energy into developing a strong root system before it starts fruiting.",
         mistakes:["Putting plants outside too early — one cold night seriously sets them back","Growing indoors without removing male flowers (on non all-female varieties) — causes bitter fruits","Not picking frequently enough — leaving mature cucumbers stops production dead","Inconsistent watering — causes bitter fruits and poor texture"],
-        quiz:[{q:"When should you harvest cucumbers for the best flavour and continued production?",opts:["When they are yellow and fully mature","When they are 15–20cm long and still firm and green","Only once a week","After the first frost"],a:1},{q:"Why do cucumbers need to be grown under cover in most of the UK?",opts:["They need protection from rain only","They need consistent warmth above 15°C that UK outdoor summers can't guarantee","They attract too many outdoor pests","They need artificial lighting"],a:1},{q:"What do you do with the growing tip of a cucumber plant when it reaches the top of its support?",opts:["Leave it to trail down","Pinch it out to redirect energy into fruiting sideshoots","Tie it to the next cane","Remove it completely"],a:1}],
+        quiz:[{q:"When should you harvest cucumbers for the best flavour and continued production?",opts:["When they are yellow and fully mature","When they are 15–20cm long and still firm and green","Only once a week","After the first frost"],a:1},{q:"Why do cucumbers need to be grown under cover in most of the UK?",opts:["They need protection from rain only","They need consistent warmth above 15°C that UK outdoor summers can't guarantee","They attract too many outdoor pests","They need artificial lighting"],a:1},{q:"What do you do with the growing tip of a cucumber plant when it reaches the top of its support?",opts:["Leave it to trail down","Pinch it out to redirect energy into fruiting sideshoots","Tie it to the next cane","Remove it completely"],a:1},{q:"True or False: Cucumbers grow best outdoors in the UK without protection.",opts:["True", "False"],a:1},{q:"True or False: Cucumbers should be harvested before they turn yellow.",opts:["True", "False"],a:0}],
         badge:"cucumber-cool",
       },
       {
@@ -459,7 +459,7 @@ const COURSES = [
         cl:["Buy courgette seeds or plants (one or two plants is plenty)","Prepare a large, rich planting spot or big container","Plan for daily checking during peak summer","Set up a feeding schedule from first flowering"],
         tip:"Plant courgettes through a hole in black plastic mulch. It keeps weeds down, retains soil moisture, and the black plastic warms the soil — courgettes absolutely love the extra warmth.",
         mistakes:["Planting too close together — they need serious space to perform well","Watering over the leaves — causes powdery mildew which weakens the plant","Not checking daily — the marrow problem is very real and very common","Under-feeding — courgettes are hungry and reward generous feeding enormously"],
-        quiz:[{q:"How often should you check courgette plants during peak season?",opts:["Once a week","Every few weeks","Every single day","Only when you want to cook them"],a:2},{q:"At what size should you harvest courgettes for the best flavour?",opts:["As large as possible","At 15–20cm — before they become marrows","Only when yellow","After the flower drops off"],a:1},{q:"What disease commonly affects courgette leaves?",opts:["Blight","Clubroot","Powdery mildew — avoid wetting the leaves","Carrot fly"],a:2}],
+        quiz:[{q:"How often should you check courgette plants during peak season?",opts:["Once a week","Every few weeks","Every single day","Only when you want to cook them"],a:2},{q:"At what size should you harvest courgettes for the best flavour?",opts:["As large as possible","At 15–20cm — before they become marrows","Only when yellow","After the flower drops off"],a:1},{q:"What disease commonly affects courgette leaves?",opts:["Blight","Clubroot","Powdery mildew — avoid wetting the leaves","Carrot fly"],a:2},{q:"True or False: Courgettes should be checked every day in summer.",opts:["True", "False"],a:0},{q:"True or False: Courgettes are best harvested when they reach marrow size.",opts:["True", "False"],a:1}],
         badge:"courgette-king",
       },
       {
@@ -477,7 +477,7 @@ const COURSES = [
         cl:["Choose dwarf or climbing variety","Buy seeds or source from a local garden centre","Plan sowing date for after last frost (late May in most of UK)","Set up supports for climbers before sowing","Plan picking routine every 2–3 days at harvest"],
         tip:"Sow a second batch of French beans 4–5 weeks after your first sowing. This staggers the harvest so you're not overwhelmed all at once and have beans for much longer.",
         mistakes:["Sowing too early before last frost — beans are very cold-sensitive","Not picking often enough — production slows dramatically if pods are left to mature","Under-watering at flowering stage — causes flower drop and poor pod set","Planting climbing beans without adequate support — they become impossible to manage"],
-        quiz:[{q:"Why must you pick French beans regularly every 2–3 days?",opts:["To make them taste better","Because they go yellow quickly","Regular picking keeps the plant producing — leaving pods slows production","They fall off if not picked"],a:2},{q:"What is the difference between dwarf and climbing bean varieties?",opts:["Climbing varieties taste better","Dwarf needs no support — climbing produces more over a longer season","Dwarf varieties are disease resistant","There is no real difference"],a:1},{q:"At what stage should French beans be harvested for the best eating quality?",opts:["When seeds are bulging in the pod","When young and finger-thick before seeds develop","Only when pods turn yellow","After the first frost"],a:1}],
+        quiz:[{q:"Why must you pick French beans regularly every 2–3 days?",opts:["To make them taste better","Because they go yellow quickly","Regular picking keeps the plant producing — leaving pods slows production","They fall off if not picked"],a:2},{q:"What is the difference between dwarf and climbing bean varieties?",opts:["Climbing varieties taste better","Dwarf needs no support — climbing produces more over a longer season","Dwarf varieties are disease resistant","There is no real difference"],a:1},{q:"At what stage should French beans be harvested for the best eating quality?",opts:["When seeds are bulging in the pod","When young and finger-thick before seeds develop","Only when pods turn yellow","After the first frost"],a:1},{q:"True or False: Picking French beans regularly encourages more production.",opts:["True", "False"],a:0},{q:"True or False: French beans are best when seeds are fully bulging in the pod.",opts:["True", "False"],a:1}],
         badge:null,
       },
       {
@@ -494,7 +494,7 @@ const COURSES = [
         cl:["Buy beetroot seeds (Boltardy is the most popular for beginners)","Prepare a weed-free bed or deep container","Plan succession sowings from April to July","Use the thinnings in salads — don't waste them"],
         tip:"Soak beetroot seeds in warm water for 30 minutes before sowing. It softens the seed coat and significantly improves germination speed and evenness.",
         mistakes:["Harvesting too late — large beetroot become woody and tough","Cutting the leaves off at harvest — the root bleeds and loses colour. Always twist them off","Irregular watering — causes splitting and poor shape","Forgetting the leaves are edible — young beetroot leaves are a genuinely excellent salad ingredient"],
-        quiz:[{q:"How should you remove beetroot leaves at harvest to prevent colour loss?",opts:["Cut with a sharp knife","Pull with both hands","Twist them off gently","Leave them on the root"],a:2},{q:"What is the bonus crop you get from growing beetroot?",opts:["The roots double in size","The leaves are edible and excellent in salads from day one","Seeds can be eaten raw","The flowers are edible"],a:1},{q:"Why is the beetroot seed unusual compared to most vegetable seeds?",opts:["It needs to be chilled before sowing","Each 'seed' is actually a cluster containing 2–3 seeds","It only germinates in darkness","It takes 6 months to germinate"],a:1}],
+        quiz:[{q:"How should you remove beetroot leaves at harvest to prevent colour loss?",opts:["Cut with a sharp knife","Pull with both hands","Twist them off gently","Leave them on the root"],a:2},{q:"What is the bonus crop you get from growing beetroot?",opts:["The roots double in size","The leaves are edible and excellent in salads from day one","Seeds can be eaten raw","The flowers are edible"],a:1},{q:"Why is the beetroot seed unusual compared to most vegetable seeds?",opts:["It needs to be chilled before sowing","Each 'seed' is actually a cluster containing 2–3 seeds","It only germinates in darkness","It takes 6 months to germinate"],a:1},{q:"True or False: Each beetroot seed cluster can produce more than one plant.",opts:["True", "False"],a:0},{q:"True or False: Beetroot leaves cannot be eaten.",opts:["True", "False"],a:1}],
         badge:null,
       },
       {
@@ -512,7 +512,7 @@ const COURSES = [
         cl:["Order garlic bulbs in September (good varieties sell out early)","Buy onion sets in late February or March","Choose a sunny, well-drained bed for both","Plan curing space — a shed, greenhouse or sunny patio","Label rows so you remember which varieties are where"],
         tip:"Plant garlic on the shortest day (around 21 December) and harvest on the longest day (around 21 June). It's not an exact science but it's a brilliant way to remember the timing!",
         mistakes:["Planting garlic in spring — it needs cold to develop properly. Autumn planting is essential","Using supermarket garlic — it may carry disease. Always buy certified seed garlic","Harvesting before foliage dies back — bulbs won't be fully formed","Skipping the curing stage — uncured onions rot in storage within weeks"],
-        quiz:[{q:"When is the best time to plant garlic in the UK?",opts:["February or March","May or June","October or November","Any time of year"],a:2},{q:"Which way up should garlic cloves be planted?",opts:["Flat side up","Pointy end upward","It doesn't matter","Sideways"],a:1},{q:"How do you know when onions are ready to harvest?",opts:["When they reach a specific size","When the foliage flops over naturally and starts to yellow","After exactly 6 months","When they begin to flower"],a:1}],
+        quiz:[{q:"When is the best time to plant garlic in the UK?",opts:["February or March","May or June","October or November","Any time of year"],a:2},{q:"Which way up should garlic cloves be planted?",opts:["Flat side up","Pointy end upward","It doesn't matter","Sideways"],a:1},{q:"How do you know when onions are ready to harvest?",opts:["When they reach a specific size","When the foliage flops over naturally and starts to yellow","After exactly 6 months","When they begin to flower"],a:1},{q:"True or False: Garlic is best planted in the UK between October and December.",opts:["True", "False"],a:0},{q:"True or False: Onions are ready when foliage turns green and stands upright.",opts:["True", "False"],a:1}],
         badge:"allium-expert",
       },
     ],
@@ -2154,79 +2154,73 @@ function CoursesPage() {
 
 // ─── LESSON PAGE ──────────────────────────────────────────────────────────────
 function LessonPage() {
-  const { lesson, course, navigate, done, completeLesson, awardBadge, badges, hearts, loseHeart, recordPerfectQuiz, recordChecklistComplete, addXP } = useApp();
-  const [checked, setChecked]           = useState({});
-  const [qIdx, setQIdx]                 = useState(0);
-  const [qa, setQa]                     = useState(null);
-  const [qd, setQd]                     = useState(false);
-  const [celebrating, setCelebrating]   = useState(false);
+  const { lesson, course, navigate, done, completeLesson, awardBadge, badges, hearts, loseHeart, recordPerfectQuiz, recordChecklistComplete, addXP, haptic } = useApp();
+
+  // ── Checklist state ─────────────────────────────────────────────────────────
+  const [checked, setChecked]             = useState({});
   const [checklistDone, setChecklistDone] = useState(false);
-  const [quizPerfect, setQuizPerfect]   = useState(false);
-  const [quizScore, setQuizScore]       = useState(0);
+
+  // ── Quiz state — clean rebuild ──────────────────────────────────────────────
+  const [qIdx, setQIdx]           = useState(0);       // current question index
+  const [selected, setSelected]   = useState(null);    // selected answer index
+  const [revealed, setRevealed]   = useState(false);   // feedback shown?
+  const [answers, setAnswers]     = useState([]);       // {correct:bool} per question
   const [quizComplete, setQuizComplete] = useState(false);
-  const [prevHearts, setPrevHearts]     = useState(hearts);
-  const [xpFloats, setXpFloats]         = useState([]); // [{id,amount,x,y}]
-  const [answerAnim, setAnswerAnim]      = useState(null); // "correct"|"wrong"
+  const [celebrating, setCelebrating]   = useState(false);
 
   if (!lesson || !course) { navigate("courses"); return null; }
-  const isDone = done.includes(lesson.id);
 
-  // Normalise quiz to always be an array
-  const quizzes = Array.isArray(lesson.quiz) ? lesson.quiz : lesson.quiz ? [lesson.quiz] : [];
-  const currentQ = quizzes[qIdx];
-  const totalQ = quizzes.length;
+  const isDone    = done.includes(lesson.id);
+  const quizzes   = Array.isArray(lesson.quiz) ? lesson.quiz : lesson.quiz ? [lesson.quiz] : [];
+  const totalQ    = quizzes.length;
+  const currentQ  = quizzes[qIdx];
+  const isTF      = currentQ && currentQ.opts && currentQ.opts.length === 2;
+  const quizScore = answers.filter(a => a.correct).length;
 
-  // Progress bar calculation
-  const hasVideo = lesson.vk && true;
+  // Progress bar steps
   const hasChecklist = lesson.cl && lesson.cl.length > 0;
-  const hasQuiz = quizzes.length > 0;
+  const hasQuiz      = totalQ > 0;
   const progressSteps = ["Read", hasChecklist && "Action", hasQuiz && "Quiz", "Done"].filter(Boolean);
-  const checklistAllDone = hasChecklist && Object.keys(checked).length === lesson.cl.length && Object.values(checked).every(Boolean);
-  const currentStep = quizComplete || isDone ? progressSteps.length - 1 : checklistAllDone ? progressSteps.indexOf("Quiz") !== -1 ? progressSteps.indexOf("Quiz") : progressSteps.length - 1 : checklistAllDone ? 1 : 0;
+  const checklistAllDone = hasChecklist && lesson.cl.every((_, i) => !!checked[i]);
+  const currentStep = quizComplete || isDone
+    ? progressSteps.length - 1
+    : checklistAllDone && hasQuiz ? progressSteps.indexOf("Quiz")
+    : checklistAllDone ? 1 : 0;
 
-  const handleVid = () => { if (!badges.includes("glens-student")) { awardBadge("glens-student"); addXP(10); } };
-
-  const handleCheck = (i) => {
-    const newChecked = { ...checked, [i]: !checked[i] };
-    setChecked(newChecked);
-    const allDone = lesson.cl && Object.keys(newChecked).length === lesson.cl.length && Object.values(newChecked).every(Boolean);
+  // ── Handlers ────────────────────────────────────────────────────────────────
+  const handleCheck = i => {
+    const n = { ...checked, [i]: !checked[i] };
+    setChecked(n);
+    const allDone = lesson.cl && lesson.cl.every((_, j) => !!n[j]);
     if (allDone && !checklistDone) { setChecklistDone(true); recordChecklistComplete(); }
   };
 
-  const handleQuizSubmit = () => {
-    const correct = qa === currentQ.a;
-    const newScore = quizScore + (correct ? 1 : 0);
-    setQd(true);
-    setQuizPerfect(correct);
-    setQuizScore(newScore);
-    setAnswerAnim(correct ? "correct" : "wrong");
-    setTimeout(() => setAnswerAnim(null), 600);
-    if (correct) {
-      // Floating XP animation
-      const id = Date.now();
-      setXpFloats(f => [...f, { id, amount:10 }]);
-      setTimeout(() => setXpFloats(f => f.filter(x => x.id !== id)), 1200);
-    } else {
-      setPrevHearts(hearts);
-      loseHeart();
-    }
-  };
-
-  const handleNextQuestion = () => {
-    if (qIdx < totalQ - 1) {
-      setQIdx(qIdx + 1);
-      setQa(null);
-      setQd(false);
-      setQuizPerfect(false);
-    } else {
-      setQuizComplete(true);
-      if (quizScore === totalQ) recordPerfectQuiz();
-      // Scroll to results after short delay
-      setTimeout(() => {
-        const el = document.getElementById("quiz-results");
-        if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-      }, 150);
-    }
+  const handleSelect = (optIdx) => {
+    if (revealed) return; // already answered
+    setSelected(optIdx);
+    const correct = optIdx === currentQ.a;
+    haptic(correct ? "medium" : "light");
+    setRevealed(true);
+    const newAnswers = [...answers, { correct }];
+    setAnswers(newAnswers);
+    if (!correct) loseHeart();
+    if (correct) addXP(10);
+    // Auto-advance after delay
+    setTimeout(() => {
+      if (qIdx < totalQ - 1) {
+        setQIdx(q => q + 1);
+        setSelected(null);
+        setRevealed(false);
+      } else {
+        setQuizComplete(true);
+        const finalScore = newAnswers.filter(a => a.correct).length;
+        if (finalScore === totalQ) recordPerfectQuiz();
+        setTimeout(() => {
+          const el = document.getElementById("quiz-results");
+          if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+        }, 200);
+      }
+    }, correct ? 1200 : 2000);
   };
 
   const handleComplete = () => {
@@ -2235,173 +2229,247 @@ function LessonPage() {
     setCelebrating(true);
     setTimeout(() => {
       setCelebrating(false);
-      if (isLastInLevel) {
-        navigate("level-complete", { course });
-      } else {
-        navigate("courses");
-      }
+      if (isLastInLevel) navigate("level-complete", { course });
+      else navigate("courses");
     }, 2400);
   };
 
-  const VL = { "soil-basics":"Soil & Compost","containers-beds":"Containers & Beds","sunlight-watering":"Sunlight & Watering","tools-guide":"Gardening Tools","sowing-seeds":"Sowing Seeds","grow-lettuce":"Growing Lettuce","grow-herbs":"Growing Herbs","grow-radish":"Radishes","grow-tomatoes":"Growing Tomatoes","grow-potatoes":"Growing Potatoes","fix-slugs":"Slug Control","fix-aphids":"Controlling Aphids" };
+  const handleVid = () => { if (!badges.includes("glens-student")) { awardBadge("glens-student"); addXP(10); } };
+
+  // ── Celebration overlay ─────────────────────────────────────────────────────
+  if (celebrating) return (
+    <div style={{ position:"fixed", inset:0, background:"linear-gradient(135deg,#1a3a08,#4e8226)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", zIndex:9999 }}>
+      <div style={{ fontSize:80, animation:"pop .5s ease", marginBottom:20 }}>🎉</div>
+      <div style={{ color:"#fff", fontSize:24, fontWeight:900 }}>Lesson Complete!</div>
+      <div style={{ color:"rgba(255,255,255,.7)", fontSize:16, marginTop:8 }}>+{lesson.xp} XP earned!</div>
+    </div>
+  );
 
   return (
     <div style={{ minHeight:"100vh" }}>
-      {/* Header */}
-      <div style={{ background:course.color, padding:"16px", position:"sticky", top:0, zIndex:10 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:11, marginBottom:8 }}>
-          <button onClick={() => navigate("courses")} style={{ display:"flex", alignItems:"center", gap:5, border:"none", background:"rgba(255,255,255,.18)", borderRadius:10, padding:"7px 12px", color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"var(--ff)" }}>← Back</button>
-          <div style={{ flex:1 }}><div style={{ fontSize:10, color:"rgba(255,255,255,.65)", fontWeight:700, textTransform:"uppercase" }}>{course.title}</div></div>
-          <Hearts count={hearts}/>
-        </div>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end" }}>
-          <h1 style={{ color:"#fff", fontSize:18, fontWeight:900, lineHeight:1.2 }}>{lesson.emoji} {lesson.title}</h1>
+      {/* ── HEADER ── */}
+      <div style={{ background:`linear-gradient(135deg,${course.color}CC,${course.color})`, padding:"16px 18px 20px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+          <button onClick={() => navigate("courses")} style={{ border:"none", background:"rgba(255,255,255,.15)", borderRadius:10, width:34, height:34, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:17, color:"#fff" }}>←</button>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:9, color:"rgba(255,255,255,.55)", fontWeight:700, textTransform:"uppercase", letterSpacing:".1em" }}>{course.title}</div>
+            <div style={{ color:"#fff", fontSize:13, fontWeight:800, marginTop:1 }}>{lesson.emoji} {lesson.title}</div>
+          </div>
           <span style={{ background:"rgba(255,255,255,.2)", color:"#fff", padding:"4px 10px", borderRadius:999, fontSize:11, fontWeight:800 }}>+{lesson.xp} XP</span>
         </div>
-        <div style={{ display:"flex", gap:8, alignItems:"center", marginTop:4 }}><span style={{ color:"rgba(255,255,255,.65)", fontSize:12 }}>⏱ {lesson.dur}</span>{lesson.vk&&<span style={{ background:"rgba(255,255,255,.18)", color:"#fff", padding:"3px 10px", borderRadius:999, fontSize:10, fontWeight:700 }}>📺 {MY_VIDEOS[lesson.vk]?"Video included":"Video coming soon"}</span>}</div>
-
-        {/* Lesson progress bar */}
-        <div style={{ display:"flex", alignItems:"center", gap:4, marginTop:10 }}>
-          {progressSteps.map((step, i) => (
-            <div key={step} style={{ display:"flex", alignItems:"center", flex:1 }}>
-              <div style={{ flex:1, height:3, borderRadius:999, background: i <= currentStep ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.25)", transition:"background .3s" }}/>
-              {i < progressSteps.length - 1 && <div style={{ width:4 }}/>}
-            </div>
-          ))}
+        <div style={{ display:"flex", gap:6, alignItems:"center", marginBottom:8 }}>
+          <span style={{ color:"rgba(255,255,255,.65)", fontSize:11 }}>⏱ {lesson.dur}</span>
+          {lesson.vk && <span style={{ background:"rgba(255,255,255,.18)", color:"#fff", padding:"3px 10px", borderRadius:999, fontSize:10, fontWeight:700 }}>📺 {MY_VIDEOS[lesson.vk]?"Video included":"Video coming soon"}</span>}
         </div>
-        <div style={{ display:"flex", gap:4, marginTop:3 }}>
+        {/* Progress bar */}
+        <div style={{ display:"flex", gap:4 }}>
           {progressSteps.map((step, i) => (
-            <div key={step} style={{ flex:1, textAlign:"center", fontSize:9, fontWeight:700, color: i <= currentStep ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.4)", transition:"color .3s" }}>{step}</div>
+            <div key={step} style={{ flex:1 }}>
+              <div style={{ height:3, borderRadius:999, background: i <= currentStep ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.25)", transition:"background .3s", marginBottom:3 }}/>
+              <div style={{ fontSize:9, fontWeight:700, color: i <= currentStep ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.4)", textAlign:"center" }}>{step}</div>
+            </div>
           ))}
         </div>
       </div>
 
-      <div style={{ padding:"16px", display:"flex", flexDirection:"column", gap:15 }}>
-        <div className="card" style={{ borderLeft:`4px solid ${course.color}` }}><p style={{ fontSize:14, color:"var(--tm)", lineHeight:1.7, fontWeight:500 }}>{lesson.intro}</p></div>
+      {/* ── CONTENT ── */}
+      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:14 }}>
 
-        {lesson.vk && <div>
-          <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:10 }}>
-            <div style={{ width:24, height:24, background:"#FF0000", borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
-            <h2 style={{ fontSize:14, fontWeight:800 }}>{MY_VIDEOS[lesson.vk] ? `Watch: ${VL[lesson.vk]||lesson.title}` : `Video coming soon`}</h2>
+        {/* Video */}
+        {lesson.vk && MY_VIDEOS[lesson.vk] && (
+          <div>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}>
+              <div style={{ width:22, height:22, background:"#FF0000", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
+              <h2 style={{ fontSize:13, fontWeight:800 }}>{HOST}'s video — watch first!</h2>
+            </div>
+            <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
           </div>
-          <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
-          <div style={{ marginTop:8, display:"flex", alignItems:"center", gap:7, padding:"9px 13px", background:"var(--g0)", borderRadius:11 }}>
-            <span style={{ fontSize:13 }}>💡</span><span style={{ fontSize:12, color:"var(--tm)", fontWeight:600 }}>Watch first, then follow the steps below.</span>
-          </div>
-        </div>}
+        )}
 
+        {/* Lesson content */}
         <div className="card">
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:10, color:"var(--g8)" }}>🎯 Key takeaways</h2>
-          {lesson.takes.map((t, i) => <div key={i} style={{ display:"flex", gap:9, marginBottom:8, alignItems:"flex-start" }}>
-            <div style={{ width:20, height:20, background:course.color, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontSize:10, fontWeight:900, flexShrink:0, marginTop:1 }}>{i+1}</div>
-            <span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{t}</span>
-          </div>)}
-        </div>
-
-        <div>
-          <h2 style={{ fontSize:15, fontWeight:800, marginBottom:11 }}>📋 Step by step</h2>
-          {lesson.steps.map(s => <div key={s.n} style={{ display:"flex", gap:11, marginBottom:11, alignItems:"flex-start" }}>
-            <div style={{ width:29, height:29, background:`linear-gradient(135deg,${course.color},${course.color}BB)`, borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:900, fontSize:13, flexShrink:0 }}>{s.n}</div>
-            <div className="card" style={{ flex:1, padding:"11px 13px" }}><div style={{ fontWeight:800, marginBottom:4, fontSize:13 }}>{s.t}</div><p style={{ fontSize:13, color:"var(--tl)", lineHeight:1.6 }}>{s.d}</p></div>
-          </div>)}
-        </div>
-
-        {lesson.glen && <GlenTip text={lesson.glen}/>}
-
-        {lesson.cl && <div className="card">
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:9 }}>
-            <h2 style={{ fontSize:14, fontWeight:800 }}>✅ Action checklist</h2>
-            {checklistDone && <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g7)", padding:"3px 10px", borderRadius:999, fontWeight:700 }}>+15 XP!</span>}
-          </div>
-          {lesson.cl.map((item, i) => <div key={i} className="crow" onClick={() => handleCheck(i)}>
-            <div className={`ccirc${checked[i]?" on":""}`}>{checked[i] && "✓"}</div>
-            <span style={{ fontSize:13, fontWeight:600, textDecoration:checked[i]?"line-through":"none", color:checked[i]?"var(--tmut)":"var(--td)" }}>{item}</span>
-          </div>)}
-        </div>}
-
-        {lesson.tip && <div className="tip"><div style={{ fontWeight:800, color:"var(--g8)", marginBottom:4, fontSize:13 }}>💡 Pro tip</div><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{lesson.tip}</p></div>}
-
-        {lesson.mistakes && <div className="card">
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:9 }}>⚠️ Common mistakes</h2>
-          {lesson.mistakes.map((m, i) => <div key={i} style={{ display:"flex", gap:8, marginBottom:7, alignItems:"flex-start" }}>
-            <span style={{ color:"#E53935", fontSize:14, flexShrink:0, marginTop:1 }}>✗</span>
-            <span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{m}</span>
-          </div>)}
-        </div>}
-
-        {/* Quiz */}
-        {quizzes.length > 0 && !quizComplete && currentQ && <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)", position:"relative", animation: answerAnim==="correct" ? "correctBounce .4s ease" : answerAnim==="wrong" ? "wrongShake .4s ease" : "none" }}>
-          {/* Floating XP */}
-          {xpFloats.map(f => (
-            <div key={f.id} style={{ position:"absolute", top:10, right:10, color:"#F9A825", fontWeight:900, fontSize:18, pointerEvents:"none", animation:"xpFloat 1.2s ease forwards", zIndex:10 }}>+{f.amount} ⭐</div>
+          <h2 style={{ fontSize:15, fontWeight:800, marginBottom:10, color:"var(--g8)" }}>📖 {lesson.title}</h2>
+          <p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.8, marginBottom:10 }}>{lesson.intro}</p>
+          {lesson.steps && lesson.steps.map((s,i) => (
+            <div key={i} style={{ display:"flex", gap:10, marginBottom:10 }}>
+              <div style={{ width:24, height:24, borderRadius:"50%", background:"var(--g1)", border:"2px solid var(--g3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"var(--g7)", flexShrink:0, marginTop:1 }}>{i+1}</div>
+              <p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{s}</p>
+            </div>
           ))}
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
-            <h2 style={{ fontSize:14, fontWeight:800, color:"var(--g8)" }}>🧠 Quiz</h2>
-            <Hearts count={hearts} prevCount={prevHearts}/>
-          </div>
-          {/* Question progress dots */}
-          <div style={{ display:"flex", gap:6, alignItems:"center", marginBottom:10 }}>
-            {quizzes.map((_, i) => (
-              <div key={i} style={{ width: i===qIdx?22:8, height:8, borderRadius:999, background: i<qIdx?"var(--g5)":i===qIdx?"var(--g6)":"var(--cdk)", transition:"all .3s" }}/>
+          {lesson.tip && <div className="tip" style={{ marginTop:8 }}><strong>💡 Glen's tip:</strong> {lesson.tip}</div>}
+          {lesson.mistakes && <div style={{ background:"#FFF3E0", border:"1px solid #FFCC80", borderRadius:12, padding:"12px 14px", marginTop:8 }}>
+            <div style={{ fontWeight:800, fontSize:13, color:"#E65100", marginBottom:6 }}>⚠️ Common mistakes</div>
+            {lesson.mistakes.map((m,i) => <div key={i} style={{ display:"flex", gap:6, marginBottom:4 }}><span style={{ color:"#FF7043", flexShrink:0 }}>•</span><span style={{ fontSize:12, color:"#BF360C", lineHeight:1.5 }}>{m}</span></div>)}
+          </div>}
+        </div>
+
+        {/* Checklist */}
+        {lesson.cl && lesson.cl.length > 0 && (
+          <div className="card">
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+              <h2 style={{ fontSize:14, fontWeight:800 }}>✅ Action checklist</h2>
+              {checklistDone && <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g7)", padding:"3px 10px", borderRadius:999, fontWeight:700 }}>+15 XP!</span>}
+            </div>
+            {lesson.cl.map((item, i) => (
+              <div key={i} className="crow" onClick={() => handleCheck(i)}>
+                <div className={`ccirc${!!checked[i]?" on":""}`}>{!!checked[i] && "✓"}</div>
+                <span style={{ fontSize:13, fontWeight:600, textDecoration:!!checked[i]?"line-through":"none", color:!!checked[i]?"var(--tmut)":"var(--td)", flex:1, lineHeight:1.5 }}>{item}</span>
+              </div>
             ))}
-            <span style={{ fontSize:11, color:"var(--tl)", marginLeft:4, fontWeight:600 }}>Question {qIdx+1} of {totalQ}</span>
+            {checklistAllDone && !checklistDone && <div style={{ textAlign:"center", padding:"8px 0 0", fontSize:12, color:"var(--g6)", fontWeight:700 }}>Great work! +15 XP earned 🌟</div>}
           </div>
-          <p style={{ fontWeight:700, marginBottom:10, fontSize:14 }}>{currentQ.q}</p>
-          <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
-            {currentQ.opts.map((opt, i) => {
-              const ic = i === currentQ.a, ch = qa === i;
-              let bd = "var(--cdk)", bg = "#fff";
-              if (qd) { if (ic) { bg="#E8F5E9"; bd="#4CAF50"; } else if (ch&&!ic) { bg="#FFEBEE"; bd="#EF5350"; } }
-              return <button key={i} onClick={() => !qd && setQa(i)} style={{ padding:"10px 14px", border:`2px solid ${ch&&!qd?"var(--g5)":bd}`, borderRadius:11, background:ch&&!qd?"var(--g0)":bg, cursor:qd?"default":"pointer", textAlign:"left", fontSize:13, fontWeight:600, fontFamily:"var(--ff)" }}>{qd&&ic&&"✅ "}{qd&&ch&&!ic&&"❌ "}{opt}</button>;
-            })}
-          </div>
-          {!qd && qa !== null && <button className="btn bp bsm" style={{ marginTop:10, width:"100%" }} onClick={handleQuizSubmit}>Submit Answer</button>}
-          {qd && <div style={{ marginTop:12, borderRadius:14, overflow:"hidden", border:`2px solid ${quizPerfect?"#4CAF50":"#EF5350"}` }}>
-            {/* Correct */}
-            {quizPerfect && <div style={{ padding:"16px", background:"linear-gradient(135deg,#E8F5E9,#F1F8E9)", textAlign:"center" }}>
-              <div style={{ fontSize:32, marginBottom:6 }}>🎉</div>
-              <div style={{ fontWeight:900, fontSize:16, color:"#2E7D32", marginBottom:4 }}>Correct! Well done!</div>
-              <div style={{ fontSize:13, color:"#388E3C", fontWeight:700, marginBottom:12 }}>+10 XP bonus! 🌟</div>
-              <button className="btn bp bsm" style={{ width:"100%", background:"#4CAF50" }} onClick={handleNextQuestion}>
-                {qIdx < totalQ - 1 ? `Next Question (${qIdx+2}/${totalQ}) →` : "See Results →"}
-              </button>
-            </div>}
-            {/* Wrong */}
-            {!quizPerfect && <div style={{ padding:"16px", background:"linear-gradient(135deg,#FFEBEE,#FCE4EC)" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
-                <div style={{ fontSize:32 }}>❌</div>
+        )}
+
+        {/* ── QUIZ — fully rebuilt ── */}
+        {quizzes.length > 0 && !quizComplete && currentQ && (
+          <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)" }}>
+            {/* Quiz header */}
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+              <h2 style={{ fontSize:14, fontWeight:800, color:"var(--g8)" }}>🧠 Quiz</h2>
+              <Hearts count={hearts}/>
+            </div>
+
+            {/* Question progress dots */}
+            <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:14 }}>
+              {quizzes.map((_, i) => (
+                <div key={i} style={{
+                  height:6,
+                  flex: i===qIdx ? 2 : 1,
+                  borderRadius:999,
+                  background: i < qIdx
+                    ? (answers[i]?.correct ? "#4CAF50" : "#EF5350")
+                    : i===qIdx ? "var(--g5)" : "var(--cdk)",
+                  transition:"all .3s"
+                }}/>
+              ))}
+              <span style={{ fontSize:10, color:"var(--tl)", fontWeight:700, marginLeft:4, flexShrink:0 }}>{qIdx+1}/{totalQ}</span>
+            </div>
+
+            {/* Question type badge */}
+            <div style={{ display:"inline-flex", alignItems:"center", gap:4, background: isTF?"#E3F2FD":"#FFF8E1", borderRadius:999, padding:"3px 10px", marginBottom:10 }}>
+              <span style={{ fontSize:10, fontWeight:800, color: isTF?"#1565C0":"#E65100", textTransform:"uppercase", letterSpacing:".06em" }}>{isTF?"True or False":"Multiple Choice"}</span>
+            </div>
+
+            {/* Question text */}
+            <p style={{ fontWeight:800, fontSize:15, lineHeight:1.5, marginBottom:14, color:"var(--td)" }}>{currentQ.q}</p>
+
+            {/* Answer options */}
+            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+              {currentQ.opts.map((opt, i) => {
+                const isCorrect = i === currentQ.a;
+                const isSelected = i === selected;
+                let bg = "#fff", border = "var(--cdk)", color = "var(--td)", icon = null;
+                if (revealed) {
+                  if (isCorrect)         { bg="#E8F5E9"; border="#4CAF50"; color="#1B5E20"; icon="✅"; }
+                  else if (isSelected)   { bg="#FFEBEE"; border="#EF5350"; color="#B71C1C"; icon="❌"; }
+                  else                   { bg="#fafafa"; border="var(--cdk)"; color="var(--tmut)"; }
+                } else if (isSelected)   { bg="var(--g0)"; border="var(--g5)"; }
+
+                return (
+                  <button key={i} onClick={() => handleSelect(i)}
+                    disabled={revealed}
+                    style={{
+                      padding:"13px 14px",
+                      border:`2px solid ${border}`,
+                      borderRadius:14,
+                      background:bg,
+                      cursor: revealed ? "default" : "pointer",
+                      textAlign:"left",
+                      fontSize:13,
+                      fontWeight:700,
+                      fontFamily:"var(--ff)",
+                      color,
+                      display:"flex",
+                      alignItems:"center",
+                      gap:10,
+                      transition:"all .2s",
+                      transform: isSelected && !revealed ? "scale(1.01)" : "scale(1)",
+                    }}>
+                    {/* Option letter */}
+                    <div style={{ width:26, height:26, borderRadius:"50%", background: revealed && isCorrect ? "#4CAF50" : revealed && isSelected ? "#EF5350" : "var(--cdk)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color: revealed && (isCorrect||isSelected) ? "#fff" : "var(--tl)", flexShrink:0 }}>
+                      {revealed && icon ? icon : String.fromCharCode(65+i)}
+                    </div>
+                    <span style={{ flex:1 }}>{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Feedback message */}
+            {revealed && (
+              <div style={{
+                marginTop:12,
+                padding:"12px 14px",
+                borderRadius:14,
+                background: selected===currentQ.a ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF3E0)",
+                border:`1px solid ${selected===currentQ.a?"#4CAF50":"#EF5350"}`,
+                display:"flex", gap:10, alignItems:"flex-start",
+                animation:"fadeUp .2s ease"
+              }}>
+                <span style={{ fontSize:22, flexShrink:0 }}>{selected===currentQ.a ? "🎉" : "💡"}</span>
                 <div>
-                  <div style={{ fontWeight:900, fontSize:16, color:"#C62828" }}>Not quite!</div>
-                  <div style={{ fontSize:12, color:"#B71C1C", fontWeight:600 }}>You lost a ❤️ heart</div>
+                  <div style={{ fontWeight:900, fontSize:13, color: selected===currentQ.a ? "#2E7D32" : "#C62828", marginBottom:3 }}>
+                    {selected===currentQ.a ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ.opts[currentQ.a]}"`}
+                  </div>
+                  <div style={{ fontSize:11, color:"var(--tl)", fontWeight:600 }}>
+                    {qIdx < totalQ-1 ? "Moving to next question..." : "Calculating your score..."}
+                  </div>
                 </div>
               </div>
-              <div style={{ background:"rgba(255,255,255,.7)", borderRadius:10, padding:"10px 12px", marginBottom:12 }}>
-                <div style={{ fontSize:11, fontWeight:700, color:"#B71C1C", marginBottom:3 }}>✅ The correct answer was:</div>
-                <div style={{ fontSize:13, fontWeight:800, color:"#1a1a1a" }}>{currentQ.opts[currentQ.a]}</div>
+            )}
+          </div>
+        )}
+
+        {/* ── QUIZ RESULTS ── */}
+        {quizComplete && (
+          <div id="quiz-results" className="card" style={{ border:`2px solid ${quizScore===totalQ?"#FFD700":quizScore>=totalQ/2?"#4CAF50":"#FF9800"}`, background:"var(--g0)", textAlign:"center" }}>
+            <div style={{ fontSize:48, marginBottom:10 }}>{quizScore===totalQ?"🏆":quizScore>=totalQ/2?"🎉":"📚"}</div>
+            <h2 style={{ fontSize:18, fontWeight:900, marginBottom:6 }}>Quiz complete!</h2>
+
+            {/* Per-question result dots */}
+            <div style={{ display:"flex", justifyContent:"center", gap:8, marginBottom:10 }}>
+              {answers.map((a,i) => (
+                <div key={i} style={{ width:36, height:36, borderRadius:"50%", background: a.correct?"linear-gradient(135deg,#4CAF50,#81C784)":"linear-gradient(135deg,#EF5350,#E57373)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, boxShadow:"0 2px 6px rgba(0,0,0,.15)" }}>
+                  {a.correct?"✓":"✗"}
+                </div>
+              ))}
+            </div>
+
+            <p style={{ fontSize:26, fontWeight:900, color: quizScore===totalQ?"#E65100":quizScore>=totalQ/2?"#2E7D32":"#FF6F00", marginBottom:4 }}>{quizScore}/{totalQ}</p>
+            <p style={{ fontSize:13, color:"var(--tl)", marginBottom:12, lineHeight:1.5 }}>
+              {quizScore===totalQ ? "Perfect score! Impressive growing knowledge! 🌱" : quizScore>=totalQ/2 ? "Good effort — keep learning and you'll nail it!" : "Have another read of the lesson and try again!"}
+            </p>
+            {quizScore > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:14, display:"inline-block" }}>+{quizScore*10} XP earned this quiz!</div>}
+
+            {/* Complete button */}
+            {!isDone
+              ? <button className="btn bp blg" style={{ width:"100%", marginBottom:12 }} onClick={handleComplete}>✅ Mark Lesson Complete — +{lesson.xp} XP</button>
+              : <div style={{ background:"#E8F5E9", borderRadius:12, padding:"10px 14px", fontSize:13, fontWeight:700, color:"#2E7D32", marginBottom:12 }}>✅ Lesson already completed!</div>
+            }
+
+            {/* Share if decent score */}
+            {quizScore >= Math.ceil(totalQ/2) && (
+              <div style={{ borderTop:"1px solid var(--cdk)", paddingTop:12 }}>
+                <p style={{ fontSize:12, color:"var(--tl)", marginBottom:8, fontWeight:600 }}>🌱 Share your score!</p>
+                <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+                  <a href={`https://twitter.com/intent/tweet?text=I+scored+${quizScore}/${totalQ}+on+the+${encodeURIComponent(lesson?.title||"")}+quiz+on+The+Growers+Academy!+🌱+${encodeURIComponent(WEBSITE_URL)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#000", color:"#fff", borderRadius:999, padding:"8px 14px", fontSize:12, fontWeight:700, textDecoration:"none" }}>
+                    𝕏 Share
+                  </a>
+                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#1877F2", color:"#fff", borderRadius:999, padding:"8px 14px", fontSize:12, fontWeight:700, textDecoration:"none" }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook
+                  </a>
+                </div>
               </div>
-              <button className="btn bp bsm" style={{ width:"100%", background:"#EF5350" }} onClick={handleNextQuestion}>
-                {qIdx < totalQ - 1 ? `Try Next Question (${qIdx+2}/${totalQ}) →` : "See Results →"}
-              </button>
-            </div>}
-          </div>}
-        </div>}
+            )}
+          </div>
+        )}
 
-        {/* Quiz Complete Summary */}
-        {quizComplete && <div id="quiz-results" className="card" style={{ border:"2px solid #4CAF50", background:"var(--g0)", textAlign:"center" }}>
-          <div style={{ fontSize:36, marginBottom:8 }}>{quizScore === totalQ ? "🏆" : quizScore >= totalQ/2 ? "🎉" : "📚"}</div>
-          <h2 style={{ fontSize:16, fontWeight:900, marginBottom:4 }}>Quiz complete!</h2>
-          <p style={{ fontSize:22, fontWeight:900, color:"var(--g6)", marginBottom:4 }}>{quizScore}/{totalQ} correct</p>
-          <p style={{ fontSize:13, color:"var(--tl)", marginBottom:10, lineHeight:1.5 }}>
-            {quizScore === totalQ ? "Perfect score! Full XP bonus earned! 🌟" : quizScore >= totalQ/2 ? "Good effort! Keep learning and you'll nail it next time." : "Review the lesson and give it another go!"}
-          </p>
-          {quizScore === totalQ && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:12, color:"#E65100", fontWeight:700, marginBottom:12 }}>+{quizScore * 10} XP bonus earned!</div>}
-          {!isDone && <button className="btn bp blg" style={{ width:"100%", marginTop:4 }} onClick={handleComplete}>
-            ✅ Mark Lesson Complete — +{lesson.xp} XP
-          </button>}
-          {isDone && <div style={{ background:"#E8F5E9", borderRadius:12, padding:"10px 14px", fontSize:13, fontWeight:700, color:"#2E7D32" }}>✅ Lesson already completed!</div>}
-        </div>}
-
-        {/* Affiliate Products */}
+        {/* Affiliate products */}
         {(() => {
           const products = (LESSON_PRODUCTS[lesson.id] || []).map(k => AFFILIATE_PRODUCTS[k]).filter(Boolean);
           if (!products.length) return null;
@@ -2437,798 +2505,34 @@ function LessonPage() {
         })()}
 
         {/* Glen channel footer */}
-        <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a3a08)", borderRadius:20, padding:18, textAlign:"center" }}>
-          <div style={{ display:"flex", justifyContent:"center", marginBottom:10 }}><VPILogo size={40}/></div>
-          <div style={{ color:"var(--g3)", fontWeight:800, fontSize:13, marginBottom:4 }}>More from {CHANNEL_NAME}</div>
-          <p style={{ color:"rgba(255,255,255,.6)", fontSize:12, marginBottom:12, lineHeight:1.4 }}>{HOST}'s channel has growing videos, allotment diaries and DIY builds.</p>
-          <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
-            <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#FF0000", color:"#fff", borderRadius:999, padding:"8px 15px", fontSize:12, fontWeight:700, textDecoration:"none" }}><YTIcon/> YouTube</a>
-            <button onClick={() => navigate("videos")} style={{ border:"2px solid rgba(255,255,255,.2)", background:"transparent", color:"#fff", borderRadius:999, padding:"8px 15px", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>All Videos</button>
+        <div style={{ background:"linear-gradient(135deg,#1a3a08,#2d5016)", borderRadius:20, padding:18 }}>
+          <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:12 }}>
+            <VPILogo size={40}/>
+            <div>
+              <div style={{ color:"#9CCC65", fontWeight:800, fontSize:12, marginBottom:2 }}>Want to see this in action?</div>
+              <div style={{ color:"rgba(255,255,255,.8)", fontSize:13, fontWeight:700 }}>Watch Glen grow it on YouTube</div>
+            </div>
           </div>
+          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer"
+            style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"11px 18px", fontSize:14, fontWeight:800, textDecoration:"none" }}>
+            <YTIcon/> {CHANNEL_NAME} on YouTube
+          </a>
         </div>
 
-        {isDone ? (
-          <div style={{ background:"var(--g0)", border:"2px solid var(--g3)", borderRadius:20, padding:18, textAlign:"center" }}>
-            <div style={{ fontSize:30, marginBottom:6 }}>🌟</div>
-            <div style={{ fontWeight:800, color:"var(--g8)", fontSize:14 }}>Lesson already complete!</div>
-            <button className="btn bs bsm" style={{ marginTop:10 }} onClick={() => navigate("courses")}>Back to courses</button>
-          </div>
-        ) : (
+        {/* Complete button (if no quiz) */}
+        {quizzes.length === 0 && !isDone && (
           <button className="btn bp blg" style={{ width:"100%" }} onClick={handleComplete}>✓ Complete Lesson & Earn {lesson.xp} XP</button>
         )}
-      </div>
-
-      {/* Celebration overlay */}
-      {celebrating && <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,.55)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:9999, padding:24 }}>
-        <div style={{ background:"#fff", borderRadius:26, padding:"28px 22px", textAlign:"center", animation:"pop .4s ease", maxWidth:290, width:"100%" }}>
-          <div style={{ display:"flex", justifyContent:"center", marginBottom:12 }}><VPILogo size={52}/></div>
-          <div style={{ fontSize:46, marginBottom:10 }}>🎉</div>
-          <h2 style={{ fontWeight:900, fontSize:18, marginBottom:6, color:"var(--g8)" }}>Lesson Complete!</h2>
-          <div style={{ fontSize:24, fontWeight:900, color:"var(--golddk)", marginBottom:6 }}>+{lesson.xp} XP ⭐</div>
-          <p style={{ color:"var(--tl)", fontSize:13 }}>Great work! Keep growing with {HOST}.</p>
-        </div>
-      </div>}
-    </div>
-  );
-}
-
-// ─── VIDEOS PAGE ──────────────────────────────────────────────────────────────
-function VideosPage() {
-  const { navigate, awardBadge, badges, addXP } = useApp();
-  const [pk, setPk] = useState(null);
-  const handlePlay = k => { setPk(k); if (!badges.includes("glens-student")) { awardBadge("glens-student"); addXP(10); } };
-  const LABELS = { "fix-slugs":"Slug Control","soil-basics":"Soil & Compost","grow-tomatoes":"Growing Tomatoes","containers-beds":"Containers & Beds","sunlight-watering":"Sunlight & Watering","tools-guide":"Gardening Tools","sowing-seeds":"Sowing Seeds","grow-lettuce":"Growing Lettuce","grow-herbs":"Potting On","grow-radish":"Radishes","grow-carrots":"Carrots","grow-spring-onions":"Spring Onions","grow-peas":"Peas","grow-cucumbers":"Cucumbers","grow-courgettes":"Courgettes","grow-beans":"French Beans","grow-beetroot":"Beetroot","grow-onions-garlic":"Onions & Garlic","grow-potatoes":"Growing Potatoes","seasonal-planning":"Seasonal Planning","winter-growing":"Winter Growing","succession-sowing":"Successional Sowing","green-manures":"Green Manures","plot-planning":"Plot Planning","irrigation":"Irrigation","polytunnel":"Polytunnel & Greenhouse","pest-management":"Pest Management","seed-saving":"Seed Saving","composting":"Composting","crop-rotation":"Crop Rotation","no-dig":"No-Dig Growing","fix-aphids":"Controlling Aphids" };
-  const sections = [
-    {title:"🌱 Level 1: Getting Started",keys:["soil-basics","containers-beds","sunlight-watering","tools-guide","sowing-seeds"]},
-    {title:"🥬 Level 2: Easy Wins",keys:["grow-lettuce","grow-herbs","grow-radish","grow-carrots","grow-spring-onions","grow-peas"]},
-    {title:"🍅 Level 3: Grow Like a Pro",keys:["grow-tomatoes","grow-potatoes","grow-cucumbers","grow-courgettes","grow-beans","grow-beetroot","grow-onions-garlic"]},
-    {title:"🗓️ Level 4: Grow All Year",keys:["seasonal-planning","winter-growing","succession-sowing","green-manures"]},
-    {title:"🏡 Level 5: Allotment Master",keys:["plot-planning","irrigation","polytunnel","pest-management","seed-saving","composting","crop-rotation","no-dig"]},
-    {title:"🔍 Problem Fixes",keys:["fix-slugs","fix-aphids"]},
-  ];
-  const totalVideos = Object.values(MY_VIDEOS).filter(Boolean).length;
-  const totalSlots  = Object.keys(MY_VIDEOS).length;
-  const pct = Math.round((totalVideos / totalSlots) * 100);
-
-  return (
-    <div style={{ minHeight:"100vh" }}>
-      <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a2a10)", padding:"22px 16px 24px" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
-          <button onClick={() => navigate("home")} style={{ border:"none", background:"rgba(255,255,255,.08)", borderRadius:10, width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"#fff" }}>←</button>
-          <VPILogo size={28}/>
-          <div>
-            <h1 style={{ color:"#fff", fontSize:18, fontWeight:900, lineHeight:1.1 }}>Video Lessons</h1>
-            <p style={{ color:"rgba(255,255,255,.4)", fontSize:11 }}>by {HOST} · {CHANNEL_NAME}</p>
-          </div>
-        </div>
-        <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
-          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
-            <span style={{ color:"rgba(255,255,255,.7)", fontSize:12, fontWeight:700 }}>📺 {totalVideos} of {totalSlots} videos live</span>
-            <span style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>{pct}%</span>
-          </div>
-          <div style={{ height:6, background:"rgba(255,255,255,.15)", borderRadius:999, overflow:"hidden" }}>
-            <div style={{ height:"100%", width:`${pct}%`, background:"linear-gradient(90deg,#7CB342,#9CCC65)", borderRadius:999 }}/>
-          </div>
-          <p style={{ color:"rgba(255,255,255,.4)", fontSize:11, marginTop:6 }}>Glen is filming more — subscribe to be notified!</p>
-        </div>
-        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(255,0,0,.85)", color:"#fff", borderRadius:999, padding:"9px 18px", fontSize:13, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe to {CHANNEL_NAME}</a>
-      </div>
-      <div style={{ padding:"16px" }}>
-        <div style={{ background:"var(--g0)", border:"2px solid var(--g2)", borderRadius:14, padding:"11px 15px", marginBottom:18, display:"flex", gap:10, alignItems:"flex-start" }}>
-          <VPILogo size={22}/>
-          <p style={{ fontSize:13, color:"var(--g8)", lineHeight:1.5 }}><strong>Watch {HOST}'s videos to earn +10 XP each!</strong> Videos pair with written lessons for the full experience.</p>
-        </div>
-        {sections.map(sec => {
-          const liveCount = sec.keys.filter(k => MY_VIDEOS[k]).length;
-          return (
-            <div key={sec.title} style={{ marginBottom:24 }}>
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
-                <h2 style={{ fontSize:15, fontWeight:800 }}>{sec.title}</h2>
-                <span style={{ fontSize:11, background: liveCount === sec.keys.length ? "#E8F5E9" : "var(--cdk)", color: liveCount === sec.keys.length ? "#2E7D32" : "var(--tmut)", borderRadius:999, padding:"3px 10px", fontWeight:700 }}>{liveCount}/{sec.keys.length} live</span>
-              </div>
-              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                {sec.keys.map(key => {
-                  const id = MY_VIDEOS[key]; const isPlaying = pk === key; const label = LABELS[key] || key;
-                  return (
-                    <div key={key} style={{ background:"#fff", borderRadius:22, overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,.07)", border:"1px solid var(--cdk)" }}>
-                      {id ? (
-                        <div style={{ position:"relative", paddingTop:"56.25%", background:"#000" }}>
-                          {isPlaying
-                            ? <iframe style={{ position:"absolute", inset:0, width:"100%", height:"100%", border:"none" }} src={`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={label}/>
-                            : <div style={{ position:"absolute", inset:0, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => handlePlay(key)}>
-                                <img src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`} alt={label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
-                                <div style={{ position:"absolute", inset:0, background:"rgba(0,0,0,.22)" }}/>
-                                <div style={{ position:"relative", zIndex:2, width:52, height:52, background:"rgba(255,0,0,.92)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                                  <svg width="19" height="19" viewBox="0 0 24 24" fill="white" style={{ marginLeft:3 }}><polygon points="5,3 19,12 5,21"/></svg>
-                                </div>
-                              </div>
-                          }
-                        </div>
-                      ) : (
-                        <div style={{ background:"linear-gradient(135deg,#1a1a2e,#16213e)", padding:"28px", textAlign:"center" }}>
-                          <div style={{ fontSize:32, marginBottom:8 }}>🎬</div>
-                          <div style={{ color:"rgba(255,255,255,.6)", fontSize:13, fontWeight:700, marginBottom:4 }}>{label}</div>
-                          <div style={{ color:"rgba(255,255,255,.3)", fontSize:11, marginBottom:10 }}>Glen is filming this soon — subscribe to be notified</div>
-                          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,0,0,.7)", color:"#fff", borderRadius:999, padding:"7px 14px", fontSize:11, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe</a>
-                        </div>
-                      )}
-                      {id && <div style={{ padding:"11px 15px 13px" }}>
-                        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
-                          <VPILogo size={16}/>
-                          <span style={{ fontSize:10, fontWeight:700, color:"var(--tmut)", textTransform:"uppercase", letterSpacing:".05em" }}>{CHANNEL_NAME}</span>
-                          <span style={{ marginLeft:"auto", fontSize:10, background:"#E8F5E9", color:"#2E7D32", padding:"2px 8px", borderRadius:999, fontWeight:700 }}>✅ Live</span>
-                        </div>
-                        <div style={{ fontWeight:800, fontSize:14 }}>{label}</div>
-                      </div>}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function PlannerPage() {
-  const curM = new Date().getMonth() + 1;
-  const [sel, setSel] = useState(curM);
-  const [tab, setTab] = useState("sow");
-  const data = MONTHLY[sel] || MONTHLY[1];
-  const tabs = [{id:"sow",l:"🌱 Sow",k:"s"},{id:"plant",l:"🌿 Plant",k:"po"},{id:"harvest",l:"🌾 Harvest",k:"h"},{id:"jobs",l:"🔧 Jobs",k:"j"}];
-  const active = data[tabs.find(t => t.id === tab)?.k] || [];
-
-  return (
-    <div style={{ minHeight:"100vh" }}>
-      <div style={{ background:"linear-gradient(135deg,#0a1a05,#2D5016)", padding:"20px 16px 17px" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>📅 Monthly Planner</h1></div>
-        <p style={{ color:"rgba(255,255,255,.55)", fontSize:12 }}>Know exactly what to do each month — by {HOST}</p>
-      </div>
-      <div style={{ background:"#fff", borderBottom:"1px solid var(--cdk)", padding:"8px 0", overflowX:"auto" }}>
-        <div style={{ display:"flex", gap:5, padding:"0 14px", width:"max-content" }}>
-          {MN.map((m, i) => { const mo = i+1, isSel=mo===sel, isCur=mo===curM; return (
-            <button key={m} onClick={() => setSel(mo)} style={{ padding:"6px 11px", border:`2px solid ${isSel?"var(--g5)":isCur?"var(--g2)":"transparent"}`, borderRadius:999, background:isSel?"var(--g5)":isCur?"var(--g0)":"transparent", color:isSel?"#fff":isCur?"var(--g7)":"var(--tl)", cursor:"pointer", fontWeight:isSel||isCur?800:600, fontSize:11, fontFamily:"var(--ff)", whiteSpace:"nowrap" }}>{m.slice(0,3)}{isCur&&<span style={{ marginLeft:2, fontSize:8 }}>●</span>}</button>
-          ); })}
-        </div>
-      </div>
-      <div style={{ padding:"14px 16px" }}>
-        <div className="tip" style={{ marginBottom:13 }}><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{data.tip}</p></div>
-        <div style={{ display:"flex", background:"#fff", borderRadius:16, padding:3, gap:3, marginBottom:11, boxShadow:"0 1px 4px rgba(0,0,0,.07)" }}>
-          {tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} style={{ flex:1, padding:"8px 2px", border:"none", borderRadius:12, background:tab===t.id?"var(--g6)":"transparent", color:tab===t.id?"#fff":"var(--tl)", cursor:"pointer", fontWeight:700, fontSize:10, fontFamily:"var(--ff)", transition:"all .15s" }}>{t.l}</button>)}
-        </div>
-        <div className="card">
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11, color:"var(--g8)" }}>{MN[sel-1]} — {tabs.find(t=>t.id===tab)?.l}</h2>
-          {active.length === 0
-            ? <div style={{ textAlign:"center", padding:"28px 18px", color:"var(--tmut)" }}><span style={{ fontSize:34, display:"block", marginBottom:8 }}>😴</span><p style={{ fontWeight:600, fontSize:13 }}>Nothing this month for this category</p></div>
-            : <div style={{ display:"flex", flexDirection:"column", gap:7 }}>{active.map((item,i) => <div key={i} style={{ display:"flex", gap:9, alignItems:"center", padding:"10px", background:"var(--cream)", borderRadius:11, border:"1px solid var(--cdk)" }}><div style={{ width:27, height:27, background:"var(--g1)", borderRadius:7, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, flexShrink:0 }}>{tab==="sow"?"🌱":tab==="plant"?"🌿":tab==="harvest"?"🌾":"🔧"}</div><span style={{ fontSize:13, fontWeight:600 }}>{item}</span></div>)}</div>}
-        </div>
-        <div style={{ marginTop:13 }}>
-          <div className="card" style={{ background:"linear-gradient(135deg,#0a1a05,#2D5016)" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}><VPILogo size={22}/><h3 style={{ fontSize:14, fontWeight:800, color:"#fff" }}>{HOST}'s priority list for {MN[sel-1]}</h3></div>
-            <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
-              {[...(data.s.slice(0,2).map(s=>`Sow: ${s}`)),...(data.j.slice(0,2)),...(data.h.slice(0,1).map(h=>`Harvest: ${h}`))].slice(0,4).map((task,i) =>
-                <div key={i} style={{ display:"flex", gap:7 }}><span style={{ opacity:.5, color:"#fff" }}>→</span><span style={{ fontSize:12, fontWeight:600, color:"rgba(255,255,255,.82)" }}>{task}</span></div>)}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── PROBLEMS PAGE ────────────────────────────────────────────────────────────
-function ProblemsPage() {
-  const { awardBadge, badges } = useApp();
-  const [sel, setSel] = useState(null);
-  const [search, setSearch] = useState("");
-  const [aiAnswer, setAiAnswer] = useState(null);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState(false);
-  const [asked, setAsked] = useState("");
-
-  if (!badges.includes("problem-solver")) setTimeout(() => awardBadge("problem-solver"), 500);
-
-  const sevStyles = { low:{ c:"#4CAF50",l:"Low risk",bg:"#E8F5E9" }, medium:{ c:"#FF9800",l:"Worth fixing",bg:"#FFF3E0" }, high:{ c:"#F44336",l:"Act quickly",bg:"#FFEBEE" } };
-  const filtered = PROBLEMS.filter(p =>
-    !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.looks.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const askAI = async () => {
-    if (!search.trim() || search.trim().length < 5) return;
-    setAiLoading(true);
-    setAiAnswer(null);
-    setAiError(false);
-    setAsked(search.trim());
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          system:`You are Glen, an experienced allotment manager and vegetable grower with 20+ years of experience. You run an 80-plot allotment site in the UK and teach growing through your YouTube channel Veggie Patch Ideas. You are warm, practical and straight-talking. You answer growing questions with real, actionable advice based on UK growing conditions. Always structure your answer with: a brief diagnosis of the likely cause, a practical fix, and a prevention tip. Keep answers concise — under 200 words. Use plain language, no jargon. Speak as Glen would — knowledgeable but friendly, like advice from a trusted allotment neighbour.`,
-          messages:[{ role:"user", content:`Growing question from one of my Growers Academy students: "${search.trim()}"` }],
-        }),
-      });
-      const data = await res.json();
-      const text = data?.content?.[0]?.text;
-      if (text) setAiAnswer(text);
-      else { setAiError(true); }
-    } catch(e) {
-      setAiError(true);
-    }
-    setAiLoading(false);
-  };
-
-  if (sel) {
-    const p = PROBLEMS.find(x => x.id === sel);
-    const s = sevStyles[p.sev];
-    return (
-      <div style={{ minHeight:"100vh" }}>
-        <div style={{ background:"#fff", padding:"14px", borderBottom:"1px solid var(--cdk)", position:"sticky", top:0, zIndex:10, display:"flex", alignItems:"center", gap:11 }}>
-          <button onClick={() => setSel(null)} style={{ border:"none", background:"var(--cream)", borderRadius:10, width:35, height:35, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:17 }}>←</button>
-          <div><div style={{ fontSize:9, color:"var(--tmut)", fontWeight:700 }}>Problem Solver</div><h1 style={{ fontSize:15, fontWeight:900 }}>{p.emoji} {p.title}</h1></div>
-        </div>
-        <div style={{ padding:"14px", display:"flex", flexDirection:"column", gap:11 }}>
-          <div style={{ background:s.bg, border:`2px solid ${s.c}44`, borderRadius:11, padding:"8px 14px", display:"flex", alignItems:"center", gap:8 }}><div style={{ width:8, height:8, borderRadius:"50%", background:s.c }}/><span style={{ fontWeight:700, fontSize:12, color:s.c }}>{s.l}</span></div>
-          {p.vk && <div>
-            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}>
-              <div style={{ width:23, height:23, background:"#FF0000", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
-              <h2 style={{ fontSize:13, fontWeight:800 }}>{HOST}'s fix video</h2>
-            </div>
-            <YTPlayer videoKey={p.vk}/>
-          </div>}
-          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔍 What it looks like</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.looks}</p></div>
-          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:8 }}>🤔 Likely causes</h2>{p.causes.map((c,i)=><div key={i} style={{ display:"flex", gap:7, marginBottom:6 }}><span style={{ color:"#FF7043", fontSize:12, flexShrink:0, marginTop:2 }}>•</span><span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{c}</span></div>)}</div>
-          <div style={{ background:"linear-gradient(135deg,var(--g0),#fff)", border:"2px solid var(--g3)", borderRadius:16, padding:14 }}><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔧 Easy fix</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{p.fix}</p></div>
-          <div className="tip"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:5, color:"var(--g8)" }}>🛡️ Prevention</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.prev}</p></div>
-          <button className="btn bs" style={{ width:"100%" }} onClick={() => setSel(null)}>← Back to Problem Solver</button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ minHeight:"100vh" }}>
-      <div style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", padding:"20px 16px 24px" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
-          <VPILogo size={24}/>
-          <h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>🔍 Problem Solver</h1>
-        </div>
-        <p style={{ color:"rgba(255,255,255,.75)", fontSize:12 }}>Ask any growing question — powered by Glen's 20 years of expertise.</p>
-      </div>
-
-      {/* AI Search bar */}
-      <div style={{ padding:"14px 16px 0", background:"#fff", borderBottom:"1px solid var(--cdk)" }}>
-        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
-          <div style={{ flex:1, display:"flex", alignItems:"center", gap:8, background:"var(--cream)", borderRadius:12, padding:"10px 14px" }}>
-            <span style={{ fontSize:16 }}>🔍</span>
-            <input
-              type="text"
-              placeholder="Ask Glen anything — e.g. why are my tomato leaves curling?"
-              value={search}
-              onChange={e => { setSearch(e.target.value); setAiAnswer(null); }}
-              onKeyDown={e => e.key === "Enter" && askAI()}
-              style={{ flex:1, border:"none", background:"transparent", fontSize:13, fontFamily:"var(--ff)", outline:"none", color:"var(--td)" }}
-            />
-            {search && <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ border:"none", background:"none", cursor:"pointer", fontSize:14, color:"var(--tmut)" }}>✕</button>}
-          </div>
-          <button onClick={askAI} disabled={aiLoading || search.trim().length < 5}
-            style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", border:"none", borderRadius:12, padding:"11px 14px", color:"#fff", fontWeight:800, fontSize:13, cursor:"pointer", fontFamily:"var(--ff)", flexShrink:0, opacity:search.trim().length < 5 ? .5 : 1 }}>
-            {aiLoading ? "..." : "Ask"}
-          </button>
-        </div>
-        <div style={{ fontSize:10, color:"var(--tmut)", padding:"6px 4px 10px", fontWeight:600 }}>Powered by AI · Answers in Glen's voice · Type and press Ask or Enter</div>
-      </div>
-
-      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:12 }}>
-
-        {/* AI Answer */}
-        {aiLoading && (
-          <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18 }}>
-            <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}>
-              <VPILogo size={32}/>
-              <div>
-                <div style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>Glen is thinking...</div>
-                <div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div>
-              </div>
-            </div>
-            <div style={{ display:"flex", gap:4 }}>
-              {[0,1,2].map(i => <div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#9CCC65", animation:`pulse 1s ${i*.2}s infinite` }}/>)}
-            </div>
-          </div>
+        {isDone && quizzes.length === 0 && (
+          <div style={{ textAlign:"center", padding:12, background:"#E8F5E9", borderRadius:14, fontSize:13, fontWeight:700, color:"#2E7D32" }}>✅ Lesson complete!</div>
         )}
-
-        {aiAnswer && !aiLoading && (
-          <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18, border:"1px solid rgba(156,204,101,.3)" }}>
-            <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:12 }}>
-              <VPILogo size={36}/>
-              <div>
-                <div style={{ color:"#9CCC65", fontWeight:800, fontSize:12, marginBottom:2 }}>Glen's Answer</div>
-                <div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div>
-              </div>
-            </div>
-            <div style={{ color:"rgba(255,255,255,.88)", fontSize:14, lineHeight:1.8, whiteSpace:"pre-wrap" }}>{aiAnswer}</div>
-            <div style={{ marginTop:14, paddingTop:12, borderTop:"1px solid rgba(255,255,255,.1)", fontSize:11, color:"rgba(255,255,255,.35)" }}>
-              AI advice based on Glen's growing expertise · Always use your own judgement
-            </div>
-            <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ marginTop:10, border:"1px solid rgba(255,255,255,.2)", background:"transparent", borderRadius:999, padding:"7px 14px", color:"rgba(255,255,255,.6)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>
-              Ask another question
-            </button>
-          </div>
-        )}
-
-        {aiError && !aiLoading && (
-          <div style={{ background:"#FFF3E0", border:"1px solid #FFB74D", borderRadius:14, padding:"14px 16px" }}>
-            <div style={{ fontWeight:800, fontSize:13, color:"#E65100", marginBottom:4 }}>⚠️ Couldn't get an answer right now</div>
-            <div style={{ fontSize:12, color:"#BF360C" }}>Check your connection and try again, or browse the common problems below.</div>
-          </div>
-        )}
-
-        {/* Common problems list — shown when no AI answer */}
-        {!aiAnswer && !aiLoading && <>
-          <div className="warn"><p style={{ fontSize:13, color:"#5D4037", lineHeight:1.5 }}><strong>Good news:</strong> Most plant problems have simple causes and easy fixes. Don't panic!</p></div>
-          {filtered.length === 0 && search && (
-            <div style={{ textAlign:"center", padding:"24px 16px" }}>
-              <div style={{ fontSize:36, marginBottom:10 }}>🤔</div>
-              <div style={{ fontWeight:800, fontSize:15, marginBottom:6 }}>No match for "{search}"</div>
-              <div style={{ fontSize:13, color:"var(--tl)", marginBottom:12 }}>Try pressing Ask to get an AI answer from Glen!</div>
-              <button onClick={askAI} style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", border:"none", borderRadius:999, padding:"10px 20px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)" }}>
-                🔍 Ask Glen about this
-              </button>
-            </div>
-          )}
-          <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
-            {filtered.map(p => { const s = sevStyles[p.sev]; return (
-              <button key={p.id} className="card tap" onClick={() => setSel(p.id)} style={{ display:"flex", alignItems:"center", gap:11, textAlign:"left", border:"1px solid var(--cdk)", fontFamily:"var(--ff)", padding:"12px 14px" }}>
-                <div style={{ width:46, height:46, background:s.bg, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:21, flexShrink:0 }}>{p.emoji}</div>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontWeight:800, fontSize:13, marginBottom:2 }}>{p.title}</div>
-                  <div style={{ fontSize:11, color:"var(--tl)", lineHeight:1.4 }}>{p.looks.slice(0,60)}...</div>
-                  <div style={{ marginTop:4, display:"flex", alignItems:"center", gap:7 }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:3 }}><div style={{ width:6, height:6, borderRadius:"50%", background:s.c }}/><span style={{ fontSize:10, fontWeight:700, color:s.c }}>{s.l}</span></div>
-                    {p.vk && MY_VIDEOS[p.vk] && <span style={{ fontSize:9, background:"#FFEBEE", color:"#FF0000", padding:"2px 6px", borderRadius:999, fontWeight:700 }}>📺 Video fix</span>}
-                  </div>
-                </div>
-                <span style={{ fontSize:16, color:"var(--tmut)" }}>→</span>
-              </button>
-            ); })}
-          </div>
-        </>}
+        <div style={{ height:20 }}/>
       </div>
     </div>
   );
 }
 
-// ─── PROGRESS PAGE ────────────────────────────────────────────────────────────
-function ProgressPage() {
-  const { done, badges, streak, profile, navigate, reset, xp, hearts, frostAlert, postcode, savePostcode, checkFrost, darkMode, toggleDarkMode } = useApp();
-  const [pcInput, setPcInput] = useState(postcode || "");
-  const [pcSaving, setPcSaving] = useState(false);
-  const handleSavePostcode = async () => {
-    setPcSaving(true);
-    savePostcode(pcInput);
-    await checkFrost(pcInput);
-    setPcSaving(false);
-  };
-  const actualTotal = COURSES.filter(c=>!c.comingSoon).reduce((a,c) => a+c.lessons.length, 0);
-  const pct = actualTotal > 0 ? Math.round((done.length/actualTotal)*100) : 0;
-  const league = getLeague(xp);
-  const cats = ["learning","level","streak","special"];
-  const catLabels = { learning:"📚 Lesson Badges", level:"🏆 Level Badges", streak:"🔥 Streak Badges", special:"⭐ Special Badges" };
 
-  return (
-    <div style={{ minHeight:"100vh" }}>
-      <div style={{ background:"linear-gradient(155deg,#1a0a00,#5D4037)", padding:"20px 16px 24px" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>⭐ My Progress</h1></div>
-        <p style={{ color:"rgba(255,255,255,.55)", fontSize:12 }}>Your journey through {HOST}'s Academy</p>
-      </div>
-
-      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:14 }}>
-        {/* League card */}
-        <div className="card" style={{ background:`linear-gradient(135deg,${league.color}22,${league.color}11)`, border:`2px solid ${league.color}44`, textAlign:"center" }}>
-          <div style={{ fontSize:48, marginBottom:6 }}>{league.emoji}</div>
-          <div style={{ fontWeight:900, fontSize:20, color:league.color, marginBottom:4 }}>{league.name}</div>
-          <XPBar xp={xp}/>
-          <div style={{ marginTop:10, display:"flex", justifyContent:"center", gap:8 }}>
-            <Hearts count={hearts}/>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10 }}>
-          {[{e:"📚",v:done.length,sub:`of ${actualTotal}`,l:"Lessons"},{e:"🔥",v:streak.count,sub:"day streak",l:"Streak"},{e:"🏅",v:badges.length,sub:`of ${BADGES.length}`,l:"Badges"}].map((s,i) =>
-            <div key={i} className="card" style={{ textAlign:"center" }}>
-              <div style={{ fontSize:22, marginBottom:3 }}>{s.e}</div>
-              <div style={{ fontWeight:900, fontSize:20, color:"var(--g7)", lineHeight:1 }}>{s.v}</div>
-              <div style={{ fontSize:9, color:"var(--tmut)", fontWeight:600, marginTop:2 }}>{s.sub}</div>
-              <div style={{ fontSize:11, fontWeight:700, color:"var(--tl)" }}>{s.l}</div>
-            </div>)}
-        </div>
-
-        {/* Progress bar */}
-        <div className="card">
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:10 }}>Overall progress</h2>
-          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}><span style={{ fontSize:12, color:"var(--tl)" }}>{done.length} lessons done</span><span style={{ fontSize:15, fontWeight:900, color:"var(--g7)" }}>{pct}%</span></div>
-          <div className="pb" style={{ height:10 }}><div className="pf" style={{ width:`${pct}%` }}/></div>
-          {pct === 100 && <div style={{ marginTop:10, textAlign:"center", color:"var(--g7)", fontWeight:800 }}>🎉 Free Academy Complete!</div>}
-        </div>
-
-        {/* Level progress */}
-        <div>
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11 }}>Progress by level</h2>
-          <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
-            {COURSES.map(c => {
-              const d2 = c.lessons.filter(l => done.includes(l.id)).length;
-              const p  = c.lessons.length > 0 ? Math.round((d2/c.lessons.length)*100) : 0;
-              return (
-                <div key={c.id} className="card" style={{ padding:"12px 14px", opacity:c.comingSoon?.5:1 }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:c.comingSoon?0:8 }}>
-                    <div style={{ width:34, height:34, background:c.color, borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, flexShrink:0 }}>{c.emoji}</div>
-                    <div style={{ flex:1 }}>
-                      <div style={{ fontWeight:800, fontSize:13, marginBottom:1 }}>{c.title}</div>
-                      <div style={{ fontSize:11, color:"var(--tmut)" }}>{c.comingSoon ? "Coming soon" : `${d2}/${c.lessons.length} lessons · ${p}%`}</div>
-                    </div>
-                    {!c.free && <span style={{ fontSize:9, background:"linear-gradient(135deg,var(--gold),var(--golddk))", color:"#111", padding:"2px 8px", borderRadius:999, fontWeight:700 }}>PREMIUM</span>}
-                    {p===100&&!c.comingSoon&&<span style={{ fontSize:17 }}>✅</span>}
-                  </div>
-                  {!c.comingSoon && c.lessons.length > 0 && <div style={{ height:5, background:"#eee", borderRadius:999, overflow:"hidden" }}><div style={{ height:"100%", width:`${p}%`, background:c.color, borderRadius:999 }}/></div>}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Badges by category */}
-        {cats.map(cat => (
-          <div key={cat}>
-            <h2 style={{ fontSize:14, fontWeight:800, marginBottom:11 }}>{catLabels[cat]}</h2>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:9 }}>
-              {BADGES.filter(b => b.cat === cat).map(b => { const earned = badges.includes(b.id); return (
-                <div key={b.id} className="card" style={{ textAlign:"center", opacity:earned?1:.36, border:earned?"2px solid var(--g2)":"1px solid var(--cdk)", background:earned?"linear-gradient(135deg,var(--g0),white)":"#fff" }}>
-                  <div style={{ fontSize:24, marginBottom:4, filter:earned?"none":"grayscale(100%)" }}>{b.e}</div>
-                  <div style={{ fontWeight:800, fontSize:11, marginBottom:2, color:earned?"var(--g8)":"var(--tmut)" }}>{b.t}</div>
-                  <div style={{ fontSize:10, color:"var(--tmut)", lineHeight:1.4 }}>{b.d}</div>
-                  {earned && <div style={{ marginTop:6, background:"var(--g5)", color:"#fff", borderRadius:999, padding:"2px 10px", fontSize:9, fontWeight:700, display:"inline-block" }}>Earned ✓</div>}
-                </div>
-              ); })}
-            </div>
-          </div>
-        ))}
-
-        {profile && <div className="card">
-          <h2 style={{ fontSize:14, fontWeight:800, marginBottom:10 }}>My grower profile</h2>
-          {/* Space */}
-          {profile.space?.length > 0 && <div style={{ padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}>
-            <div style={{ fontSize:12, color:"var(--tl)", marginBottom:6 }}>Growing space</div>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-              {profile.space.map(s => {
-                const spE = {garden:"🌳",greenhouse:"🏠","raised-beds":"📦",allotment:"🌾",containers:"🪴",balcony:"🌇",windowsill:"🪟"};
-                return <span key={s} style={{ background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:999, padding:"3px 10px", fontSize:11, fontWeight:700, color:"var(--g8)" }}>{spE[s]||"🌱"} {s.replace("-"," ")}</span>;
-              })}
-            </div>
-          </div>}
-          {/* Crops */}
-          {profile.crops?.length > 0 && <div style={{ padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}>
-            <div style={{ fontSize:12, color:"var(--tl)", marginBottom:6 }}>Wants to grow</div>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
-              {profile.crops.map(c => {
-                const crE = {tomatoes:"🍅",potatoes:"🥔",lettuce:"🥬",carrots:"🥕",cucumbers:"🥒",herbs:"🌿",beans:"🫘",courgettes:"🫑",onions:"🧅","all-veg":"🌈"};
-                return <span key={c} style={{ background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:999, padding:"3px 10px", fontSize:11, fontWeight:700, color:"var(--g8)" }}>{crE[c]||"🌱"} {c.replace("-"," ")}</span>;
-              })}
-            </div>
-          </div>}
-          {[{l:"Experience",v:profile.experience==="beginner"?"🌱 Beginner":profile.experience==="some"?"🌿 Some experience":"🌾 Confident"},{l:"Time/week",v:profile.time==="30min"?"⚡ <30 min":profile.time==="1hour"?"⏰ 30–60 min":profile.time==="2hours"?"⏱ 1–2 hrs":"🕐 2+ hrs"},{l:"Main goal",v:profile.goal==="save-money"?"💰 Save money":profile.goal==="health"?"💚 Healthier food":profile.goal==="skill"?"📚 New skill":profile.goal==="self-sufficient"?"🏡 Self-sufficiency":"🌈 Enjoyment"},{l:"Member since",v:new Date(profile.startedAt).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}].map((row,i) =>
-            <div key={i} style={{ display:"flex", justifyContent:"space-between", padding:"7px 0", borderBottom:"1px solid var(--cdk)" }}><span style={{ fontSize:12, color:"var(--tl)" }}>{row.l}</span><span style={{ fontSize:12, fontWeight:700 }}>{row.v}</span></div>)}
-          <button className="btn bs bsm" style={{ width:"100%", marginTop:10 }} onClick={() => navigate("onboarding")}>Update profile</button>
-        </div>}
-
-        <BrandFooter/>
-        <div style={{ textAlign:"center", paddingBottom:8 }}>
-        {/* Frost Alert — Premium Feature */}
-        <div style={{ background:"linear-gradient(135deg,#1A237E,#283593)", borderRadius:20, padding:18 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-            <div style={{ fontSize:28 }}>🌡️</div>
-            <div>
-              <div style={{ color:"#90CAF9", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em", marginBottom:2 }}>Premium Feature</div>
-              <h3 style={{ color:"#fff", fontWeight:900, fontSize:15 }}>Frost Alert</h3>
-            </div>
-          </div>
-          <p style={{ color:"rgba(255,255,255,.7)", fontSize:13, lineHeight:1.5, marginBottom:14 }}>
-            Enter your UK postcode and we'll warn you when frost is forecast in your area — so you can protect your plants before it's too late.
-          </p>
-          {frostAlert && (
-            <div style={{ background:"rgba(255,255,255,.1)", borderRadius:12, padding:"10px 14px", marginBottom:12, border:"1px solid #5C6BC0" }}>
-              <div style={{ color:"#90CAF9", fontWeight:800, fontSize:12, marginBottom:3 }}>⚠️ Current Alert</div>
-              <div style={{ color:"#fff", fontWeight:700, fontSize:13 }}>Frost risk {frostAlert.night} — {frostAlert.temp}°C near {frostAlert.postcode}</div>
-            </div>
-          )}
-          {!frostAlert && postcode && (
-            <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}>
-              <div style={{ color:"#A5D6A7", fontWeight:700, fontSize:13 }}>✅ No frost risk in the next 48 hours near {postcode}</div>
-            </div>
-          )}
-          <div style={{ display:"flex", gap:8 }}>
-            <input
-              type="text"
-              placeholder="Enter postcode e.g. TA6 3AB"
-              value={pcInput}
-              onChange={e => setPcInput(e.target.value.toUpperCase())}
-              maxLength={8}
-              style={{ flex:1, padding:"10px 14px", borderRadius:999, border:"1px solid #5C6BC0", background:"rgba(255,255,255,.1)", color:"#fff", fontSize:13, fontFamily:"var(--ff)", outline:"none" }}
-            />
-            <button onClick={handleSavePostcode} disabled={pcSaving || !pcInput}
-              style={{ background:"#5C6BC0", border:"none", borderRadius:999, padding:"10px 18px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)", opacity:pcSaving||!pcInput?.5:1, whiteSpace:"nowrap" }}>
-              {pcSaving ? "Checking..." : "Check"}
-            </button>
-          </div>
-          <div style={{ marginTop:8, fontSize:11, color:"rgba(255,255,255,.4)", textAlign:"center" }}>Uses your postcode to check local overnight temperatures · Updates on each visit</div>
-        </div>
-
-        <BrandFooter/>
-        <div style={{ textAlign:"center", paddingBottom:8 }}>
-            {/* Dark mode toggle */}
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:14, padding:"12px 16px" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ fontSize:18 }}>{darkMode ? "🌙" : "☀️"}</span>
-                <span style={{ fontSize:13, fontWeight:700, color:"var(--td)" }}>Dark Mode</span>
-              </div>
-              <button onClick={toggleDarkMode} style={{ width:48, height:26, borderRadius:999, border:"none", cursor:"pointer", background: darkMode ? "var(--g5)" : "var(--cdk)", position:"relative", transition:"background .3s", flexShrink:0 }}>
-                <div style={{ width:20, height:20, borderRadius:"50%", background:"white", position:"absolute", top:3, left: darkMode ? 25 : 3, transition:"left .3s", boxShadow:"0 1px 4px rgba(0,0,0,.2)" }}/>
-              </button>
-            </div>
-
-            <div style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap" }}>
-              <button onClick={() => navigate("daily")} style={{ border:"none", background:"none", color:"var(--g6)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline", fontWeight:700 }}>🌱 Daily Challenge</button>
-              <button onClick={() => navigate("legal")} style={{ border:"none", background:"none", color:"var(--tl)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>📋 Legal & Disclaimers</button>
-              <button onClick={() => { if (window.confirm("Reset all progress? This cannot be undone.")) reset(); }} style={{ border:"none", background:"none", color:"var(--tmut)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>Reset all progress</button>
-            </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── BOTTOM NAV ───────────────────────────────────────────────────────────────
-function BottomNav() {
-  const { page, navigate, profile } = useApp();
-  if (!profile) return null;
-  const NAV_ICONS = { dashboard: INavHome, courses: INavLearn, videos: INavVideos, planner: INavPlanner, progress: INavProgress, problems: INavProblems };
-  const items = [{id:"dashboard",l:"Home"},{id:"courses",l:"Learn"},{id:"videos",l:"Videos"},{id:"planner",l:"Planner"},{id:"problems",l:"Fix It 🔍"},{id:"progress",l:"Progress"}];
-  const isActive = id => page === id || (id === "courses" && page === "lesson");
-
-  return (
-    <nav style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, height:"var(--nav)", background:"#fff", borderTop:"1px solid var(--cdk)", display:"flex", alignItems:"center", justifyContent:"space-around", zIndex:100, boxShadow:"0 -4px 18px rgba(0,0,0,.06)", overflowX:"auto", overflowY:"hidden" }}>
-      {items.map(item => {
-        const active = isActive(item.id);
-        const IC = NAV_ICONS[item.id];
-        return (
-          <button key={item.id} onClick={() => navigate(item.id)} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:4, padding:"6px 4px", border:"none", background:"transparent", cursor:"pointer", fontFamily:"var(--ff)", transition:"all .2s" }}>
-            <div style={{ transform: active ? "scale(1.12)" : "scale(0.88)", transition:"transform .2s", opacity: active ? 1 : 0.45 }}>
-              <IC size={38}/>
-            </div>
-            <span style={{ fontSize:9, fontWeight:active?800:600, color:active?"var(--g7)":"var(--tmut)", letterSpacing:".02em" }}>{item.l}</span>
-          </button>
-        );
-      })}
-    </nav>
-  );
-}
-
-// ─── LEVEL COMPLETE PAGE ──────────────────────────────────────────────────────
-function LevelCompletePage() {
-  const { course, navigate, xp, badges } = useApp();
-  const [showDance, setShowDance] = useState(true);
-  if (!course) { navigate("courses"); return null; }
-
-  const LEVEL_MSGS = {
-    "level-1": { msg:"You've got the foundations! You now understand what every plant needs to thrive.", next:"Level 2: Easy Wins — let's grow something delicious.", emoji:"🌱" },
-    "level-2": { msg:"Brilliant work! You've grown some of the most rewarding beginner crops there are.", next:"Level 3: Grow Like a Pro — time for the big leagues.", emoji:"🥬" },
-    "level-3": { msg:"Incredible — you're no longer a beginner. Tomatoes, potatoes, cucumbers and more.", next:"Level 4: Grow All Year — never a bare patch again.", emoji:"🍅" },
-    "level-4": { msg:"You think like a real grower now. Planning, succession, soil care — all mastered.", next:"Level 5: Allotment Master — advanced skills await.", emoji:"🗓️" },
-    "level-5": { msg:"You've reached Allotment Master level. Crop rotation, no-dig, composting — all yours.", next:"Level 6: Glen's Expert Secrets — unlock the premium tier.", emoji:"🏡" },
-    "level-6": { msg:"You've completed the entire Growers Academy. Glen is proud. You're a proper grower.", next:"Share your achievement and keep growing!", emoji:"👨‍🌾" },
-  };
-
-  const isLastLevel = course.id === "level-6";
-  const info = LEVEL_MSGS[course.id] || LEVEL_MSGS["level-1"];
-  const nextCourse = COURSES[COURSES.findIndex(c => c.id === course.id) + 1];
-
-  // Dancing veg characters per level
-  const LEVEL_DANCERS = {
-    "level-1": ["🌱","🌿","🫘"],
-    "level-2": ["🥬","🥕","🌿"],
-    "level-3": ["🍅","🥔","🥒"],
-    "level-4": ["🗓️","❄️","🔄"],
-    "level-5": ["🏡","♻️","💧"],
-    "level-6": ["👨‍🌾","🌟","🏆"],
-  };
-  const dancers = LEVEL_DANCERS[course.id] || ["🌱","🍅","🥕"];
-
-  // Confetti pieces
-  const confetti = [...Array(24)].map((_, i) => ({
-    id: i,
-    color: ["#FF5252","#FF9800","#FFEB3B","#4CAF50","#2196F3","#9C27B0","#FF4081","#00BCD4"][i % 8],
-    left: `${(i * 4.2) % 100}%`,
-    delay: `${(i * 0.08) % 1.5}s`,
-    duration: `${1.2 + (i % 6) * 0.2}s`,
-    size: `${8 + (i % 5) * 3}px`,
-    shape: i % 3 === 0 ? "50%" : i % 3 === 1 ? "2px" : "0%",
-  }));
-
-  return (
-    <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", background:"var(--cream)" }}>
-      {/* Hero with confetti */}
-      <div style={{ background:`linear-gradient(155deg,${course.color}DD,${course.color})`, padding:"52px 24px 44px", textAlign:"center", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", top:-40, right:-40, width:180, height:180, borderRadius:"50%", background:"rgba(255,255,255,.08)" }}/>
-        <div style={{ position:"absolute", bottom:-60, left:-30, width:220, height:220, borderRadius:"50%", background:"rgba(255,255,255,.05)" }}/>
-
-        {/* Confetti burst */}
-        <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
-          {confetti.map(c => (
-            <div key={c.id} style={{
-              position:"absolute", top:-10, left:c.left,
-              width:c.size, height:c.size,
-              background:c.color, borderRadius:c.shape,
-              animation:`confettiFall ${c.duration} ${c.delay} ease-in forwards, confettiSway ${c.duration} ${c.delay} ease-in-out infinite`,
-            }}/>
-          ))}
-        </div>
-
-        <div style={{ position:"relative", zIndex:1 }}>
-          <div style={{ fontSize:64, marginBottom:12, animation:"pop .5s ease" }}>🎉</div>
-          <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,255,255,.2)", borderRadius:999, padding:"5px 14px", marginBottom:14 }}>
-            <span style={{ fontSize:14 }}>{info.emoji}</span>
-            <span style={{ color:"#fff", fontSize:12, fontWeight:800, textTransform:"uppercase", letterSpacing:".06em" }}>Level Complete!</span>
-          </div>
-          <h1 style={{ color:"#fff", fontSize:26, fontWeight:900, lineHeight:1.2, marginBottom:10 }}>
-            You've completed<br/>{course.title}!
-          </h1>
-          <p style={{ color:"rgba(255,255,255,.85)", fontSize:15, lineHeight:1.5, maxWidth:300, margin:"0 auto 20px" }}>
-            {info.msg}
-          </p>
-
-          {/* Dancing vegetables */}
-          <div style={{ display:"flex", justifyContent:"center", gap:20, marginBottom:20 }}>
-            {dancers.map((veg, i) => (
-              <div key={i} style={{
-                fontSize:46,
-                animation:`${["vegDance","vegDance2","vegDance3"][i]} ${1.4 + i*0.15}s ${i*0.2}s ease-in-out infinite`,
-                display:"inline-block",
-                filter:"drop-shadow(0 4px 8px rgba(0,0,0,.2))",
-              }}>{veg}</div>
-            ))}
-          </div>
-
-          {/* XP earned */}
-          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(0,0,0,.2)", borderRadius:999, padding:"10px 20px" }}>
-            <span style={{ fontSize:20 }}>⭐</span>
-            <span style={{ color:"#fff", fontWeight:900, fontSize:16 }}>{xp} Total XP</span>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ padding:"24px 18px", display:"flex", flexDirection:"column", gap:16, flex:1 }}>
-        {/* Next level card */}
-        {!isLastLevel && nextCourse && (
-          <div className="card" style={{ border:`2px solid ${nextCourse.color}44`, background:`${nextCourse.color}0A` }}>
-            <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:14 }}>
-              <div style={{ width:46, height:46, background:nextCourse.color, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextCourse.emoji}</div>
-              <div>
-                <div style={{ fontSize:10, fontWeight:700, color:nextCourse.color, textTransform:"uppercase", letterSpacing:".05em", marginBottom:2 }}>Up next</div>
-                <h2 style={{ fontSize:16, fontWeight:900, marginBottom:2 }}>{nextCourse.title}</h2>
-                <p style={{ fontSize:13, color:"var(--tl)", lineHeight:1.4 }}>{nextCourse.desc}</p>
-              </div>
-            </div>
-            <button className="btn bp blg" style={{ width:"100%", background:nextCourse.color }} onClick={() => navigate("courses")}>
-              Start {nextCourse.title} →
-            </button>
-          </div>
-        )}
-
-        {/* Glen's channel card */}
-        <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a3a08)", borderRadius:20, padding:20 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-            <VPILogo size={36}/>
-            <div>
-              <div style={{ color:"var(--g3)", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em", marginBottom:3 }}>Catch up with {HOST}</div>
-              <h3 style={{ color:"#fff", fontWeight:900, fontSize:16 }}>Latest from {CHANNEL_NAME}</h3>
-            </div>
-          </div>
-          <p style={{ color:"rgba(255,255,255,.65)", fontSize:13, lineHeight:1.6, marginBottom:16 }}>
-            Head over to {HOST}'s YouTube channel for the latest growing videos, allotment diaries and seasonal tips — updated regularly throughout the year.
-          </p>
-          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer"
-            style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"14px 20px", fontSize:15, fontWeight:800, textDecoration:"none", boxShadow:"0 4px 18px rgba(255,0,0,.4)" }}>
-            <YTIcon/> Visit {CHANNEL_NAME} on YouTube
-          </a>
-          <div style={{ marginTop:10, textAlign:"center", color:"rgba(255,255,255,.35)", fontSize:11 }}>
-            New videos added regularly · Subscribe so you never miss one
-          </div>
-        </div>
-
-        {/* ── PLANNER PROMOTION ── */}
-        <a href="https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/"
-          target="_blank" rel="noopener noreferrer"
-          style={{ textDecoration:"none", display:"block" }}>
-          <div style={{ background:"linear-gradient(135deg,#111,#1a2a10)", borderRadius:20, overflow:"hidden", boxShadow:"0 6px 24px rgba(0,0,0,.25)" }}>
-            {/* Product image */}
-            <img
-              src="https://veggiepatchideas.co.uk/wp-content/uploads/2024/11/small-image-planner.png"
-              alt="Veggie Patch Ideas Season Planner"
-              style={{ width:"100%", display:"block", borderRadius:"20px 20px 0 0" }}
-              onError={e => { e.target.style.display="none"; }}
-            />
-            <div style={{ padding:"18px 18px 20px" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
-                <VPILogo size={26}/>
-                <div style={{ fontSize:10, color:"var(--g3)", fontWeight:800, textTransform:"uppercase", letterSpacing:".08em" }}>{CHANNEL_NAME} · Recommended</div>
-              </div>
-              <h3 style={{ color:"#fff", fontSize:17, fontWeight:900, lineHeight:1.3, marginBottom:10 }}>
-                Your Guide Through the Season
-              </h3>
-              <p style={{ color:"rgba(255,255,255,.75)", fontSize:13, lineHeight:1.6, marginBottom:16 }}>
-                The best growers write everything down. What worked, what failed, when they sowed and when they harvested. Over time your notes become your most powerful growing tool — more valuable than any book or video.
-              </p>
-              <div style={{ background:"rgba(255,255,255,.06)", border:"1px solid rgba(255,255,255,.12)", borderRadius:12, padding:"12px 14px", marginBottom:16 }}>
-                <div style={{ color:"var(--g3)", fontWeight:800, fontSize:12, marginBottom:6 }}>💡 Glen's advice</div>
-                <p style={{ color:"rgba(255,255,255,.7)", fontSize:13, lineHeight:1.5, margin:0 }}>
-                  "I've kept a growing notebook every year for 20 years. Looking back at what I wrote last season is still the fastest way I know to improve. Don't skip this — it makes a real difference."
-                </p>
-              </div>
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                <div>
-                  <div style={{ color:"rgba(255,255,255,.45)", fontSize:11, fontWeight:600 }}>Use every year</div>
-                  <div style={{ color:"#fff", fontSize:14, fontWeight:800 }}>Season Planner & Diary →</div>
-                </div>
-                <div style={{ background:"linear-gradient(135deg,var(--g4),var(--g6))", borderRadius:999, padding:"10px 18px", fontSize:13, fontWeight:800, color:"#fff", whiteSpace:"nowrap" }}>
-                  Get it now
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-
-        {/* Share achievement */}
-        <div className="card" style={{ textAlign:"center" }}>
-          <div style={{ fontSize:32, marginBottom:8 }}>{info.emoji}</div>
-          <h3 style={{ fontSize:15, fontWeight:800, marginBottom:4 }}>Share your achievement</h3>
-          <p style={{ fontSize:13, color:"var(--tl)", marginBottom:14, lineHeight:1.5 }}>
-            Completed {course.title} on The Growers Academy by {CHANNEL_NAME}!
-          </p>
-          <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
-            <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(course.title)}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱+${encodeURIComponent(WEBSITE_URL)}`}
-              target="_blank" rel="noopener noreferrer"
-              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#000", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
-              𝕏 Share
-            </a>
-            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}&quote=Just+completed+${encodeURIComponent(course.title)}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱`}
-              target="_blank" rel="noopener noreferrer"
-              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#1877F2", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              Facebook
-            </a>
-            <a href="https://www.instagram.com/veggiepatchideas"
-              target="_blank" rel="noopener noreferrer"
-              style={{ display:"inline-flex", alignItems:"center", gap:6, background:"linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-              Instagram
-            </a>
-          </div>
-        </div>
-
-        {/* Back to courses */}
-        <button className="btn bs" style={{ width:"100%" }} onClick={() => navigate("courses")}>
-          ← Back to all courses
-        </button>
-      </div>
-    </div>
-  );
-}
-// ─── DAILY CHALLENGE PAGE ─────────────────────────────────────────────────────
 function DailyChallengePage() {
   const { navigate, dailyDone, setDailyDone, addXP, haptic } = useApp();
   const [qa, setQa] = useState(null);
