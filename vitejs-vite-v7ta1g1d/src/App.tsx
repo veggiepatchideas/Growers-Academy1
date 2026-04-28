@@ -2219,20 +2219,19 @@ function LessonPage() {
     setChecked(prev => {
       const n = { ...prev, [i]: !prev[i] };
       try { localStorage.setItem("ga_ck_" + lesson.id, JSON.stringify(n)); } catch {}
+      const allDone = lesson.cl.every((_, j) => !!n[j]);
+      if (allDone && !checklistDone) {
+        try { localStorage.setItem("ga_ckd_" + lesson.id, "1"); } catch {}
+        setChecklistDone(true);
+        // Delay XP/badge calls so render completes first
+        setTimeout(() => {
+          recordChecklistComplete();
+          setTimeout(() => setShowXP(true), 600);
+        }, 50);
+      }
       return n;
     });
   };
-
-  useEffect(() => {
-    if (!lesson?.cl || checklistDone) return;
-    const allDone = lesson.cl.every((_, j) => !!checked[j]);
-    if (allDone) {
-      setChecklistDone(true);
-      try { localStorage.setItem("ga_ckd_" + lesson.id, "1"); } catch {}
-      recordChecklistComplete();
-      setTimeout(() => setShowXP(true), 800);
-    }
-  }, [checked]);
 
   const handleSelect = (optIdx) => {
     if (revealed) return;
