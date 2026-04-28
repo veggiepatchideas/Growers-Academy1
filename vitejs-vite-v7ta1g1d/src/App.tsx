@@ -2171,6 +2171,7 @@ function LessonPage() {
   // ── Checklist state ─────────────────────────────────────────────────────────
   const [checked, setChecked]             = useState({});
   const [checklistDone, setChecklistDone] = useState(false);
+  const [showXP, setShowXP] = useState(false);
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
   const [qIdx, setQIdx]           = useState(0);
@@ -2205,7 +2206,11 @@ function LessonPage() {
     const n = { ...checked, [i]: !checked[i] };
     setChecked(n);
     const allDone = lesson.cl && lesson.cl.every((_, j) => !!n[j]);
-    if (allDone && !checklistDone) { setChecklistDone(true); recordChecklistComplete(); }
+    if (allDone && !checklistDone) {
+      setChecklistDone(true);
+      recordChecklistComplete();
+      setTimeout(() => setShowXP(true), 400);
+    }
   };
 
   const handleSelect = (optIdx) => {
@@ -2324,13 +2329,18 @@ function LessonPage() {
               <h2 style={{ fontSize:14, fontWeight:800 }}>✅ Action checklist</h2>
               <span style={{ fontSize:11, color:"var(--tl)" }}>{Object.values(checked).filter(Boolean).length}/{lesson.cl.length}</span>
             </div>
-            {lesson.cl.map((item, i) => (
-              <div key={i} className="crow" onClick={() => handleCheck(i)} style={{ paddingBottom:10, marginBottom:2 }}>
-                <div className={`ccirc${!!checked[i]?" on":""}`}>{!!checked[i] && "✓"}</div>
-                <span style={{ fontSize:13, fontWeight:600, textDecoration:!!checked[i]?"line-through":"none", color:!!checked[i]?"var(--tmut)":"var(--td)", flex:1, lineHeight:1.5 }}>{item}</span>
-              </div>
-            ))}
-            {checklistDone && <div style={{ textAlign:"center", padding:"10px 0 2px", fontSize:13, color:"var(--g6)", fontWeight:800 }}>✅ All done! +15 XP earned 🌟</div>}
+            {lesson.cl.map((item, i) => {
+              const ticked = !!checked[i];
+              return (
+                <div key={i} onClick={() => handleCheck(i)} style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 0", borderBottom: i < lesson.cl.length-1 ? "1px solid var(--cdk)" : "none", cursor:"pointer" }}>
+                  <div style={{ width:22, height:22, borderRadius:"50%", border:`2px solid ${ticked?"var(--g5)":"var(--cdk)"}`, background:ticked?"var(--g5)":"transparent", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, color:"#fff", flexShrink:0, transition:"all .2s" }}>
+                    {ticked && "✓"}
+                  </div>
+                  <span style={{ fontSize:13, fontWeight:600, textDecoration:ticked?"line-through":"none", color:ticked?"var(--tmut)":"var(--td)", flex:1, lineHeight:1.5, transition:"all .2s" }}>{item}</span>
+                </div>
+              );
+            })}
+            {showXP && <div style={{ textAlign:"center", padding:"10px 0 2px", fontSize:13, color:"var(--g6)", fontWeight:800, animation:"fadeUp .3s ease" }}>✅ All done! +15 XP earned 🌟</div>}
           </div>
         )}
 
