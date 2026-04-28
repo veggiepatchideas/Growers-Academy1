@@ -2172,14 +2172,18 @@ function LessonPage() {
   const [checked, setChecked] = useState(() => {
     try { const s = localStorage.getItem("ga_ck_" + (lesson?.id||"")); return s ? JSON.parse(s) : {}; } catch { return {}; }
   });
-  const [checklistDone, setChecklistDone] = useState(false);
-  const [showXP, setShowXP] = useState(false);
+  const [checklistDone, setChecklistDone] = useState(() => {
+    try { return localStorage.getItem("ga_ckd_" + (lesson?.id||"")) === "1"; } catch { return false; }
+  });
+  const [showXP, setShowXP] = useState(() => {
+    try { return localStorage.getItem("ga_ckd_" + (lesson?.id||"")) === "1"; } catch { return false; }
+  });
 
-  // Clear checked state when lesson changes
   useEffect(() => {
     try { const s = localStorage.getItem("ga_ck_" + (lesson?.id||"")); setChecked(s ? JSON.parse(s) : {}); } catch { setChecked({}); }
-    setChecklistDone(false);
-    setShowXP(false);
+    const done = localStorage.getItem("ga_ckd_" + (lesson?.id||"")) === "1";
+    setChecklistDone(done);
+    setShowXP(done);
   }, [lesson?.id]);
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
@@ -2224,6 +2228,7 @@ function LessonPage() {
     const allDone = lesson.cl.every((_, j) => !!checked[j]);
     if (allDone) {
       setChecklistDone(true);
+      try { localStorage.setItem("ga_ckd_" + lesson.id, "1"); } catch {}
       recordChecklistComplete();
       setTimeout(() => setShowXP(true), 800);
     }
