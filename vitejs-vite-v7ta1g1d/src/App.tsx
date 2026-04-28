@@ -1422,14 +1422,10 @@ function Provider({ children }) {
     }
   };
   const navigate = (p, ex = {}) => {
-    setPageAnim(true);
-    setTimeout(() => {
-      setPage(p);
-      if (ex.lesson) setLesson(ex.lesson);
-      if (ex.course) setCourse(ex.course);
-      window.scrollTo(0, 0);
-      setPageAnim(false);
-    }, 120);
+    setPage(p);
+    if (ex.lesson) setLesson(ex.lesson);
+    if (ex.course) setCourse(ex.course);
+    window.scrollTo(0, 0);
     haptic("light");
   };
   const reset       = () => { localStorage.clear(); setProf(null); setDone([]); setBadges([]); setXP(0); setHearts(5); setStreak({ count:0, last:null }); setPage("home"); };
@@ -3105,7 +3101,7 @@ function Router() {
         </div>
       )}
 
-      <div style={{ paddingBottom: showNav ? "var(--nav)" : 0, opacity: pageAnim ? 0.4 : 1, transition:"opacity .12s ease" }}>
+      <div style={{ paddingBottom: showNav ? "var(--nav)" : 0 }}>
         <Page/>
       </div>
       <BottomNav/>
