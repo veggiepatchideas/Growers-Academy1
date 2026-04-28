@@ -2533,6 +2533,380 @@ function LessonPage() {
 }
 
 
+// ─── VIDEOS PAGE ──────────────────────────────────────────────────────────────
+function VideosPage() {
+  const { navigate, awardBadge, badges, addXP } = useApp();
+  const [pk, setPk] = useState(null);
+  const handlePlay = k => { setPk(k); if (!badges.includes("glens-student")) { awardBadge("glens-student"); addXP(10); } };
+  const LABELS = { "fix-slugs":"Slug Control","soil-basics":"Soil & Compost","grow-tomatoes":"Growing Tomatoes","containers-beds":"Containers & Beds","sunlight-watering":"Sunlight & Watering","tools-guide":"Gardening Tools","sowing-seeds":"Sowing Seeds","grow-lettuce":"Growing Lettuce","grow-herbs":"Potting On","grow-radish":"Radishes","grow-carrots":"Carrots","grow-spring-onions":"Spring Onions","grow-peas":"Peas","grow-cucumbers":"Cucumbers","grow-courgettes":"Courgettes","grow-beans":"French Beans","grow-beetroot":"Beetroot","grow-onions-garlic":"Onions & Garlic","grow-potatoes":"Growing Potatoes","seasonal-planning":"Seasonal Planning","winter-growing":"Winter Growing","succession-sowing":"Successional Sowing","green-manures":"Green Manures","plot-planning":"Plot Planning","irrigation":"Irrigation","polytunnel":"Polytunnel & Greenhouse","pest-management":"Pest Management","seed-saving":"Seed Saving","composting":"Composting","crop-rotation":"Crop Rotation","no-dig":"No-Dig Growing","fix-aphids":"Controlling Aphids" };
+  const sections = [
+    {title:"🌱 Level 1: Getting Started",keys:["soil-basics","containers-beds","sunlight-watering","tools-guide","sowing-seeds"]},
+    {title:"🥬 Level 2: Easy Wins",keys:["grow-lettuce","grow-herbs","grow-radish","grow-carrots","grow-spring-onions","grow-peas"]},
+    {title:"🍅 Level 3: Grow Like a Pro",keys:["grow-tomatoes","grow-potatoes","grow-cucumbers","grow-courgettes","grow-beans","grow-beetroot","grow-onions-garlic"]},
+    {title:"🗓️ Level 4: Grow All Year",keys:["seasonal-planning","winter-growing","succession-sowing","green-manures"]},
+    {title:"🏡 Level 5: Allotment Master",keys:["plot-planning","irrigation","polytunnel","pest-management","seed-saving","composting","crop-rotation","no-dig"]},
+    {title:"🔍 Problem Fixes",keys:["fix-slugs","fix-aphids"]},
+  ];
+  const totalVideos = Object.values(MY_VIDEOS).filter(Boolean).length;
+  const totalSlots = Object.keys(MY_VIDEOS).length;
+  const pct = Math.round((totalVideos/totalSlots)*100);
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a2a10)", padding:"22px 16px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+          <button onClick={() => navigate("dashboard")} style={{ border:"none", background:"rgba(255,255,255,.08)", borderRadius:10, width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"#fff" }}>←</button>
+          <VPILogo size={28}/>
+          <div><h1 style={{ color:"#fff", fontSize:18, fontWeight:900 }}>Video Lessons</h1><p style={{ color:"rgba(255,255,255,.4)", fontSize:11 }}>by {HOST} · {CHANNEL_NAME}</p></div>
+        </div>
+        <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"12px 14px", marginBottom:14 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+            <span style={{ color:"rgba(255,255,255,.7)", fontSize:12, fontWeight:700 }}>📺 {totalVideos} of {totalSlots} videos live</span>
+            <span style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>{pct}%</span>
+          </div>
+          <div style={{ height:6, background:"rgba(255,255,255,.15)", borderRadius:999, overflow:"hidden" }}>
+            <div style={{ height:"100%", width:`${pct}%`, background:"linear-gradient(90deg,#7CB342,#9CCC65)", borderRadius:999 }}/>
+          </div>
+          <p style={{ color:"rgba(255,255,255,.4)", fontSize:11, marginTop:6 }}>Glen is filming more — subscribe to be notified!</p>
+        </div>
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(255,0,0,.85)", color:"#fff", borderRadius:999, padding:"9px 18px", fontSize:13, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe to {CHANNEL_NAME}</a>
+      </div>
+      <div style={{ padding:"16px" }}>
+        {sections.map(sec => {
+          const liveCount = sec.keys.filter(k => MY_VIDEOS[k]).length;
+          return (
+            <div key={sec.title} style={{ marginBottom:24 }}>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+                <h2 style={{ fontSize:15, fontWeight:800 }}>{sec.title}</h2>
+                <span style={{ fontSize:11, background:liveCount===sec.keys.length?"#E8F5E9":"var(--cdk)", color:liveCount===sec.keys.length?"#2E7D32":"var(--tmut)", borderRadius:999, padding:"3px 10px", fontWeight:700 }}>{liveCount}/{sec.keys.length} live</span>
+              </div>
+              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                {sec.keys.map(key => {
+                  const id = MY_VIDEOS[key]; const isPlaying = pk===key; const label = LABELS[key]||key;
+                  return (
+                    <div key={key} style={{ background:"#fff", borderRadius:22, overflow:"hidden", boxShadow:"0 1px 4px rgba(0,0,0,.07)", border:"1px solid var(--cdk)" }}>
+                      {id ? (
+                        <div style={{ position:"relative", paddingTop:"56.25%", background:"#000" }}>
+                          {isPlaying
+                            ? <iframe style={{ position:"absolute", inset:0, width:"100%", height:"100%", border:"none" }} src={`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={label}/>
+                            : <div style={{ position:"absolute", inset:0, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => handlePlay(key)}>
+                                <img src={`https://img.youtube.com/vi/${id}/mqdefault.jpg`} alt={label} style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover" }}/>
+                                <div style={{ position:"absolute", inset:0, background:"rgba(0,0,0,.22)" }}/>
+                                <div style={{ position:"relative", zIndex:2, width:52, height:52, background:"rgba(255,0,0,.92)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="19" height="19" viewBox="0 0 24 24" fill="white" style={{ marginLeft:3 }}><polygon points="5,3 19,12 5,21"/></svg></div>
+                              </div>
+                          }
+                        </div>
+                      ) : (
+                        <div style={{ background:"linear-gradient(135deg,#1a1a2e,#16213e)", padding:"28px", textAlign:"center" }}>
+                          <div style={{ fontSize:32, marginBottom:8 }}>🎬</div>
+                          <div style={{ color:"rgba(255,255,255,.6)", fontSize:13, fontWeight:700, marginBottom:4 }}>{label}</div>
+                          <div style={{ color:"rgba(255,255,255,.3)", fontSize:11, marginBottom:10 }}>Glen is filming this soon</div>
+                          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,0,0,.7)", color:"#fff", borderRadius:999, padding:"7px 14px", fontSize:11, fontWeight:700, textDecoration:"none" }}><YTIcon/> Subscribe</a>
+                        </div>
+                      )}
+                      {id && <div style={{ padding:"11px 15px 13px" }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}><VPILogo size={16}/><span style={{ fontSize:10, fontWeight:700, color:"var(--tmut)", textTransform:"uppercase", letterSpacing:".05em" }}>{CHANNEL_NAME}</span><span style={{ marginLeft:"auto", fontSize:10, background:"#E8F5E9", color:"#2E7D32", padding:"2px 8px", borderRadius:999, fontWeight:700 }}>✅ Live</span></div>
+                        <div style={{ fontWeight:800, fontSize:14 }}>{label}</div>
+                      </div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── PLANNER PAGE ──────────────────────────────────────────────────────────────
+function PlannerPage() {
+  const { navigate } = useApp();
+  const month = new Date().getMonth();
+  const MONTHS = [
+    {name:"January",emoji:"❄️",sow:["Chillies","Peppers (heated propagator)"],plant:[],harvest:["Parsnips","Leeks","Kale"],jobs:["Order seeds early — best varieties sell out","Plan your crop rotation for the year","Check stored vegetables"]},
+    {name:"February",emoji:"🌱",sow:["Onions","Leeks","Early tomatoes"],plant:[],harvest:["Leeks","Kale","Purple sprouting broccoli"],jobs:["Chit seed potatoes in a light frost-free place","Prepare beds by adding compost","Check fences and supports"]},
+    {name:"March",emoji:"🌿",sow:["Tomatoes","Courgettes","Cucumbers","Lettuce","Peas"],plant:["Onion sets","Shallots","Early potatoes"],harvest:["Purple sprouting broccoli","Spring onions","Kale"],jobs:["Start hardening off seedlings","Prepare raised beds","Sow peas under cover"]},
+    {name:"April",emoji:"🌸",sow:["Beans","Sweetcorn","Squash","More lettuce"],plant:["Potatoes (main crop)","Onion sets","Early beetroot"],harvest:["Asparagus","Spring onions","Radishes"],jobs:["Watch for late frosts — keep fleece handy","Earth up potatoes as they emerge","Plant strawberries"]},
+    {name:"May",emoji:"☀️",sow:["More beans","Succession lettuce","Carrots"],plant:["Tomatoes (after mid-May)","Courgettes","Cucumbers","Squash"],harvest:["Asparagus","Radishes","Lettuce","Spring onions"],jobs:["Last frost date usually mid-May","Pinch out tomato sideshoots","Start watering regularly"]},
+    {name:"June",emoji:"🌞",sow:["Succession carrots","Beetroot","More lettuce"],plant:["Leeks","Brassicas"],harvest:["Broad beans","Lettuce","Strawberries","Early potatoes","Courgettes"],jobs:["Feed tomatoes weekly with liquid tomato food","Water consistently — daily in dry spells"]},
+    {name:"July",emoji:"🌻",sow:["Succession salads","Spring onions","Kale for winter"],plant:["Winter brassicas"],harvest:["Tomatoes","Courgettes","Cucumbers","Beans","Garlic","Onions","Potatoes"],jobs:["Harvest garlic and onions when tops flop","Keep picking courgettes daily"]},
+    {name:"August",emoji:"🍅",sow:["Winter salads","Spinach","Spring onions"],plant:["Strawberry runners"],harvest:["Tomatoes","Courgettes","Beans","Cucumbers","Sweetcorn","Peppers"],jobs:["Stop tomato plants — pinch out top","Sow green manures on cleared beds"]},
+    {name:"September",emoji:"🍂",sow:["Garlic","Winter salads"],plant:["Garlic","Overwintering salads"],harvest:["Squash","Tomatoes (final)","Potatoes","Beetroot"],jobs:["Harvest and store squash before first frost","Begin clearing summer beds"]},
+    {name:"October",emoji:"🍁",sow:["Broad beans","Garlic"],plant:["Garlic","Spring bulbs"],harvest:["Squash","Root vegetables","Kale","Leeks"],jobs:["Earth up brassicas against wind rock","Add compost to cleared beds"]},
+    {name:"November",emoji:"🌧️",sow:[],plant:[],harvest:["Parsnips","Leeks","Kale","Brussels sprouts","Carrots"],jobs:["Protect brassicas from pigeons","Mulch beds to protect roots","Plan next year"]},
+    {name:"December",emoji:"⛄",sow:[],plant:[],harvest:["Parsnips","Leeks","Kale","Brussels sprouts"],jobs:["Order seed catalogues","Check stored crops","Clean and oil tools ready for spring"]},
+  ];
+  const m = MONTHS[month];
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#1a3a08,#4e8226)", padding:"20px 18px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>📅 Monthly Planner</h1></div>
+        <p style={{ color:"rgba(255,255,255,.7)", fontSize:13 }}>What to do in the garden this month</p>
+      </div>
+      <div style={{ padding:"16px", display:"flex", flexDirection:"column", gap:14 }}>
+        <div style={{ background:"linear-gradient(135deg,var(--g1),var(--g0))", border:"2px solid var(--g3)", borderRadius:20, padding:18, textAlign:"center" }}>
+          <div style={{ fontSize:40, marginBottom:4 }}>{m.emoji}</div>
+          <h2 style={{ fontSize:22, fontWeight:900, color:"var(--g8)" }}>{m.name}</h2>
+          <p style={{ fontSize:13, color:"var(--tl)" }}>{new Date().getFullYear()}</p>
+        </div>
+        {[
+          {title:"🌱 Sow now",items:m.sow,color:"#E8F5E9",border:"#A5D6A7",tc:"#1B5E20"},
+          {title:"🌿 Plant out",items:m.plant,color:"#E3F2FD",border:"#90CAF9",tc:"#0D47A1"},
+          {title:"🥕 Harvest",items:m.harvest,color:"#FFF8E1",border:"#FFE082",tc:"#E65100"},
+          {title:"🔧 Key jobs",items:m.jobs,color:"#F3E5F5",border:"#CE93D8",tc:"#4A148C"},
+        ].map(s => s.items.length>0 && (
+          <div key={s.title} style={{ background:s.color, border:`1px solid ${s.border}`, borderRadius:16, padding:"14px 16px" }}>
+            <h3 style={{ fontSize:14, fontWeight:800, color:s.tc, marginBottom:10 }}>{s.title}</h3>
+            {s.items.map((item,i) => <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}><span style={{ color:s.tc, flexShrink:0 }}>•</span><span style={{ fontSize:13, color:s.tc, lineHeight:1.5 }}>{item}</span></div>)}
+          </div>
+        ))}
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"12px 18px", fontSize:14, fontWeight:700, textDecoration:"none", justifyContent:"center" }}><YTIcon/> Watch Glen's latest videos</a>
+      </div>
+    </div>
+  );
+}
+
+// ─── PROBLEMS PAGE ─────────────────────────────────────────────────────────────
+function ProblemsPage() {
+  const { awardBadge, badges } = useApp();
+  const [sel, setSel] = useState(null);
+  const [search, setSearch] = useState("");
+  const [aiAnswer, setAiAnswer] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState(false);
+  const [asked, setAsked] = useState("");
+  if (!badges.includes("problem-solver")) setTimeout(() => awardBadge("problem-solver"), 500);
+  const sevStyles = { low:{c:"#4CAF50",l:"Low risk",bg:"#E8F5E9"}, medium:{c:"#FF9800",l:"Worth fixing",bg:"#FFF3E0"}, high:{c:"#F44336",l:"Act quickly",bg:"#FFEBEE"} };
+  const filtered = PROBLEMS.filter(p => !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.looks.toLowerCase().includes(search.toLowerCase()));
+  const askAI = async () => {
+    if (!search.trim()||search.trim().length<5) return;
+    setAiLoading(true); setAiAnswer(null); setAiError(false); setAsked(search.trim());
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", { method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000,
+          system:`You are Glen, an experienced allotment manager with 20+ years growing experience in the UK. Answer growing questions warmly and practically. Structure: likely cause, practical fix, prevention tip. Under 200 words.`,
+          messages:[{role:"user", content:`Growing question: "${search.trim()}"`}] }) });
+      const data = await res.json();
+      const text = data?.content?.[0]?.text;
+      if (text) setAiAnswer(text); else setAiError(true);
+    } catch(e) { setAiError(true); }
+    setAiLoading(false);
+  };
+  if (sel) {
+    const p = PROBLEMS.find(x => x.id===sel); const s = sevStyles[p.sev];
+    return (
+      <div style={{ minHeight:"100vh" }}>
+        <div style={{ background:"#fff", padding:"14px", borderBottom:"1px solid var(--cdk)", position:"sticky", top:0, zIndex:10, display:"flex", alignItems:"center", gap:11 }}>
+          <button onClick={() => setSel(null)} style={{ border:"none", background:"var(--cream)", borderRadius:10, width:35, height:35, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:17 }}>←</button>
+          <div><div style={{ fontSize:9, color:"var(--tmut)", fontWeight:700 }}>Problem Solver</div><h1 style={{ fontSize:15, fontWeight:900 }}>{p.emoji} {p.title}</h1></div>
+        </div>
+        <div style={{ padding:"14px", display:"flex", flexDirection:"column", gap:11 }}>
+          <div style={{ background:s.bg, border:`2px solid ${s.c}44`, borderRadius:11, padding:"8px 14px", display:"flex", alignItems:"center", gap:8 }}><div style={{ width:8, height:8, borderRadius:"50%", background:s.c }}/><span style={{ fontWeight:700, fontSize:12, color:s.c }}>{s.l}</span></div>
+          {p.vk && MY_VIDEOS[p.vk] && <YTPlayer videoKey={p.vk}/>}
+          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔍 What it looks like</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.looks}</p></div>
+          <div className="card"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:8 }}>🤔 Likely causes</h2>{p.causes.map((c,i) => <div key={i} style={{ display:"flex", gap:7, marginBottom:6 }}><span style={{ color:"#FF7043", fontSize:12, flexShrink:0 }}>•</span><span style={{ fontSize:13, color:"var(--tm)", lineHeight:1.5 }}>{c}</span></div>)}</div>
+          <div style={{ background:"linear-gradient(135deg,var(--g0),#fff)", border:"2px solid var(--g3)", borderRadius:16, padding:14 }}><h2 style={{ fontSize:13, fontWeight:800, marginBottom:7, color:"var(--g8)" }}>🔧 Easy fix</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{p.fix}</p></div>
+          <div className="tip"><h2 style={{ fontSize:13, fontWeight:800, marginBottom:5, color:"var(--g8)" }}>🛡️ Prevention</h2><p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{p.prev}</p></div>
+          <button className="btn bs" style={{ width:"100%" }} onClick={() => setSel(null)}>← Back to Problem Solver</button>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ minHeight:"100vh" }}>
+      <div style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", padding:"20px 16px 24px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}><VPILogo size={24}/><h1 style={{ color:"#fff", fontSize:19, fontWeight:900 }}>🔍 Problem Solver</h1></div>
+        <p style={{ color:"rgba(255,255,255,.75)", fontSize:12 }}>Ask any growing question — powered by Glen's expertise.</p>
+      </div>
+      <div style={{ padding:"12px 16px 0", background:"#fff", borderBottom:"1px solid var(--cdk)" }}>
+        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+          <div style={{ flex:1, display:"flex", alignItems:"center", gap:8, background:"var(--cream)", borderRadius:12, padding:"10px 14px" }}>
+            <span style={{ fontSize:16 }}>🔍</span>
+            <input type="text" placeholder="Ask Glen anything — e.g. why are my tomato leaves curling?" value={search} onChange={e => { setSearch(e.target.value); setAiAnswer(null); }} onKeyDown={e => e.key==="Enter" && askAI()} style={{ flex:1, border:"none", background:"transparent", fontSize:13, fontFamily:"var(--ff)", outline:"none", color:"var(--td)" }}/>
+            {search && <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ border:"none", background:"none", cursor:"pointer", fontSize:14, color:"var(--tmut)" }}>✕</button>}
+          </div>
+          <button onClick={askAI} disabled={aiLoading||search.trim().length<5} style={{ background:"linear-gradient(135deg,#7B1818,#E53935)", border:"none", borderRadius:12, padding:"11px 14px", color:"#fff", fontWeight:800, fontSize:13, cursor:"pointer", fontFamily:"var(--ff)", opacity:search.trim().length<5?.5:1 }}>{aiLoading?"...":"Ask"}</button>
+        </div>
+        <div style={{ fontSize:10, color:"var(--tmut)", padding:"6px 4px 10px" }}>Powered by AI · Press Ask or Enter</div>
+      </div>
+      <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:12 }}>
+        {aiLoading && <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18 }}><div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}><VPILogo size={32}/><div><div style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>Glen is thinking...</div><div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div></div></div><div style={{ display:"flex", gap:4 }}>{[0,1,2].map(i => <div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#9CCC65", animation:`pulse 1s ${i*.2}s infinite` }}/>)}</div></div>}
+        {aiAnswer && !aiLoading && <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", borderRadius:18, padding:18, border:"1px solid rgba(156,204,101,.3)" }}>
+          <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:12 }}><VPILogo size={36}/><div><div style={{ color:"#9CCC65", fontWeight:800, fontSize:12 }}>Glen's Answer</div><div style={{ color:"rgba(255,255,255,.5)", fontSize:11 }}>"{asked}"</div></div></div>
+          <div style={{ color:"rgba(255,255,255,.88)", fontSize:14, lineHeight:1.8, whiteSpace:"pre-wrap" }}>{aiAnswer}</div>
+          <button onClick={() => { setSearch(""); setAiAnswer(null); }} style={{ marginTop:12, border:"1px solid rgba(255,255,255,.2)", background:"transparent", borderRadius:999, padding:"7px 14px", color:"rgba(255,255,255,.6)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>Ask another question</button>
+        </div>}
+        {aiError && !aiLoading && <div style={{ background:"#FFF3E0", border:"1px solid #FFB74D", borderRadius:14, padding:"14px 16px" }}><div style={{ fontWeight:800, fontSize:13, color:"#E65100" }}>⚠️ Couldn't get an answer right now</div></div>}
+        {!aiAnswer && !aiLoading && <>
+          <div className="warn"><p style={{ fontSize:13, color:"#5D4037", lineHeight:1.5 }}><strong>Good news:</strong> Most problems have simple fixes. Don't panic!</p></div>
+          <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
+            {filtered.map(p => { const s = sevStyles[p.sev]; return (
+              <button key={p.id} className="card tap" onClick={() => setSel(p.id)} style={{ display:"flex", alignItems:"center", gap:11, textAlign:"left", border:"1px solid var(--cdk)", fontFamily:"var(--ff)", padding:"12px 14px" }}>
+                <div style={{ width:46, height:46, background:s.bg, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:21, flexShrink:0 }}>{p.emoji}</div>
+                <div style={{ flex:1 }}><div style={{ fontWeight:800, fontSize:13, marginBottom:2 }}>{p.title}</div><div style={{ fontSize:11, color:"var(--tl)", lineHeight:1.4 }}>{p.looks.slice(0,60)}...</div></div>
+                <span style={{ fontSize:16, color:"var(--tmut)" }}>→</span>
+              </button>
+            ); })}
+          </div>
+        </>}
+      </div>
+    </div>
+  );
+}
+
+// ─── PROGRESS PAGE ─────────────────────────────────────────────────────────────
+function ProgressPage() {
+  const { done, badges, streak, profile, navigate, reset, xp, hearts, frostAlert, postcode, savePostcode, checkFrost, darkMode, toggleDarkMode } = useApp();
+  const [pcInput, setPcInput] = useState(postcode||"");
+  const [pcSaving, setPcSaving] = useState(false);
+  const handleSavePostcode = async () => { setPcSaving(true); savePostcode(pcInput); await checkFrost(pcInput); setPcSaving(false); };
+  const totalLessons = COURSES.reduce((a,c) => a+c.lessons.length, 0);
+  const pct = Math.round((done.length/totalLessons)*100);
+  return (
+    <div style={{ minHeight:"100vh", background:"var(--cream)", paddingBottom:100 }}>
+      <div style={{ background:"linear-gradient(135deg,#1a3a08,#4e8226)", padding:"22px 18px 28px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16 }}>
+          <VPILogo size={44}/>
+          <div><h1 style={{ color:"#fff", fontSize:20, fontWeight:900 }}>My Progress</h1><p style={{ color:"rgba(255,255,255,.6)", fontSize:13 }}>{profile?.experience==="beginner"?"Beginner Grower":profile?.experience==="some"?"Growing Enthusiast":"Confident Grower"}</p></div>
+          <div style={{ marginLeft:"auto" }}><LeagueBadge xp={xp}/></div>
+        </div>
+        <div style={{ display:"flex", gap:12, marginBottom:14 }}>
+          {[{v:xp,l:"Total XP",e:"⭐"},{v:done.length,l:"Lessons",e:"📚"},{v:streak.count,l:"Streak",e:"🔥"},{v:badges.length,l:"Badges",e:"🏅"}].map(s => (
+            <div key={s.l} style={{ flex:1, background:"rgba(255,255,255,.1)", borderRadius:14, padding:"10px 8px", textAlign:"center" }}>
+              <div style={{ fontSize:18 }}>{s.e}</div>
+              <div style={{ color:"#fff", fontWeight:900, fontSize:16 }}>{s.v}</div>
+              <div style={{ color:"rgba(255,255,255,.55)", fontSize:9, fontWeight:700 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ background:"rgba(255,255,255,.15)", borderRadius:999, height:8, overflow:"hidden" }}>
+          <div style={{ height:"100%", width:`${pct}%`, background:"linear-gradient(90deg,#FFD700,#FF8F00)", borderRadius:999 }}/>
+        </div>
+        <div style={{ color:"rgba(255,255,255,.6)", fontSize:11, marginTop:6, textAlign:"center" }}>{done.length} of {totalLessons} lessons · {pct}%</div>
+      </div>
+      <div style={{ padding:"16px 18px", display:"flex", flexDirection:"column", gap:14 }}>
+        <div className="card">
+          <h2 style={{ fontSize:15, fontWeight:800, marginBottom:14 }}>🏅 Badges ({badges.length}/{BADGES.length})</h2>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
+            {BADGES.map(b => {
+              const earned = badges.includes(b.id);
+              return <div key={b.id} style={{ width:60, textAlign:"center", opacity:earned?1:.3 }}>
+                <div style={{ width:48, height:48, borderRadius:"50%", background:earned?"linear-gradient(135deg,#5E9E2E,#9CCC65)":"var(--cdk)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, margin:"0 auto 4px" }}>{b.e}</div>
+                <div style={{ fontSize:9, fontWeight:700, color:earned?"var(--g7)":"var(--tmut)", lineHeight:1.3 }}>{b.t}</div>
+              </div>;
+            })}
+          </div>
+        </div>
+        <div className="card">
+          <h2 style={{ fontSize:15, fontWeight:800, marginBottom:14 }}>📚 Course progress</h2>
+          {COURSES.map(c => {
+            const completed = c.lessons.filter(l => done.includes(l.id)).length;
+            const p2 = Math.round((completed/c.lessons.length)*100);
+            return <div key={c.id} style={{ marginBottom:12 }}>
+              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}><span style={{ fontSize:13, fontWeight:700 }}>{c.emoji} {c.title}</span><span style={{ fontSize:12, color:"var(--tl)" }}>{completed}/{c.lessons.length}</span></div>
+              <div style={{ height:6, background:"var(--cdk)", borderRadius:999, overflow:"hidden" }}><div style={{ height:"100%", width:`${p2}%`, background:`linear-gradient(90deg,${c.color},${c.color}BB)`, borderRadius:999 }}/></div>
+            </div>;
+          })}
+        </div>
+        {/* Frost */}
+        <div style={{ background:"linear-gradient(135deg,#1A237E,#283593)", borderRadius:20, padding:18 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}><div style={{ fontSize:28 }}>🌡️</div><div><div style={{ color:"#90CAF9", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em" }}>Premium Feature</div><h3 style={{ color:"#fff", fontWeight:900, fontSize:15 }}>Frost Alert</h3></div></div>
+          {frostAlert && <div style={{ background:"rgba(255,255,255,.1)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}><div style={{ color:"#90CAF9", fontWeight:800, fontSize:12 }}>⚠️ Frost risk {frostAlert.night} — {frostAlert.temp}°C near {frostAlert.postcode}</div></div>}
+          {!frostAlert && postcode && <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}><div style={{ color:"#A5D6A7", fontWeight:700, fontSize:13 }}>✅ No frost risk near {postcode}</div></div>}
+          <div style={{ display:"flex", gap:8 }}>
+            <input type="text" placeholder="Enter postcode e.g. TA6 3AB" value={pcInput} onChange={e => setPcInput(e.target.value.toUpperCase())} maxLength={8} style={{ flex:1, padding:"10px 14px", borderRadius:999, border:"1px solid #5C6BC0", background:"rgba(255,255,255,.1)", color:"#fff", fontSize:13, fontFamily:"var(--ff)", outline:"none" }}/>
+            <button onClick={handleSavePostcode} disabled={pcSaving||!pcInput} style={{ background:"#5C6BC0", border:"none", borderRadius:999, padding:"10px 18px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)" }}>{pcSaving?"Checking...":"Check"}</button>
+          </div>
+        </div>
+        {/* Dark mode */}
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:14, padding:"12px 16px" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}><span style={{ fontSize:18 }}>{darkMode?"🌙":"☀️"}</span><span style={{ fontSize:13, fontWeight:700 }}>Dark Mode</span></div>
+          <button onClick={toggleDarkMode} style={{ width:48, height:26, borderRadius:999, border:"none", cursor:"pointer", background:darkMode?"var(--g5)":"var(--cdk)", position:"relative", transition:"background .3s" }}>
+            <div style={{ width:20, height:20, borderRadius:"50%", background:"white", position:"absolute", top:3, left:darkMode?25:3, transition:"left .3s" }}/>
+          </button>
+        </div>
+        <BrandFooter/>
+        <div style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap" }}>
+          <button onClick={() => navigate("daily")} style={{ border:"none", background:"none", color:"var(--g6)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline", fontWeight:700 }}>🌱 Daily Challenge</button>
+          <button onClick={() => navigate("legal")} style={{ border:"none", background:"none", color:"var(--tl)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>📋 Legal & Disclaimers</button>
+          <button onClick={() => { if (window.confirm("Reset all progress? This cannot be undone.")) reset(); }} style={{ border:"none", background:"none", color:"var(--tmut)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline" }}>Reset all progress</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── LEVEL COMPLETE PAGE ───────────────────────────────────────────────────────
+function LevelCompletePage() {
+  const { course, navigate, xp } = useApp();
+  if (!course) { navigate("courses"); return null; }
+  const LEVEL_MSGS = {
+    "level-1":{msg:"You've got the foundations! You now understand what every plant needs to thrive.",emoji:"🌱"},
+    "level-2":{msg:"Brilliant work! You've grown some of the most rewarding beginner crops there are.",emoji:"🥬"},
+    "level-3":{msg:"Incredible — you're no longer a beginner. Tomatoes, potatoes, cucumbers and more.",emoji:"🍅"},
+    "level-4":{msg:"You think like a real grower now. Planning, succession, soil care — all mastered.",emoji:"🗓️"},
+    "level-5":{msg:"You've reached Allotment Master level. Crop rotation, no-dig, composting — all yours.",emoji:"🏡"},
+    "level-6":{msg:"You've completed the entire Growers Academy. Glen is proud. You're a proper grower.",emoji:"👨‍🌾"},
+  };
+  const isLastLevel = course.id==="level-6";
+  const info = LEVEL_MSGS[course.id]||LEVEL_MSGS["level-1"];
+  const nextCourse = COURSES[COURSES.findIndex(c => c.id===course.id)+1];
+  const LEVEL_DANCERS = {"level-1":["🌱","🌿","🫘"],"level-2":["🥬","🥕","🌿"],"level-3":["🍅","🥔","🥒"],"level-4":["🗓️","❄️","🔄"],"level-5":["🏡","♻️","💧"],"level-6":["👨‍🌾","🌟","🏆"]};
+  const dancers = LEVEL_DANCERS[course.id]||["🌱","🍅","🥕"];
+  const confetti = [...Array(24)].map((_,i) => ({id:i,color:["#FF5252","#FF9800","#FFEB3B","#4CAF50","#2196F3","#9C27B0","#FF4081","#00BCD4"][i%8],left:`${(i*4.2)%100}%`,delay:`${(i*.08)%1.5}s`,duration:`${1.2+(i%6)*.2}s`,size:`${8+(i%5)*3}px`,shape:i%3===0?"50%":i%3===1?"2px":"0%"}));
+  return (
+    <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", background:"var(--cream)" }}>
+      <div style={{ background:`linear-gradient(155deg,${course.color}DD,${course.color})`, padding:"52px 24px 44px", textAlign:"center", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
+          {confetti.map(c => <div key={c.id} style={{ position:"absolute", top:-10, left:c.left, width:c.size, height:c.size, background:c.color, borderRadius:c.shape, animation:`confettiFall ${c.duration} ${c.delay} ease-in forwards` }}/>)}
+        </div>
+        <div style={{ position:"relative", zIndex:1 }}>
+          <div style={{ fontSize:64, marginBottom:12, animation:"pop .5s ease" }}>🎉</div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,255,255,.2)", borderRadius:999, padding:"5px 14px", marginBottom:14 }}>
+            <span style={{ fontSize:14 }}>{info.emoji}</span>
+            <span style={{ color:"#fff", fontSize:12, fontWeight:800, textTransform:"uppercase", letterSpacing:".06em" }}>Level Complete!</span>
+          </div>
+          <h1 style={{ color:"#fff", fontSize:26, fontWeight:900, lineHeight:1.2, marginBottom:10 }}>You've completed<br/>{course.title}!</h1>
+          <p style={{ color:"rgba(255,255,255,.85)", fontSize:15, lineHeight:1.5, maxWidth:300, margin:"0 auto 20px" }}>{info.msg}</p>
+          <div style={{ display:"flex", justifyContent:"center", gap:20, marginBottom:20 }}>
+            {dancers.map((veg,i) => <div key={i} style={{ fontSize:46, animation:`${["vegDance","vegDance2","vegDance3"][i]} ${1.4+i*.15}s ${i*.2}s ease-in-out infinite`, display:"inline-block" }}>{veg}</div>)}
+          </div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(0,0,0,.2)", borderRadius:999, padding:"10px 20px" }}>
+            <span style={{ fontSize:20 }}>⭐</span><span style={{ color:"#fff", fontWeight:900, fontSize:16 }}>{xp} Total XP</span>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding:"24px 18px", display:"flex", flexDirection:"column", gap:16, flex:1 }}>
+        {!isLastLevel && nextCourse && (
+          <div className="card" style={{ border:`2px solid ${nextCourse.color}44`, background:`${nextCourse.color}0A` }}>
+            <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:14 }}>
+              <div style={{ width:46, height:46, background:nextCourse.color, borderRadius:13, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextCourse.emoji}</div>
+              <div><div style={{ fontSize:10, fontWeight:700, color:nextCourse.color, textTransform:"uppercase", letterSpacing:".05em", marginBottom:2 }}>Up next</div><h2 style={{ fontSize:16, fontWeight:900, marginBottom:2 }}>{nextCourse.title}</h2><p style={{ fontSize:13, color:"var(--tl)", lineHeight:1.4 }}>{nextCourse.desc}</p></div>
+            </div>
+            <button className="btn bp blg" style={{ width:"100%", background:nextCourse.color }} onClick={() => navigate("courses")}>Start {nextCourse.title} →</button>
+          </div>
+        )}
+        <div style={{ background:"linear-gradient(135deg,#0a1a05,#1a3a08)", borderRadius:20, padding:20 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}><VPILogo size={36}/><div><div style={{ color:"var(--g3)", fontWeight:800, fontSize:11, textTransform:"uppercase", marginBottom:3 }}>Catch up with {HOST}</div><h3 style={{ color:"#fff", fontWeight:900, fontSize:16 }}>Latest from {CHANNEL_NAME}</h3></div></div>
+          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"14px 20px", fontSize:15, fontWeight:800, textDecoration:"none" }}><YTIcon/> Visit {CHANNEL_NAME} on YouTube</a>
+        </div>
+        <div className="card" style={{ textAlign:"center" }}>
+          <div style={{ fontSize:32, marginBottom:8 }}>{info.emoji}</div>
+          <h3 style={{ fontSize:15, fontWeight:800, marginBottom:4 }}>Share your achievement</h3>
+          <p style={{ fontSize:13, color:"var(--tl)", marginBottom:14, lineHeight:1.5 }}>Completed {course.title} on The Growers Academy!</p>
+          <div style={{ display:"flex", gap:10, justifyContent:"center" }}>
+            <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(course.title)}+on+The+Growers+Academy!+🌱+${encodeURIComponent(WEBSITE_URL)}`} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#000", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>𝕏 Share</a>
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, background:"#1877F2", color:"#fff", borderRadius:999, padding:"9px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>Facebook</a>
+          </div>
+        </div>
+        <button className="btn bs" style={{ width:"100%" }} onClick={() => navigate("courses")}>← Back to all courses</button>
+      </div>
+    </div>
+  );
+}
+
+
 function DailyChallengePage() {
   const { navigate, dailyDone, setDailyDone, addXP, haptic } = useApp();
   const [qa, setQa] = useState(null);
