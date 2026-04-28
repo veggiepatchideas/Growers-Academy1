@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 
 // ─── VIDEO IDs — paste your YouTube video ID after filming each one ───────────
 const MY_VIDEOS = {
@@ -108,6 +108,22 @@ const XP_VALUES = {
   checklistComplete: 15,
   speedLearner: 30,
 };
+
+// Error boundary to catch crashes
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error: error.message }; }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding:24, background:"#FFEBEE", minHeight:"100vh" }}>
+        <h2 style={{ color:"#C62828", marginBottom:12 }}>⚠️ App Error</h2>
+        <p style={{ fontSize:13, color:"#B71C1C", fontFamily:"monospace", background:"#fff", padding:12, borderRadius:8, lineHeight:1.8, whiteSpace:"pre-wrap" }}>{this.state.error}</p>
+        <button onClick={() => window.location.reload()} style={{ marginTop:16, background:"#C62828", color:"#fff", border:"none", borderRadius:999, padding:"10px 20px", fontSize:14, fontWeight:700, cursor:"pointer" }}>Reload App</button>
+      </div>
+    );
+    return this.props.children;
+  }
+}
 
 const LEAGUES = [
   { id:"seedling",     name:"Seedling",      emoji:"🌱", minXP:0,    color:"#8BC34A" },
@@ -1867,15 +1883,15 @@ function DashboardPage() {
         {/* Daily Challenge Card */}
         {(() => {
           const today = new Date().toDateString();
-          const done = dailyDone.date === today && dailyDone.done;
+          const isDailyDone = dailyDone.date === today && dailyDone.done;
           return (
-            <button onClick={() => navigate("daily")} style={{ width:"100%", background: done ? "var(--g0)" : "linear-gradient(135deg,#1a3a08,#2d5016)", border:`2px solid ${done?"var(--g2)":"transparent"}`, borderRadius:16, padding:"14px 16px", display:"flex", gap:12, alignItems:"center", cursor:"pointer", fontFamily:"var(--ff)", textAlign:"left" }}>
-              <div style={{ fontSize:28, flexShrink:0 }}>{done ? "✅" : "🌱"}</div>
+            <button onClick={() => navigate("daily")} style={{ width:"100%", background: isDailyDone ? "var(--g0)" : "linear-gradient(135deg,#1a3a08,#2d5016)", border:`2px solid ${isDailyDone?"var(--g2)":"transparent"}`, borderRadius:16, padding:"14px 16px", display:"flex", gap:12, alignItems:"center", cursor:"pointer", fontFamily:"var(--ff)", textAlign:"left" }}>
+              <div style={{ fontSize:28, flexShrink:0 }}>{isDailyDone ? "✅" : "🌱"}</div>
               <div style={{ flex:1 }}>
-                <div style={{ color: done ? "var(--g6)" : "#9CCC65", fontWeight:800, fontSize:12, marginBottom:2 }}>{done ? "Daily Challenge — Complete!" : "🔥 Daily Challenge — New question!"}</div>
-                <div style={{ color: done ? "var(--tl)" : "rgba(255,255,255,.6)", fontSize:12 }}>{done ? "Come back tomorrow for a new question" : "Answer today's question for +15 XP"}</div>
+                <div style={{ color: isDailyDone ? "var(--g6)" : "#9CCC65", fontWeight:800, fontSize:12, marginBottom:2 }}>{isDailyDone ? "Daily Challenge — Complete!" : "🔥 Daily Challenge — New question!"}</div>
+                <div style={{ color: isDailyDone ? "var(--tl)" : "rgba(255,255,255,.6)", fontSize:12 }}>{isDailyDone ? "Come back tomorrow for a new question" : "Answer today's question for +15 XP"}</div>
               </div>
-              <div style={{ color: done ? "var(--g4)" : "rgba(255,255,255,.4)", fontSize:16 }}>→</div>
+              <div style={{ color: isDailyDone ? "var(--g4)" : "rgba(255,255,255,.4)", fontSize:16 }}>→</div>
             </button>
           );
         })()}
@@ -2288,8 +2304,8 @@ function LessonPage() {
           <p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.8, marginBottom:10 }}>{lesson.intro}</p>
           {lesson.steps && lesson.steps.map((s,i) => (
             <div key={i} style={{ display:"flex", gap:10, marginBottom:10 }}>
-              <div style={{ width:24, height:24, borderRadius:"50%", background:"var(--g1)", border:"2px solid var(--g3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"var(--g7)", flexShrink:0, marginTop:1 }}>{i+1}</div>
-              <p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{s}</p>
+              <div style={{ width:24, height:24, borderRadius:"50%", background:"var(--g1)", border:"2px solid var(--g3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"var(--g7)", flexShrink:0, marginTop:1 }}>{typeof s === "string" ? i+1 : s.n}</div>
+              <p style={{ fontSize:13, color:"var(--tm)", lineHeight:1.7 }}>{typeof s === "string" ? s : s.d}</p>
             </div>
           ))}
           {lesson.tip && <div className="tip" style={{ marginTop:8 }}><strong>💡 Glen's tip:</strong> {lesson.tip}</div>}
@@ -3191,5 +3207,5 @@ function LegalPage() {
 }
 
 export default function App() {
-  return <Provider><Router/></Provider>;
+  return <ErrorBoundary><Provider><Router/></Provider></ErrorBoundary>;
 }
