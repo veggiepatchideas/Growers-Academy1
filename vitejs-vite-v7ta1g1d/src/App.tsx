@@ -3014,6 +3014,37 @@ function DailyChallengePage() {
   );
 }
 
+// ─── BOTTOM NAV ───────────────────────────────────────────────────────────────
+function BottomNav() {
+  const { page, navigate, profile } = useApp();
+  if (!profile) return null;
+  const noNav = ["home","onboarding","welcome","level-complete"];
+  if (noNav.includes(page)) return null;
+  const items = [
+    {id:"dashboard", e:"🏡", l:"Home"},
+    {id:"courses",   e:"📚", l:"Learn"},
+    {id:"videos",    e:"📺", l:"Videos"},
+    {id:"planner",   e:"📅", l:"Planner"},
+    {id:"problems",  e:"🔍", l:"Fix It"},
+    {id:"progress",  e:"⭐", l:"Progress"},
+  ];
+  const isActive = id => page===id || (id==="courses" && page==="lesson");
+  return (
+    <nav style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, height:"var(--nav)", background:"#fff", borderTop:"1px solid var(--cdk)", display:"flex", alignItems:"center", justifyContent:"space-around", zIndex:100, boxShadow:"0 -4px 18px rgba(0,0,0,.06)", overflowX:"auto" }}>
+      {items.map(item => {
+        const active = isActive(item.id);
+        const isYT = item.id==="videos";
+        return (
+          <button key={item.id} onClick={() => navigate(item.id)} style={{ flex:1, minWidth:48, display:"flex", flexDirection:"column", alignItems:"center", gap:2, padding:"6px 2px", border:"none", background:"transparent", cursor:"pointer", color:active?(isYT?"#FF0000":"var(--g6)"):"var(--tmut)", transition:"all .2s", fontFamily:"var(--ff)" }}>
+            <span style={{ fontSize:19, display:"flex", alignItems:"center", justifyContent:"center", width:32, height:32, borderRadius:9, background:active?(isYT?"#FFEBEE":"var(--g0)"):"transparent", transition:"all .2s", transform:active?"scale(1.08)":"scale(1)" }}>{item.e}</span>
+            <span style={{ fontSize:8, fontWeight:active?800:600, letterSpacing:".02em" }}>{item.l}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
 function Router() {
   const { page, profile, darkMode, newBadge, pageAnim, navigate } = useApp();
   const noNav  = ["home","onboarding","welcome","level-complete"];
