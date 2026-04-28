@@ -2173,10 +2173,11 @@ function LessonPage() {
   const [checklistDone, setChecklistDone] = useState(false);
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
-  const [qIdx, setQIdx]           = useState(0);       // current question index
-  const [selected, setSelected]   = useState(null);    // selected answer index
-  const [revealed, setRevealed]   = useState(false);   // feedback shown?
-  const [answers, setAnswers]     = useState([]);       // {correct:bool} per question
+  const [qIdx, setQIdx]           = useState(0);
+  const [selected, setSelected]   = useState(null);
+  const [revealed, setRevealed]   = useState(false);
+  const [wasCorrect, setWasCorrect] = useState(false); // stores result at submit time
+  const [answers, setAnswers]     = useState([]);
   const [quizComplete, setQuizComplete] = useState(false);
   const [celebrating, setCelebrating]   = useState(false);
 
@@ -2208,21 +2209,22 @@ function LessonPage() {
   };
 
   const handleSelect = (optIdx) => {
-    if (revealed) return; // already answered
+    if (revealed) return;
     setSelected(optIdx);
     const correct = optIdx === currentQ.a;
+    setWasCorrect(correct);
     haptic(correct ? "medium" : "light");
     setRevealed(true);
     const newAnswers = [...answers, { correct }];
     setAnswers(newAnswers);
     if (!correct) loseHeart();
     if (correct) addXP(10);
-    // Auto-advance after delay
     setTimeout(() => {
       if (qIdx < totalQ - 1) {
         setQIdx(q => q + 1);
         setSelected(null);
         setRevealed(false);
+        setWasCorrect(false);
       } else {
         setQuizComplete(true);
         const finalScore = newAnswers.filter(a => a.correct).length;
@@ -2232,7 +2234,7 @@ function LessonPage() {
           if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
         }, 200);
       }
-    }, correct ? 1200 : 2000);
+    }, correct ? 1400 : 2200);
   };
 
   const handleComplete = () => {
@@ -2320,15 +2322,15 @@ function LessonPage() {
           <div className="card">
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
               <h2 style={{ fontSize:14, fontWeight:800 }}>✅ Action checklist</h2>
-              {checklistDone && <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g7)", padding:"3px 10px", borderRadius:999, fontWeight:700 }}>+15 XP!</span>}
+              <span style={{ fontSize:11, color:"var(--tl)" }}>{Object.values(checked).filter(Boolean).length}/{lesson.cl.length}</span>
             </div>
             {lesson.cl.map((item, i) => (
-              <div key={i} className="crow" onClick={() => handleCheck(i)}>
+              <div key={i} className="crow" onClick={() => handleCheck(i)} style={{ paddingBottom:10, marginBottom:2 }}>
                 <div className={`ccirc${!!checked[i]?" on":""}`}>{!!checked[i] && "✓"}</div>
                 <span style={{ fontSize:13, fontWeight:600, textDecoration:!!checked[i]?"line-through":"none", color:!!checked[i]?"var(--tmut)":"var(--td)", flex:1, lineHeight:1.5 }}>{item}</span>
               </div>
             ))}
-            {checklistAllDone && !checklistDone && <div style={{ textAlign:"center", padding:"8px 0 0", fontSize:12, color:"var(--g6)", fontWeight:700 }}>Great work! +15 XP earned 🌟</div>}
+            {checklistDone && <div style={{ textAlign:"center", padding:"10px 0 2px", fontSize:13, color:"var(--g6)", fontWeight:800 }}>✅ All done! +15 XP earned 🌟</div>}
           </div>
         )}
 
@@ -2410,18 +2412,16 @@ function LessonPage() {
             {/* Feedback message */}
             {revealed && (
               <div style={{
-                marginTop:12,
-                padding:"12px 14px",
-                borderRadius:14,
-                background: selected===currentQ.a ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF3E0)",
-                border:`1px solid ${selected===currentQ.a?"#4CAF50":"#EF5350"}`,
+                marginTop:12, padding:"12px 14px", borderRadius:14,
+                background: wasCorrect ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF3E0)",
+                border:`1px solid ${wasCorrect?"#4CAF50":"#EF5350"}`,
                 display:"flex", gap:10, alignItems:"flex-start",
                 animation:"fadeUp .2s ease"
               }}>
-                <span style={{ fontSize:22, flexShrink:0 }}>{selected===currentQ.a ? "🎉" : "💡"}</span>
+                <span style={{ fontSize:22, flexShrink:0 }}>{wasCorrect ? "🎉" : "💡"}</span>
                 <div>
-                  <div style={{ fontWeight:900, fontSize:13, color: selected===currentQ.a ? "#2E7D32" : "#C62828", marginBottom:3 }}>
-                    {selected===currentQ.a ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ.opts[currentQ.a]}"`}
+                  <div style={{ fontWeight:900, fontSize:13, color: wasCorrect ? "#2E7D32" : "#C62828", marginBottom:3 }}>
+                    {wasCorrect ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ.opts[currentQ.a]}"`}
                   </div>
                   <div style={{ fontSize:11, color:"var(--tl)", fontWeight:600 }}>
                     {qIdx < totalQ-1 ? "Moving to next question..." : "Calculating your score..."}
