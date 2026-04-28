@@ -2169,9 +2169,18 @@ function LessonPage() {
   const { lesson, course, navigate, done, completeLesson, awardBadge, badges, hearts, loseHeart, recordPerfectQuiz, recordChecklistComplete, addXP, haptic } = useApp();
 
   // ── Checklist state ─────────────────────────────────────────────────────────
-  const [checked, setChecked]             = useState({});
+  const [checked, setChecked] = useState(() => {
+    try { const s = localStorage.getItem("ga_ck_" + (lesson?.id||"")); return s ? JSON.parse(s) : {}; } catch { return {}; }
+  });
   const [checklistDone, setChecklistDone] = useState(false);
   const [showXP, setShowXP] = useState(false);
+
+  // Clear checked state when lesson changes
+  useEffect(() => {
+    try { const s = localStorage.getItem("ga_ck_" + (lesson?.id||"")); setChecked(s ? JSON.parse(s) : {}); } catch { setChecked({}); }
+    setChecklistDone(false);
+    setShowXP(false);
+  }, [lesson?.id]);
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
   const [qIdx, setQIdx]           = useState(0);
@@ -2203,15 +2212,22 @@ function LessonPage() {
 
   // ── Handlers ────────────────────────────────────────────────────────────────
   const handleCheck = i => {
-    const n = { ...checked, [i]: !checked[i] };
-    setChecked(n);
-    const allDone = lesson.cl && lesson.cl.every((_, j) => !!n[j]);
-    if (allDone && !checklistDone) {
+    setChecked(prev => {
+      const n = { ...prev, [i]: !prev[i] };
+      try { localStorage.setItem("ga_ck_" + lesson.id, JSON.stringify(n)); } catch {}
+      return n;
+    });
+  };
+
+  useEffect(() => {
+    if (!lesson?.cl || checklistDone) return;
+    const allDone = lesson.cl.every((_, j) => !!checked[j]);
+    if (allDone) {
       setChecklistDone(true);
       recordChecklistComplete();
-      setTimeout(() => setShowXP(true), 400);
+      setTimeout(() => setShowXP(true), 800);
     }
-  };
+  }, [checked]);
 
   const handleSelect = (optIdx) => {
     if (revealed) return;
@@ -2340,7 +2356,7 @@ function LessonPage() {
                 </div>
               );
             })}
-            {showXP && <div style={{ textAlign:"center", padding:"10px 0 2px", fontSize:13, color:"var(--g6)", fontWeight:800, animation:"fadeUp .3s ease" }}>✅ All done! +15 XP earned 🌟</div>}
+            {showXP && <div style={{ textAlign:"center", padding:"12px 0 4px", fontSize:13, color:"var(--g6)", fontWeight:800 }}>✅ All done! +15 XP earned 🌟</div>}
           </div>
         )}
 
