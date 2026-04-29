@@ -2143,6 +2143,7 @@ function LessonPage() {
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
   const [qIdx, setQIdx]                 = useState(0);
+  const qIdxRef                         = useRef(0); // ref copy immune to re-renders
   const [quizComplete, setQuizComplete] = useState(false);
   const [celebrating, setCelebrating]   = useState(false);
   const [feedbackLocked, setFeedbackLocked] = useState(false);
@@ -2161,6 +2162,7 @@ function LessonPage() {
         setQuizComplete(true);
       } else {
         answersRef.current = [];
+        qIdxRef.current = 0;
         setQuizComplete(false);
         setQIdx(0);
       }
@@ -2220,34 +2222,36 @@ function LessonPage() {
     haptic(correct ? "medium" : "light");
 
     const advanceDelay = correct ? 1400 : 2400;
-    const capturedQIdx = qIdx;
+    const capturedQIdx = qIdxRef.current; // ref — immune to re-renders
 
     setTimeout(() => {
       if (capturedQIdx < totalQ - 1) {
-        // Lose heart for wrong answers between questions — less disruptive here
-        if (!correct) loseHeart();
+        const nextIdx = capturedQIdx + 1;
         selectedRef.current   = null;
         revealedRef.current   = false;
         wasCorrectRef.current = false;
-        setQIdx(capturedQIdx + 1);
+        qIdxRef.current       = nextIdx;
+        setQIdx(nextIdx);
         setFeedbackLocked(false);
         tick();
+        if (!correct) setTimeout(() => loseHeart(), 100);
       } else {
-        // Award all XP and hearts at end
         const finalScore = newAnswers.filter(a => a.correct).length;
         const wrongCount = newAnswers.filter(a => !a.correct).length;
-        if (finalScore > 0) addXP(finalScore * 10);
-        for (let i = 0; i < wrongCount; i++) loseHeart();
-        if (finalScore === totalQ) recordPerfectQuiz();
         revealedRef.current = false;
         try { localStorage.setItem("ga_qc_" + lesson.id, "1"); } catch {}
         try { localStorage.setItem("ga_qa_" + lesson.id, JSON.stringify(newAnswers)); } catch {}
         setQuizComplete(true);
         setFeedbackLocked(false);
         setTimeout(() => {
+          if (finalScore > 0) addXP(finalScore * 10);
+          for (let i = 0; i < wrongCount; i++) loseHeart();
+          if (finalScore === totalQ) recordPerfectQuiz();
+        }, 100);
+        setTimeout(() => {
           const el = document.getElementById("quiz-results");
           if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-        }, 300);
+        }, 400);
       }
     }, advanceDelay);
   };
