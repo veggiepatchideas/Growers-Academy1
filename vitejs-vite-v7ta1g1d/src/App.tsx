@@ -2344,38 +2344,23 @@ function LessonPage() {
         )}
 
         {/* After quiz complete — complete button + share + next lesson */}
-        {isQuizDone && (
-          <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-            {/* Complete button */}
-            {!isDone
-              ? <button className="btn bp blg" style={{ width:"100%" }} onClick={handleComplete}>✅ Mark Lesson Complete — +{lesson.xp} XP</button>
-              : <div style={{ textAlign:"center", padding:12, background:"#E8F5E9", borderRadius:14, fontSize:13, fontWeight:700, color:"#2E7D32" }}>✅ Lesson complete!</div>
-            }
-
-            {/* Share */}
-            <div style={{ background:"#fff", border:"1px solid var(--cdk)", borderRadius:16, padding:"14px 16px", textAlign:"center" }}>
-              <p style={{ fontSize:12, color:"var(--tl)", marginBottom:10, fontWeight:600 }}>🌱 Share your progress!</p>
-              <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
-                <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(lesson?.title||"")}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱+${encodeURIComponent(WEBSITE_URL)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#000", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
-                  𝕏 Share
-                </a>
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#1877F2", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  Facebook
-                </a>
+        {isQuizDone && (() => {
+          const lessonIndex = course.lessons.findIndex(l => l.id === lesson.id);
+          const nextLesson  = course.lessons[lessonIndex + 1];
+          return (
+            <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+              {!isDone
+                ? <button className="btn bp blg" style={{ width:"100%", fontSize:16 }} onClick={handleComplete}>✅ Mark Lesson Complete — +{lesson.xp} XP</button>
+                : <div style={{ textAlign:"center", padding:14, background:"#E8F5E9", border:"2px solid #4CAF50", borderRadius:16, fontSize:14, fontWeight:800, color:"#2E7D32" }}>✅ Lesson Complete!</div>
+              }
+              <div style={{ background:"#fff", border:"1px solid var(--cdk)", borderRadius:16, padding:"14px 16px", textAlign:"center" }}>
+                <p style={{ fontSize:12, color:"var(--tl)", marginBottom:10, fontWeight:600 }}>🌱 Share your progress!</p>
+                <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+                  <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(lesson?.title||"")}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱+${encodeURIComponent(WEBSITE_URL)}`} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#000", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>𝕏 Share</a>
+                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#1877F2", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
+                </div>
               </div>
-            </div>
-
-            {/* Next lesson */}
-            {(() => {
-              const lessonIndex = course.lessons.findIndex(l => l.id === lesson.id);
-              const nextLesson  = course.lessons[lessonIndex + 1];
-              if (!nextLesson) return null;
-              return (
+              {nextLesson && (
                 <div style={{ background:"#fff", border:"2px solid var(--g2)", borderRadius:20, padding:18 }}>
                   <div style={{ fontSize:10, fontWeight:800, color:"var(--g5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Up next in {course.title}</div>
                   <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
@@ -2385,15 +2370,12 @@ function LessonPage() {
                       <div style={{ fontSize:12, color:"var(--tl)" }}>⏱ {nextLesson.dur} · +{nextLesson.xp} XP</div>
                     </div>
                   </div>
-                  <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }}
-                    onClick={() => navigate("lesson", { lesson:nextLesson, course })}>
-                    Next Lesson →
-                  </button>
+                  <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }} onClick={() => navigate("lesson", { lesson:nextLesson, course })}>Next Lesson →</button>
                 </div>
-              );
-            })()}
-          </div>
-        )}
+              )}
+            </div>
+          );
+        })()}
 
         {/* Affiliate products */}
         {(() => {
@@ -2569,7 +2551,32 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
         <p style={{ fontSize:13, color:"var(--tl)", marginBottom:12, lineHeight:1.5 }}>
           {score===totalQ?"Perfect score! Impressive growing knowledge! 🌱":score>=totalQ/2?"Good effort — keep learning and you'll nail it!":"Have another read of the lesson and try again!"}
         </p>
-        {score > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:14, display:"inline-block" }}>+{score*10} XP earned this quiz!</div>}
+        {score > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:8, display:"inline-block" }}>+{score*10} XP earned this quiz!</div>}
+
+        {/* Hearts summary */}
+        {heartsLostRef.current > 0 ? (
+          <div style={{ marginBottom:14 }}>
+            <div style={{ fontSize:13, color:"var(--tl)", marginBottom:6 }}>Hearts remaining after this quiz:</div>
+            <div style={{ display:"flex", justifyContent:"center", gap:4 }}>
+              {Array.from({length:5}).map((_,i) => (
+                <span key={i} style={{ fontSize:22, opacity: i < (hearts) ? 1 : 0.25 }}>
+                  {i < hearts ? "❤️" : "🤍"}
+                </span>
+              ))}
+            </div>
+            <div style={{ fontSize:12, color:"#EF5350", fontWeight:700, marginTop:6 }}>
+              💔 {heartsLostRef.current} heart{heartsLostRef.current > 1 ? "s" : ""} lost
+            </div>
+          </div>
+        ) : (
+          <div style={{ marginBottom:14 }}>
+            <div style={{ fontSize:13, color:"var(--tl)", marginBottom:6 }}>Hearts:</div>
+            <div style={{ display:"flex", justifyContent:"center", gap:4 }}>
+              {Array.from({length:5}).map((_,i) => <span key={i} style={{ fontSize:22 }}>❤️</span>)}
+            </div>
+            <div style={{ fontSize:12, color:"#4CAF50", fontWeight:700, marginTop:6 }}>💚 No hearts lost — perfect!</div>
+          </div>
+        )}
 
         {/* Review wrong answers */}
         {wrong.length > 0 && (
