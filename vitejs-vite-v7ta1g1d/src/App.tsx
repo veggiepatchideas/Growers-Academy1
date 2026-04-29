@@ -1870,17 +1870,30 @@ function DashboardPage() {
         })()}
 
         {/* Email Capture — shown once before paywall */}
-        {!emailCapture && done.length >= 5 && (
-          <div style={{ background:"linear-gradient(135deg,#0f2206,#1a3a08)", border:"1px solid rgba(156,204,101,.3)", borderRadius:18, padding:18 }}>
-            <div style={{ fontSize:10, color:"#9CCC65", fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", marginBottom:8 }}>🎁 Free Growing Resource</div>
-            <h3 style={{ color:"#fff", fontWeight:900, fontSize:15, marginBottom:6 }}>Get Glen's Free Growing Calendar</h3>
-            <p style={{ color:"rgba(255,255,255,.65)", fontSize:13, lineHeight:1.5, marginBottom:14 }}>A month-by-month guide to what to sow, plant and harvest — free when you join the Veggie Patch Ideas newsletter.</p>
-            <a href={`${WEBSITE_URL}#newsletter`} target="_blank" rel="noopener noreferrer"
-              onClick={() => { setEmailCapture(true); ss("ga_ec", true); }}
-              style={{ display:"block", background:"linear-gradient(135deg,#9CCC65,#5E9E2E)", color:"#fff", borderRadius:999, padding:"12px 18px", fontSize:14, fontWeight:800, textDecoration:"none", textAlign:"center", marginBottom:8 }}>
-              📧 Get the Free Calendar
-            </a>
-            <button onClick={() => { setEmailCapture(true); }} style={{ width:"100%", border:"none", background:"none", color:"rgba(255,255,255,.3)", fontSize:11, cursor:"pointer", fontFamily:"var(--ff)" }}>No thanks</button>
+        {!emailCapture && done.length >= 3 && (
+          <div style={{ background:"linear-gradient(135deg,#1a1a2e,#16213e)", border:"1px solid rgba(255,215,0,.25)", borderRadius:18, overflow:"hidden" }}>
+            {/* Product image */}
+            <img src="https://veggiepatchideas.co.uk/wp-content/uploads/2026/04/product_image_600.png"
+              alt="Vegetable Garden Planner Diary"
+              style={{ width:"100%", display:"block", borderRadius:"0" }}
+              onError={e => e.target.style.display="none"}
+            />
+            <div style={{ padding:"16px 18px 18px" }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,215,0,.15)", border:"1px solid rgba(255,215,0,.3)", borderRadius:999, padding:"3px 12px", marginBottom:10 }}>
+                <span style={{ fontSize:12 }}>🎁</span>
+                <span style={{ fontSize:10, fontWeight:800, color:"#FFD700", textTransform:"uppercase", letterSpacing:".08em" }}>Free with Premium</span>
+              </div>
+              <h3 style={{ color:"#fff", fontWeight:900, fontSize:16, marginBottom:6, lineHeight:1.3 }}>Get the Garden Planner Diary — Free!</h3>
+              <p style={{ color:"rgba(255,255,255,.65)", fontSize:13, lineHeight:1.6, marginBottom:14 }}>
+                Glen's month-by-month growing planner — what to sow, plant and harvest every week of the year. Yours <strong style={{ color:"#FFD700" }}>completely free</strong> when you unlock premium levels.
+              </p>
+              <a href={GUMROAD_URL} target="_blank" rel="noopener noreferrer"
+                onClick={() => { setEmailCapture(true); ss("ga_ec", true); }}
+                style={{ display:"block", background:"linear-gradient(135deg,#FFD700,#FF8F00)", color:"#1a1a00", borderRadius:999, padding:"13px 18px", fontSize:14, fontWeight:900, textDecoration:"none", textAlign:"center", marginBottom:8 }}>
+                🚀 Unlock Premium + Free Diary
+              </a>
+              <button onClick={() => { setEmailCapture(true); }} style={{ width:"100%", border:"none", background:"none", color:"rgba(255,255,255,.25)", fontSize:11, cursor:"pointer", fontFamily:"var(--ff)" }}>Maybe later</button>
+            </div>
           </div>
         )}
 
@@ -2162,10 +2175,8 @@ function LessonPage() {
     setQuizAnswers(answers);
     setQuizComplete(true);
     const score = answers.filter(a => a.correct).length;
-    const wrong = answers.filter(a => !a.correct).length;
     setTimeout(() => {
       if (score > 0) addXP(score * 10);
-      for (let i = 0; i < wrong; i++) loseHeart();
       if (score === (Array.isArray(lesson?.quiz) ? lesson.quiz : lesson?.quiz ? [lesson.quiz] : []).length) recordPerfectQuiz();
     }, 300);
     setTimeout(() => {
@@ -2370,12 +2381,12 @@ function LessonPage() {
 
         {/* Quiz widget */}
         {quizzes.length > 0 && hearts > 0 && !quizComplete && (
-          <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} onComplete={handleQuizComplete}/>
+          <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} loseHeart={loseHeart} onComplete={handleQuizComplete}/>
         )}
 
         {/* Quiz complete results */}
         {quizComplete && (
-          <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} onComplete={handleQuizComplete}/>
+          <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} loseHeart={loseHeart} onComplete={handleQuizComplete}/>
         )}
 
         {/* Affiliate products */}
@@ -2466,7 +2477,7 @@ function LessonPage() {
 
 
 // ─── QUIZ WIDGET — fully self-contained, no Provider state during questions ──
-function QuizWidget({ quizzes, lessonId, hearts, onComplete }) {
+function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   // All state is local — immune to Provider re-renders
   const [phase, setPhase]       = useState("question"); // question | feedback | results
   const [qIdx, setQIdx]         = useState(0);
@@ -2505,6 +2516,7 @@ function QuizWidget({ quizzes, lessonId, hearts, onComplete }) {
     setSelected(optIdx);
     setCorrect(isCorrect);
     setPhase("feedback");
+    if (!isCorrect && loseHeart) loseHeart();
 
     // After showing feedback, advance
     setTimeout(() => {
