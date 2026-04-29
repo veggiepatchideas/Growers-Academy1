@@ -2366,19 +2366,7 @@ function LessonPage() {
                   <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`} target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#1877F2", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook</a>
                 </div>
               </div>
-              {nextLesson && (
-                <div style={{ background:"#fff", border:"2px solid var(--g2)", borderRadius:20, padding:18 }}>
-                  <div style={{ fontSize:10, fontWeight:800, color:"var(--g5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Up next in {course.title}</div>
-                  <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
-                    <div style={{ width:44, height:44, background:"var(--g0)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextLesson.emoji}</div>
-                    <div>
-                      <div style={{ fontWeight:800, fontSize:15, color:"var(--td)" }}>{nextLesson.title}</div>
-                      <div style={{ fontSize:12, color:"var(--tl)" }}>⏱ {nextLesson.dur} · +{nextLesson.xp} XP</div>
-                    </div>
-                  </div>
-                  <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }} onClick={() => navigate("lesson", { lesson:nextLesson, course })}>Next Lesson →</button>
-                </div>
-              )}
+              {nextLesson && null}
             </div>
           );
         })()}
@@ -2459,6 +2447,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   const animRef         = useRef(""); // quiz-correct | quiz-wrong | ""
   const [tick, setTick] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [heartsLostFinal, setHeartsLostFinal] = useState(0);
   const rerender = () => setTick(n => n + 1);
 
   const totalQ   = quizzes.length;
@@ -2525,6 +2514,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
       } else {
         phaseRef.current = "results";
         setAnswers(newAnswers);
+        setHeartsLostFinal(heartsLostRef.current);
         rerender();
         try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
         try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
@@ -2537,7 +2527,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   if (phaseRef.current === "results") {
     const score = answers.filter(a => a.correct).length;
     const wrong = answers.filter(a => !a.correct);
-    const heartsLost = heartsLostRef.current;
+    const heartsLost = heartsLostFinal;
     return (
       <div id="quiz-results" className="card" style={{ border:`2px solid ${score===totalQ?"#FFD700":score>=totalQ/2?"#4CAF50":"#FF9800"}`, background:"var(--g0)", textAlign:"center" }}>
         <div style={{ fontSize:48, marginBottom:10, animation:"pop .5s ease" }}>{score===totalQ?"🏆":score>=totalQ/2?"🎉":"📚"}</div>
