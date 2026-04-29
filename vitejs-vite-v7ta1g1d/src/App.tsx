@@ -2151,6 +2151,9 @@ function LessonPage() {
     try { const s = localStorage.getItem("ga_qa_" + (lesson?.id||"")); return s ? JSON.parse(s) : []; } catch { return []; }
   });
   const [celebrating, setCelebrating]   = useState(false);
+  const [lifelineUsed, setLifelineUsed] = useState(() => {
+    try { return localStorage.getItem("ga_ll_" + (lesson?.id||"")) === "1"; } catch { return false; }
+  });
 
   const handleQuizComplete = (answers) => {
     setQuizAnswers(answers);
@@ -2311,18 +2314,87 @@ function LessonPage() {
         )}
 
         {/* ── QUIZ — fully rebuilt ── */}
-        {/* No hearts left */}
+        {/* No hearts left — show mistakes and offer lifeline */}
         {quizzes.length > 0 && !quizComplete && hearts <= 0 && (
-          <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:24 }}>
-            <div style={{ fontSize:48, marginBottom:12 }}>❤️‍🩹</div>
-            <h2 style={{ fontSize:18, fontWeight:900, color:"#E65100", marginBottom:10 }}>You've used all your hearts!</h2>
-            <p style={{ fontSize:14, color:"#BF360C", lineHeight:1.7, marginBottom:12 }}>That's okay — Glen has been growing for 20 years and still learns something new every day! 🌱</p>
-            <p style={{ fontSize:14, color:"#5D4037", lineHeight:1.7, marginBottom:16 }}>Have another read through the lesson, take your time, and come back when you're ready. You've absolutely got this — every expert was once a beginner!</p>
-            <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"12px 16px", marginBottom:18, display:"flex", gap:10, alignItems:"flex-start" }}>
-              <VPILogo size={32}/>
-              <p style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic", textAlign:"left" }}>"Don't be disheartened — the fact you're here and trying means you really care about growing. Read it through again and I know you'll get it!" — Glen</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+            {/* Glen's encouragement */}
+            <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:20 }}>
+              <div style={{ fontSize:40, marginBottom:10 }}>❤️‍🩹</div>
+              <h2 style={{ fontSize:17, fontWeight:900, color:"#E65100", marginBottom:8 }}>You've used all your hearts!</h2>
+              <p style={{ fontSize:13, color:"#5D4037", lineHeight:1.7, marginBottom:10 }}>
+                That's okay — Glen has been growing for 20 years and still learns something new every day! Every expert was once a beginner. 🌱
+              </p>
+              <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", display:"flex", gap:10, alignItems:"flex-start", textAlign:"left", marginBottom:14 }}>
+                <VPILogo size={28}/>
+                <p style={{ fontSize:12, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>"Read through the answers below carefully, then give it one more go. I know you've got this!" — Glen</p>
+              </div>
+              <button className="btn blg" style={{ width:"100%", background:"none", border:"2px solid #E65100", color:"#E65100", marginBottom:0 }} onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
+                📖 Re-read the lesson
+              </button>
             </div>
-            <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }} onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>📖 Re-read the lesson then try again</button>
+
+            {/* Show questions answered so far with correct answers */}
+            {quizAnswers.length > 0 && (
+              <div className="card" style={{ border:"1px solid #FFCDD2" }}>
+                <h3 style={{ fontSize:14, fontWeight:800, marginBottom:12, color:"var(--td)" }}>📖 Review — check these before trying again</h3>
+                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                  {quizAnswers.map((a, i) => (
+                    <div key={i} style={{ background:a.correct?"#E8F5E9":"#FFEBEE", border:`1px solid ${a.correct?"#C8E6C9":"#FFCDD2"}`, borderRadius:12, padding:"11px 13px" }}>
+                      <p style={{ fontSize:12, fontWeight:700, color:"var(--td)", marginBottom:6, lineHeight:1.5 }}>{a.question || `Question ${i+1}`}</p>
+                      {!a.correct && a.opts && (
+                        <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+                          <div style={{ display:"flex", gap:6, alignItems:"flex-start" }}>
+                            <span style={{ fontSize:13 }}>❌</span>
+                            <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts[a.selected]}</span>
+                          </div>
+                          <div style={{ display:"flex", gap:6, alignItems:"flex-start" }}>
+                            <span style={{ fontSize:13 }}>✅</span>
+                            <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts[a.correctAnswer]}</span>
+                          </div>
+                        </div>
+                      )}
+                      {a.correct && <div style={{ fontSize:12, color:"#2E7D32", fontWeight:700 }}>✅ You got this one right!</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Lifeline button */}
+            {!lifelineUsed ? (
+              <div className="card" style={{ border:"2px solid #4CAF50", background:"#E8F5E9", textAlign:"center", padding:20 }}>
+                <div style={{ fontSize:32, marginBottom:8 }}>💚</div>
+                <h3 style={{ fontSize:15, fontWeight:900, color:"#2E7D32", marginBottom:6 }}>Glen's Lifeline</h3>
+                <p style={{ fontSize:13, color:"#388E3C", lineHeight:1.6, marginBottom:14 }}>
+                  Glen really wants you to get this — here's one more heart. Read the answers above carefully, then try the quiz again!
+                </p>
+                <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#4CAF50,#2E7D32)", color:"#fff" }}
+                  onClick={() => {
+                    setLifelineUsed(true);
+                    try { localStorage.setItem("ga_ll_" + lesson.id, "1"); } catch {}
+                    // Reset quiz state for retry
+                    try { localStorage.removeItem("ga_qc_" + lesson.id); } catch {}
+                    try { localStorage.removeItem("ga_qa_" + lesson.id); } catch {}
+                    setQuizComplete(false);
+                    setQuizAnswers([]);
+                    // Give one heart back via context
+                    addXP(0); // harmless call to force re-render after heart restored below
+                    // We can't directly set hearts but we can restore via localStorage
+                    try {
+                      const current = parseInt(localStorage.getItem("ga_h") || "0");
+                      const restored = Math.min(current + 1, 5);
+                      localStorage.setItem("ga_h", restored);
+                      window.location.reload(); // cleanest way to restore hearts from localStorage
+                    } catch {}
+                  }}>
+                  💚 Use Glen's Lifeline — Get 1 Heart Back
+                </button>
+              </div>
+            ) : (
+              <div className="card" style={{ border:"1px solid var(--cdk)", textAlign:"center", padding:16 }}>
+                <p style={{ fontSize:13, color:"var(--tl)" }}>Lifeline already used for this lesson. Your hearts will refill tomorrow — keep going! 🌱</p>
+              </div>
+            )}
           </div>
         )}
 
