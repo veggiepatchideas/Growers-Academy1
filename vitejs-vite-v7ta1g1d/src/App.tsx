@@ -87,7 +87,6 @@ const LESSON_PRODUCTS = {
   "l5-composting":    ["compost-bin"],
   "l5-irrigation":    ["watering-can"],
   "slugs":            ["slug-pellets","copper-tape"],
-  "frost":            ["fleece","cloche"],
 };
 
 const CHANNEL_URL  = "https://www.youtube.com/@veggiepatchideas";
@@ -95,6 +94,7 @@ const WEBSITE_URL  = "https://veggiepatchideas.co.uk";
 const CHANNEL_NAME = "Veggie Patch Ideas";
 const HOST         = "Glen";
 const GUMROAD_URL  = "https://veggiepatchideas.co.uk"; // 🔑 Replace with your Gumroad link when ready
+const DIARY_URL    = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
 
 // ─── XP CONFIG ────────────────────────────────────────────────────────────────
 const XP_VALUES = {
@@ -916,7 +916,6 @@ const MONTHLY = {
 
 const PROBLEMS = [
   {id:"slugs",title:"Slug Damage",emoji:"🐌",sev:"medium",vk:"fix-slugs",looks:"Irregular holes in leaves with slime trails. Worst overnight and after rain.",causes:["Slugs and snails feeding at night","Particularly bad in wet weather","Worse in beds with lots of mulch to hide in"],fix:"Go out at night with a torch and remove slugs by hand. Set beer traps. Apply organic ferric phosphate pellets. Use copper tape around containers. Encourage hedgehogs and frogs into your garden!",prev:"Raise seedlings to a good size before planting out. Clear debris from around beds. Let the soil surface dry between waterings."},
-  {id:"frost",title:"Frost Damage",emoji:"🌡️",sev:"high",vk:null,looks:"Leaves turn black, brown or mushy overnight — especially on tender plants like tomatoes, cucumbers, courgettes and basil. Seedlings collapse. Stems become soft and water-soaked.",causes:["Overnight temperatures dropping below 0°C","Late spring frosts catching tender plants out","Plants put outside before last frost date (mid-May in most of UK)","No fleece or cloche protection on vulnerable plants"],fix:"Remove blackened leaves and stems immediately — they won't recover. Don't water frost-damaged plants until they warm up. If the roots are intact the plant may recover. Move containers indoors overnight when frost is forecast. Cover beds with fleece before nightfall.",prev:"Never plant tender crops outdoors before mid-May in most of the UK. Always check the forecast before planting out. Keep a roll of horticultural fleece handy from March to June. Pot-grown plants can be brought indoors overnight. Earth up potatoes immediately if frost is forecast."},
   {id:"yellow-leaves",title:"Yellow Leaves",emoji:"🟡",sev:"medium",vk:null,looks:"Leaves turning yellow — sometimes from the bottom up, sometimes patchy across the plant.",causes:["Overwatering / waterlogged roots","Nitrogen deficiency","Natural ageing of lower leaves","Root damage from pests"],fix:"Check soil moisture first. If soggy, improve drainage and hold off watering. If dry and pale, apply a liquid nitrogen feed. Lower leaves yellowing naturally? Simply remove them.",prev:"Ensure good drainage. Feed every 2 weeks during growing season. Always check soil before watering."},
   {id:"wilting",title:"Wilting Plants",emoji:"😮",sev:"high",vk:null,looks:"Plants look sad and droopy, especially in the afternoon heat.",causes:["Underwatering (most common cause)","Overwatering — roots can't breathe","Root rot from waterlogged soil","Extreme heat stress"],fix:"Check soil immediately. Bone dry? Water deeply at the base. Soggy? Let roots air dry slightly. If wilting on hot afternoons but recovering by evening — this is normal heat stress, not a problem.",prev:"Water consistently and deeply. Mulch around plants to retain moisture. Water in the morning before heat builds."},
   {id:"aphids",title:"Aphids",emoji:"🐛",sev:"low",vk:"fix-aphids",looks:"Tiny green, black or white insects on new growth. Sticky residue on leaves and distorted young shoots.",causes:["Reproduce extremely fast in warm weather","More common when plants are stressed","Ants farming aphids and protecting them from predators"],fix:"Blast off with a strong jet of water. Squish by hand — it's satisfying! Apply insecticidal soap spray. Encourage ladybirds — they're voracious aphid predators.",prev:"Grow nasturtiums and marigolds as companion plants. Keep your plants healthy and unstressed. Check under leaves weekly throughout summer."},
@@ -1446,42 +1445,10 @@ function Provider({ children }) {
   };
   const reset       = () => { localStorage.clear(); setProf(null); setDone([]); setBadges([]); setXP(0); setHearts(5); setStreak({ count:0, last:null }); setPage("home"); };
 
-  // ── FROST ALERT ────────────────────────────────────────────────────────────
-  const [frostAlert, setFrostAlert] = useState(null); // null | { temp, night, postcode }
-  const [postcode, setPostcodeState] = useState(() => ls("ga_pc", ""));
-  const savePostcode = pc => { setPostcodeState(pc); ss("ga_pc", pc); };
 
-  const checkFrost = async (pc) => {
-    if (!pc || pc.length < 3) return;
-    try {
-      // 1. Convert postcode to lat/lng via postcodes.io
-      const geo = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(pc.trim())}`);
-      const geoData = await geo.json();
-      if (geoData.status !== 200) return;
-      const { latitude, longitude } = geoData.result;
-      // 2. Get 48hr forecast from Open-Meteo (free, no API key)
-      const wx = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&timezone=Europe%2FLondon&forecast_days=2`);
-      const wxData = await wx.json();
-      const hours = wxData.hourly.time;
-      const temps = wxData.hourly.temperature_2m;
-      // 3. Check overnight hours (8pm–8am) for frost risk (≤2°C)
-      let frostFound = null;
-      for (let i = 0; i < hours.length; i++) {
-        const hour = new Date(hours[i]).getHours();
-        if ((hour >= 20 || hour <= 8) && temps[i] <= 2) {
-          const night = new Date(hours[i]).toLocaleDateString("en-GB", { weekday:"long", day:"numeric", month:"short" });
-          frostFound = { temp: Math.round(temps[i] * 10) / 10, night, postcode: pc.trim().toUpperCase() };
-          break;
-        }
-      }
-      setFrostAlert(frostFound);
-    } catch (e) { /* silently fail */ }
-  };
-
-  useEffect(() => { if (postcode) checkFrost(postcode); }, [postcode]);
 
   return (
-    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, frostAlert, postcode, savePostcode, checkFrost, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); } }}>
+    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); } }}>
       {children}
       <XPPopup amount={xpAnim.amount} visible={xpAnim.show}/>
       {toast && <div style={{ position:"fixed", bottom:80, left:"50%", transform:"translateX(-50%)", background:"#111", color:"#fff", padding:"12px 20px", borderRadius:999, fontWeight:700, fontSize:13, zIndex:9998, whiteSpace:"nowrap", boxShadow:"0 8px 24px rgba(0,0,0,.4)", animation:"fadeUp .3s ease" }}>{toast}</div>}
@@ -1677,7 +1644,6 @@ function OnboardingPage() {
         {[
           { icon:"🌱", title:"Growing Advice", body:"All growing advice is for general guidance only. Results vary based on your location, soil and climate. We accept no liability for crop losses or failures." },
           { icon:"🛒", title:"Affiliate Links", body:"Some lessons contain product recommendations with Amazon affiliate links. We earn a small commission if you buy — at no extra cost to you. We only recommend products Glen genuinely uses." },
-          { icon:"🌡️", title:"Frost Alert — Premium Feature", body:"Frost alerts use your postcode to fetch publicly available weather data. Forecasts are not guaranteed. Always use your own judgement to protect plants." },
           { icon:"🔒", title:"Your Data", body:"Your progress and profile are stored only on your device — never on our servers. We don't track you, use cookies, or collect personal data." },
           { icon:"💳", title:"Premium Content", body:"Levels 4, 5 and 6 require a one-time payment. No subscriptions, no recurring charges. Premium access never expires." },
         ].map((t, i) => (
@@ -1827,7 +1793,7 @@ function WelcomePage() {
 
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
 function DashboardPage() {
-  const { profile, done, badges, streak, navigate, xp, hearts, frostAlert, dailyDone, emailCapture, setEmailCapture } = useApp();
+  const { profile, done, badges, streak, navigate, xp, hearts, dailyDone, emailCapture, setEmailCapture } = useApp();
   const IT = [{id:"t1",task:"Check soil moisture in all containers"},{id:"t2",task:"Look under leaves for pests"},{id:"t3",task:"Water seedlings in the morning"},{id:"t4",task:"Harden off any indoor seedlings"},{id:"t5",task:"Pull any visible weeds"}];
   const [tasks, setTasks] = useState(() => { try { const s = localStorage.getItem("ga_tasks"); return s ? JSON.parse(s) : IT.map(t => ({ ...t, done:false })); } catch { return IT.map(t => ({ ...t, done:false })); } });
   const toggleT = id => { const n = tasks.map(t => t.id === id ? { ...t, done:!t.done } : t); setTasks(n); try { localStorage.setItem("ga_tasks", JSON.stringify(n)); } catch {} };
@@ -1943,18 +1909,6 @@ function DashboardPage() {
           );
         })()}
 
-        {/* Frost Alert Banner — paid feature */}
-        {frostAlert && (
-          <div style={{ background:"linear-gradient(135deg,#1A237E,#283593)", border:"2px solid #5C6BC0", borderRadius:16, padding:"14px 16px", display:"flex", gap:12, alignItems:"flex-start" }}>
-            <div style={{ fontSize:28, flexShrink:0 }}>🌡️</div>
-            <div style={{ flex:1 }}>
-              <div style={{ color:"#90CAF9", fontWeight:800, fontSize:12, textTransform:"uppercase", letterSpacing:".06em", marginBottom:4 }}>⚠️ Frost Alert — {frostAlert.postcode}</div>
-              <div style={{ color:"#fff", fontWeight:800, fontSize:14, marginBottom:4 }}>Frost risk {frostAlert.night} — {frostAlert.temp}°C</div>
-              <p style={{ color:"rgba(255,255,255,.75)", fontSize:12, lineHeight:1.5, marginBottom:10 }}>Protect tender plants tonight. Cover with fleece before dark and bring containers indoors.</p>
-              <button onClick={() => navigate("problems")} style={{ background:"#5C6BC0", border:"none", borderRadius:999, padding:"7px 14px", color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"var(--ff)" }}>🔍 Frost protection advice →</button>
-            </div>
-          </div>
-        )}
 
         {streak.count > 0 && streak.count < 7 && (
           <div style={{ background:"linear-gradient(135deg,#FFF3E0,#FFF8E1)", border:"2px solid #FFB74D", borderRadius:16, padding:"12px 16px", display:"flex", gap:12, alignItems:"center" }}>
@@ -2089,8 +2043,7 @@ function CoursesPage() {
                     ["🗓️","Grow All Year Round","Never have a bare plot again — plan across all four seasons"],
                     ["🏡","Allotment Manager Insights","Crop rotation, no-dig, composting and more — with real advice from an experienced allotment site manager"],
                     ["👨‍🌾","Glen's Expert Secrets","20+ years of growing wisdom in 7 exclusive lessons"],
-                    ["🌡️","Frost Alert ✦ Premium","Real-time frost warnings for your postcode — protect your plants"],
-                    ["📋","Glen's Full Plot Plan","The exact system Glen uses on his own allotment every year"],
+                    ["📔","Free Garden Planner Diary","Get our bestselling Vegetable Garden Planner Diary completely free when you go premium — worth £9.99!"],
                     ["💰","Save Money Growing","Which crops save the most — and how to grow them for almost free"],
                   ].map(([emoji, title, desc]) => (
                     <div key={title} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
@@ -2190,9 +2143,7 @@ function LessonPage() {
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
   const [qIdx, setQIdx]                 = useState(0);
-  const [quizComplete, setQuizComplete] = useState(() => {
-    try { return localStorage.getItem("ga_qc_" + (lesson?.id||"")) === "1"; } catch { return false; }
-  });
+  const [quizComplete, setQuizComplete] = useState(false);
   const [celebrating, setCelebrating]   = useState(false);
   const [feedbackLocked, setFeedbackLocked] = useState(false);
   const selectedRef   = useRef(null);
@@ -2862,11 +2813,7 @@ function ProblemsPage() {
 
 // ─── PROGRESS PAGE ─────────────────────────────────────────────────────────────
 function ProgressPage() {
-  const { done, badges, streak, profile, navigate, reset, xp, hearts, frostAlert, postcode, savePostcode, checkFrost, darkMode, toggleDarkMode } = useApp();
-  const [pcInput, setPcInput] = useState(postcode||"");
-  const [pcSaving, setPcSaving] = useState(false);
-  const handleSavePostcode = async () => { setPcSaving(true); savePostcode(pcInput); await checkFrost(pcInput); setPcSaving(false); };
-  const totalLessons = COURSES.reduce((a,c) => a+c.lessons.length, 0);
+  const { done, badges, streak, profile, navigate, reset, xp, hearts, darkMode, toggleDarkMode } = useApp();  const totalLessons = COURSES.reduce((a,c) => a+c.lessons.length, 0);
   const pct = Math.round((done.length/totalLessons)*100);
   return (
     <div style={{ minHeight:"100vh", background:"var(--cream)", paddingBottom:100 }}>
@@ -2914,17 +2861,7 @@ function ProgressPage() {
             </div>;
           })}
         </div>
-        {/* Frost */}
-        <div style={{ background:"linear-gradient(135deg,#1A237E,#283593)", borderRadius:20, padding:18 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}><div style={{ fontSize:28 }}>🌡️</div><div><div style={{ color:"#90CAF9", fontWeight:800, fontSize:11, textTransform:"uppercase", letterSpacing:".06em" }}>Premium Feature</div><h3 style={{ color:"#fff", fontWeight:900, fontSize:15 }}>Frost Alert</h3></div></div>
-          {frostAlert && <div style={{ background:"rgba(255,255,255,.1)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}><div style={{ color:"#90CAF9", fontWeight:800, fontSize:12 }}>⚠️ Frost risk {frostAlert.night} — {frostAlert.temp}°C near {frostAlert.postcode}</div></div>}
-          {!frostAlert && postcode && <div style={{ background:"rgba(255,255,255,.08)", borderRadius:12, padding:"10px 14px", marginBottom:12 }}><div style={{ color:"#A5D6A7", fontWeight:700, fontSize:13 }}>✅ No frost risk near {postcode}</div></div>}
-          <div style={{ display:"flex", gap:8 }}>
-            <input type="text" placeholder="Enter postcode e.g. TA6 3AB" value={pcInput} onChange={e => setPcInput(e.target.value.toUpperCase())} maxLength={8} style={{ flex:1, padding:"10px 14px", borderRadius:999, border:"1px solid #5C6BC0", background:"rgba(255,255,255,.1)", color:"#fff", fontSize:13, fontFamily:"var(--ff)", outline:"none" }}/>
-            <button onClick={handleSavePostcode} disabled={pcSaving||!pcInput} style={{ background:"#5C6BC0", border:"none", borderRadius:999, padding:"10px 18px", color:"#fff", fontSize:13, fontWeight:800, cursor:"pointer", fontFamily:"var(--ff)" }}>{pcSaving?"Checking...":"Check"}</button>
-          </div>
-        </div>
-        {/* Dark mode */}
+        {/* Dark mode{/* Dark mode */}
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", background:"var(--g0)", border:"1px solid var(--g2)", borderRadius:14, padding:"12px 16px" }}>
           <div style={{ display:"flex", alignItems:"center", gap:8 }}><span style={{ fontSize:18 }}>{darkMode?"🌙":"☀️"}</span><span style={{ fontSize:13, fontWeight:700 }}>Dark Mode</span></div>
           <button onClick={toggleDarkMode} style={{ width:48, height:26, borderRadius:999, border:"none", cursor:"pointer", background:darkMode?"var(--g5)":"var(--cdk)", position:"relative", transition:"background .3s" }}>
@@ -3228,11 +3165,6 @@ function LegalPage() {
       body:`The Growers Academy contains affiliate links to products on Amazon and other retailers. When you click one of these links and make a purchase, ${CHANNEL_NAME} may earn a small commission at no extra cost to you.\n\nAll products recommended in this app are genuinely used and trusted by Glen. We only recommend products we believe will help your growing. Affiliate income helps keep the free lessons in this app free.`,
     },
     {
-      title:"Frost Alert & Weather Data",
-      icon:"🌡️",
-      body:`The frost alert feature uses your UK postcode to retrieve weather forecast data from Open-Meteo (open-meteo.com), a free and openly licensed weather service. Your postcode is stored only on your device and is never transmitted to any ${CHANNEL_NAME} server.\n\nFrost alerts are provided as general guidance only. Weather forecasts are not guaranteed to be accurate. Always use your own judgement when deciding whether to protect plants. ${CHANNEL_NAME} accepts no responsibility for crop losses resulting from reliance on frost alert data.`,
-    },
-    {
       title:"Growing Advice Disclaimer",
       icon:"🌱",
       body:`All growing advice in this app is provided for general informational and educational purposes only. Results will vary depending on your location, soil, climate, experience and many other factors.\n\n${CHANNEL_NAME} and Glen accept no liability for crop failures, losses or damage arising from following advice in this app. Gardening involves real-world variables that no app can fully account for. Always apply your own judgement and seek local advice where needed.`,
@@ -3240,7 +3172,7 @@ function LegalPage() {
     {
       title:"Data Storage & Privacy",
       icon:"🔒",
-      body:`The Growers Academy stores your progress, profile and preferences in your browser's local storage only. This data never leaves your device and is never sent to any external server.\n\nNo personal data is collected, stored or processed by ${CHANNEL_NAME}. Your postcode (if entered for frost alerts) is stored locally on your device only and is used solely to fetch publicly available weather data.\n\nThis app does not use cookies, tracking pixels, or any third-party analytics.`,
+      body:`The Growers Academy stores your progress, profile and preferences in your browser's local storage only. This data never leaves your device and is never sent to any external server.\n\nNo personal data is collected, stored or processed by ${CHANNEL_NAME}. This app does not use cookies, tracking pixels, or any third-party analytics.`,
     },
     {
       title:"Premium Content & Payments",
@@ -3250,7 +3182,7 @@ function LegalPage() {
     {
       title:"Privacy Notice (UK GDPR)",
       icon:"🔐",
-      body:`Veggie Patch Ideas is committed to protecting your privacy. This is a summary of how we handle your data in The Growers Academy app.\n\nData controller: Veggie Patch Ideas, England (sole trader)\nContact: Via the contact form at ${WEBSITE_URL}\n\nWhat data the app collects:\n• App progress, profile and preferences — stored only on your device in local storage. Never transmitted to any server.\n• Postcode (optional, Frost Alert) — stored on your device only. Sent solely to Open-Meteo and postcodes.io to retrieve local weather data. Never stored or shared by us.\n• The app does not use cookies, tracking pixels or third-party analytics.\n\nYour rights:\nUnder UK GDPR you have the right to access, correct or delete your data at any time. Since all app data is stored locally on your device, you can exercise these rights using the Reset option in the app or by clearing your browser storage.\n\nFor our full Privacy Notice covering our website, shop, newsletter and all services visit:\n${WEBSITE_URL}/privacy-policy\n\nTo make a complaint contact the ICO at ico.org.uk.`,
+      body:`Veggie Patch Ideas is committed to protecting your privacy. This is a summary of how we handle your data in The Growers Academy app.\n\nData controller: Veggie Patch Ideas, England (sole trader)\nContact: Via the contact form at ${WEBSITE_URL}\n\nWhat data the app collects:\n• App progress, profile and preferences — stored only on your device in local storage. Never transmitted to any server.\n• The app does not use cookies, tracking pixels or third-party analytics.\n\nYour rights:\nUnder UK GDPR you have the right to access, correct or delete your data at any time. Since all app data is stored locally on your device, you can exercise these rights using the Reset option in the app or by clearing your browser storage.\n\nFor our full Privacy Notice covering our website, shop, newsletter and all services visit:\n${WEBSITE_URL}/privacy-policy\n\nTo make a complaint contact the ICO at ico.org.uk.`,
     },
     {
       title:"Contact",
