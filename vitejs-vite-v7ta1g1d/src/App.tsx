@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, useRef, createContext, useContext } from "react";
 
 // ─── VIDEO IDs — paste your YouTube video ID after filming each one ───────────
 const MY_VIDEOS = {
@@ -1637,7 +1637,9 @@ function HomePage() {
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
 function OnboardingPage() {
   const { setProfile, navigate, awardBadge } = useApp();
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(() => {
+    try { return localStorage.getItem("ga_terms") === "1"; } catch { return false; }
+  });
   const [step, setStep] = useState(0);
   const [ans, setAns]   = useState({ space:[], experience:"", time:"", crops:[], goal:"" });
 
@@ -1702,7 +1704,7 @@ function OnboardingPage() {
 
       {/* Sticky accept button */}
       <div style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"100%", maxWidth:480, padding:"14px 18px 24px", background:"#fff", borderTop:"1px solid var(--cdk)", boxShadow:"0 -4px 20px rgba(0,0,0,.08)", zIndex:50 }}>
-        <button className="btn bp blg" style={{ width:"100%", marginBottom:10 }} onClick={() => setTermsAccepted(true)}>
+        <button className="btn bp blg" style={{ width:"100%", marginBottom:10 }} onClick={() => { localStorage.setItem("ga_terms","1"); setTermsAccepted(true); }}>
           ✅ I Agree & Continue
         </button>
         <button onClick={() => navigate("home")} style={{ width:"100%", border:"none", background:"none", color:"var(--tmut)", cursor:"pointer", fontSize:13, fontFamily:"var(--ff)", padding:8 }}>
@@ -2187,13 +2189,17 @@ function LessonPage() {
   }, [lesson?.id]);
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
-  const [qIdx, setQIdx]           = useState(0);
-  const [selected, setSelected]   = useState(null);
-  const [revealed, setRevealed]   = useState(false);
-  const [wasCorrect, setWasCorrect] = useState(false); // stores result at submit time
-  const [answers, setAnswers]     = useState([]);
+  const [qIdx, setQIdx]                 = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
   const [celebrating, setCelebrating]   = useState(false);
+  const [feedbackLocked, setFeedbackLocked] = useState(false);
+  // Use refs for feedback display — immune to Provider re-renders
+  const selectedRef  = useRef(null);
+  const revealedRef  = useRef(false);
+  const wasCorrectRef = useRef(false);
+  const answersRef   = useRef([]);
+  const [, forceRender] = useState(0); // trigger re-render when refs change
+  const tick = () => forceRender(n => n + 1);
 
   if (!lesson || !course) { navigate("courses"); return null; }
 
@@ -2202,7 +2208,7 @@ function LessonPage() {
   const totalQ    = quizzes.length;
   const currentQ  = quizzes[qIdx];
   const isTF      = currentQ && currentQ.opts && currentQ.opts.length === 2;
-  const quizScore = answers.filter(a => a.correct).length;
+  const quizScore = answersRef.current.filter(a => a.correct).length;
 
   // Progress bar steps
   const hasChecklist = lesson.cl && lesson.cl.length > 0;
@@ -2234,32 +2240,44 @@ function LessonPage() {
   };
 
   const handleSelect = (optIdx) => {
-    if (revealed) return;
-    setSelected(optIdx);
+    if (revealedRef.current || feedbackLocked) return;
     const correct = optIdx === currentQ.a;
-    setWasCorrect(correct);
+    selectedRef.current  = optIdx;
+    wasCorrectRef.current = correct;
+    revealedRef.current  = true;
+    const newAnswers = [...answersRef.current, { correct }];
+    answersRef.current = newAnswers;
+    setFeedbackLocked(true);
+    tick(); // force render to show feedback
     haptic(correct ? "medium" : "light");
-    setRevealed(true);
-    const newAnswers = [...answers, { correct }];
-    setAnswers(newAnswers);
-    if (!correct) loseHeart();
+
+    // XP/heart immediately — refs mean re-render won't wipe feedback
     if (correct) addXP(10);
+    else loseHeart();
+
+    const advanceDelay = correct ? 1400 : 2400;
+    const capturedQIdx = qIdx;
+
     setTimeout(() => {
-      if (qIdx < totalQ - 1) {
-        setQIdx(q => q + 1);
-        setSelected(null);
-        setRevealed(false);
-        setWasCorrect(false);
+      if (capturedQIdx < totalQ - 1) {
+        selectedRef.current  = null;
+        revealedRef.current  = false;
+        wasCorrectRef.current = false;
+        setQIdx(capturedQIdx + 1);
+        setFeedbackLocked(false);
+        tick();
       } else {
+        revealedRef.current = false;
         setQuizComplete(true);
+        setFeedbackLocked(false);
         const finalScore = newAnswers.filter(a => a.correct).length;
         if (finalScore === totalQ) recordPerfectQuiz();
         setTimeout(() => {
           const el = document.getElementById("quiz-results");
           if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-        }, 200);
+        }, 300);
       }
-    }, correct ? 1400 : 2200);
+    }, advanceDelay);
   };
 
   const handleComplete = () => {
@@ -2381,7 +2399,7 @@ function LessonPage() {
                   flex: i===qIdx ? 2 : 1,
                   borderRadius:999,
                   background: i < qIdx
-                    ? (answers[i]?.correct ? "#4CAF50" : "#EF5350")
+                    ? (answersRef.current[i]?.correct ? "#4CAF50" : "#EF5350")
                     : i===qIdx ? "var(--g5)" : "var(--cdk)",
                   transition:"all .3s"
                 }}/>
@@ -2401,13 +2419,13 @@ function LessonPage() {
             <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
               {currentQ.opts.map((opt, i) => {
                 const isCorrect = i === currentQ.a;
-                const isSelected = i === selected;
+                const isSelected = i === selectedRef.current;
                 let bg = "#fff", border = "var(--cdk)", color = "var(--td)", icon = null;
                 if (revealed) {
                   if (isCorrect)         { bg="#E8F5E9"; border="#4CAF50"; color="#1B5E20"; icon="✅"; }
                   else if (isSelected)   { bg="#FFEBEE"; border="#EF5350"; color="#B71C1C"; icon="❌"; }
                   else                   { bg="#fafafa"; border="var(--cdk)"; color="var(--tmut)"; }
-                } else if (isSelected)   { bg="var(--g0)"; border="var(--g5)"; }
+                } else if (isSelected) { bg="var(--g0)"; border="var(--g5)"; }
 
                 return (
                   <button key={i} onClick={() => handleSelect(i)}
@@ -2417,7 +2435,7 @@ function LessonPage() {
                       border:`2px solid ${border}`,
                       borderRadius:14,
                       background:bg,
-                      cursor: revealed ? "default" : "pointer",
+                      cursor: revealedRef.current ? "default" : "pointer",
                       textAlign:"left",
                       fontSize:13,
                       fontWeight:700,
@@ -2427,11 +2445,11 @@ function LessonPage() {
                       alignItems:"center",
                       gap:10,
                       transition:"all .2s",
-                      transform: isSelected && !revealed ? "scale(1.01)" : "scale(1)",
+                      transform: isSelected && !revealedRef.current ? "scale(1.01)" : "scale(1)",
                     }}>
                     {/* Option letter */}
-                    <div style={{ width:26, height:26, borderRadius:"50%", background: revealed && isCorrect ? "#4CAF50" : revealed && isSelected ? "#EF5350" : "var(--cdk)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color: revealed && (isCorrect||isSelected) ? "#fff" : "var(--tl)", flexShrink:0 }}>
-                      {revealed && icon ? icon : String.fromCharCode(65+i)}
+                    <div style={{ width:26, height:26, borderRadius:"50%", background: revealedRef.current && isCorrect ? "#4CAF50" : revealedRef.current && isSelected ? "#EF5350" : "var(--cdk)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color: revealedRef.current && (isCorrect||isSelected) ? "#fff" : "var(--tl)", flexShrink:0 }}>
+                      {revealedRef.current && icon ? icon : String.fromCharCode(65+i)}
                     </div>
                     <span style={{ flex:1 }}>{opt}</span>
                   </button>
@@ -2440,18 +2458,18 @@ function LessonPage() {
             </div>
 
             {/* Feedback message */}
-            {revealed && (
+            {revealedRef.current && (
               <div style={{
                 marginTop:12, padding:"12px 14px", borderRadius:14,
-                background: wasCorrect ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF3E0)",
-                border:`1px solid ${wasCorrect?"#4CAF50":"#EF5350"}`,
+                background: wasCorrectRef.current ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF3E0)",
+                border:`1px solid ${wasCorrectRef.current?"#4CAF50":"#EF5350"}`,
                 display:"flex", gap:10, alignItems:"flex-start",
                 animation:"fadeUp .2s ease"
               }}>
-                <span style={{ fontSize:22, flexShrink:0 }}>{wasCorrect ? "🎉" : "💡"}</span>
+                <span style={{ fontSize:22, flexShrink:0 }}>{wasCorrectRef.current ? "🎉" : "💡"}</span>
                 <div>
-                  <div style={{ fontWeight:900, fontSize:13, color: wasCorrect ? "#2E7D32" : "#C62828", marginBottom:3 }}>
-                    {wasCorrect ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ.opts[currentQ.a]}"`}
+                  <div style={{ fontWeight:900, fontSize:13, color: wasCorrectRef.current ? "#2E7D32" : "#C62828", marginBottom:3 }}>
+                    {wasCorrectRef.current ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ.opts[currentQ.a]}"`}
                   </div>
                   <div style={{ fontSize:11, color:"var(--tl)", fontWeight:600 }}>
                     {qIdx < totalQ-1 ? "Moving to next question..." : "Calculating your score..."}
@@ -2470,7 +2488,7 @@ function LessonPage() {
 
             {/* Per-question result dots */}
             <div style={{ display:"flex", justifyContent:"center", gap:8, marginBottom:10 }}>
-              {answers.map((a,i) => (
+              {answersRef.current.map((a,i) => (
                 <div key={i} style={{ width:36, height:36, borderRadius:"50%", background: a.correct?"linear-gradient(135deg,#4CAF50,#81C784)":"linear-gradient(135deg,#EF5350,#E57373)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, boxShadow:"0 2px 6px rgba(0,0,0,.15)" }}>
                   {a.correct?"✓":"✗"}
                 </div>
