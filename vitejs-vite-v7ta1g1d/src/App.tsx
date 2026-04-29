@@ -2447,7 +2447,9 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   const animRef         = useRef(""); // quiz-correct | quiz-wrong | ""
   const [tick, setTick] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [heartsLostFinal, setHeartsLostFinal] = useState(0);
+  const [heartsLostFinal, setHeartsLostFinal] = useState(() => {
+    try { return parseInt(localStorage.getItem("ga_hl_" + lessonId) || "0"); } catch { return 0; }
+  });
   const rerender = () => setTick(n => n + 1);
 
   const totalQ   = quizzes.length;
@@ -2461,6 +2463,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     heartsLostRef.current = 0;
     animRef.current       = "";
     setAnswers([]);
+    setHeartsLostFinal(0);
     try {
       const qc = localStorage.getItem("ga_qc_" + lessonId);
       const qa = localStorage.getItem("ga_qa_" + lessonId);
@@ -2470,6 +2473,8 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
           answersRef.current = parsed;
           setAnswers(parsed);
           phaseRef.current = "results";
+          const hl = parseInt(localStorage.getItem("ga_hl_" + lessonId) || "0");
+          setHeartsLostFinal(hl);
           rerender();
         } else {
           localStorage.removeItem("ga_qc_" + lessonId);
@@ -2515,6 +2520,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
         phaseRef.current = "results";
         setAnswers(newAnswers);
         setHeartsLostFinal(heartsLostRef.current);
+        try { localStorage.setItem("ga_hl_" + lessonId, String(heartsLostRef.current)); } catch {}
         rerender();
         try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
         try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
