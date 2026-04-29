@@ -2483,6 +2483,8 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   const selectedRef             = useRef(null);
   const correctRef              = useRef(false);
   const answersRef              = useRef([]);
+  const displayAnswersRef       = useRef([]);
+  const heartsLostRef           = useRef(0); // track locally, call loseHeart once at end
   const [, tick]                = useState(0);
   const rerender                = () => tick(n => n + 1);
   const [answers, setAnswers]   = useState([]);
@@ -2491,11 +2493,13 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
 
   // Reset all state when lessonId changes and restore from localStorage
   useEffect(() => {
-    phaseRef.current    = "question";
-    qIdxRef.current     = 0;
-    selectedRef.current = null;
-    correctRef.current  = false;
-    answersRef.current  = [];
+    phaseRef.current          = "question";
+    qIdxRef.current           = 0;
+    selectedRef.current       = null;
+    correctRef.current        = false;
+    answersRef.current        = [];
+    displayAnswersRef.current = [];
+    heartsLostRef.current     = 0;
     setAnswers([]);
     try {
       const qc = localStorage.getItem("ga_qc_" + lessonId);
@@ -2531,19 +2535,18 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     selectedRef.current = optIdx;
     correctRef.current  = isCorrect;
     phaseRef.current    = "feedback";
+    displayAnswersRef.current = [...displayAnswersRef.current, { correct: isCorrect }];
+    if (!isCorrect) heartsLostRef.current += 1;
     rerender();
 
-    // Advance after user sees feedback
     const capturedQIdx = qIdxRef.current;
-    const capturedQ    = currentQ; // capture question before any re-render
+    const capturedQ    = currentQ;
     setTimeout(() => {
       const newAnswers = [...answersRef.current, {
         correct: isCorrect, selected: optIdx,
         correctAnswer: capturedQ.a, question: capturedQ.q, opts: capturedQ.opts
       }];
       answersRef.current = newAnswers;
-      // Lose heart here — after feedback shown, at same time as advancing
-      if (!isCorrect && loseHeart) loseHeart();
 
       if (capturedQIdx < totalQ - 1) {
         qIdxRef.current     = capturedQIdx + 1;
@@ -2551,14 +2554,18 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
         phaseRef.current    = "question";
         rerender();
       } else {
-        try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
-        try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
+        // Quiz done — now call loseHeart for all wrong answers at once
+        const finalScore = newAnswers.filter(a => a.correct).length;
+        for (let i = 0; i < heartsLostRef.current; i++) { if (loseHeart) loseHeart(); }
         phaseRef.current = "results";
         setAnswers(newAnswers);
         rerender();
+        try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
+        try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
         onComplete(newAnswers);
       }
     }, isCorrect ? 1400 : 2400);
+
   };
 
   if (phaseRef.current === "results") {
@@ -2621,7 +2628,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
       {/* Progress dots */}
       <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:14 }}>
         {quizzes.map((_,i) => (
-          <div key={i} style={{ height:6, flex:i===qIdxRef.current?2:1, borderRadius:999, background:i<qIdxRef.current?(answersRef.current[i]?.correct?"#4CAF50":"#EF5350"):i===qIdxRef.current?"var(--g5)":"var(--cdk)", transition:"all .3s" }}/>
+          <div key={i} style={{ height:6, flex:i===qIdxRef.current&&phaseRef.current==="question"?2:1, borderRadius:999, background:i<displayAnswersRef.current.length?(displayAnswersRef.current[i]?.correct?"#4CAF50":"#EF5350"):i===qIdxRef.current?"var(--g5)":"var(--cdk)", transition:"all .3s" }}/>
         ))}
         <span style={{ fontSize:10, color:"var(--tl)", fontWeight:700, marginLeft:4, flexShrink:0 }}>{qIdxRef.current+1}/{totalQ}</span>
       </div>
