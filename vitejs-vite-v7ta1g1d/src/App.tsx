@@ -2404,6 +2404,30 @@ function LessonPage() {
         )}
 
         {/* ── QUIZ — fully rebuilt ── */}
+        {/* No hearts left — encourage to re-read */}
+        {quizzes.length > 0 && !quizComplete && hearts <= 0 && (
+          <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:24 }}>
+            <div style={{ fontSize:48, marginBottom:12 }}>❤️‍🩹</div>
+            <h2 style={{ fontSize:18, fontWeight:900, color:"#E65100", marginBottom:10 }}>You've used all your hearts!</h2>
+            <p style={{ fontSize:14, color:"#BF360C", lineHeight:1.7, marginBottom:12 }}>
+              That's okay — Glen has been growing for 20 years and still learns something new every day! 🌱
+            </p>
+            <p style={{ fontSize:14, color:"#5D4037", lineHeight:1.7, marginBottom:16 }}>
+              Have another read through the lesson above, take your time with it, and when you feel ready come back and give the quiz another go. You've absolutely got this — every expert was once a beginner!
+            </p>
+            <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"12px 16px", marginBottom:18, display:"flex", gap:10, alignItems:"flex-start" }}>
+              <VPILogo size={32}/>
+              <p style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic", textAlign:"left" }}>
+                "Don't be disheartened — the fact you're here and trying means you really care about growing. That's the most important thing. Read it through again and I know you'll get it!" — Glen
+              </p>
+            </div>
+            <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }}
+              onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
+              📖 Re-read the lesson then try again
+            </button>
+          </div>
+        )}
+
         {quizzes.length > 0 && !quizComplete && currentQ && (
           <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)" }}>
             {/* Quiz header */}
