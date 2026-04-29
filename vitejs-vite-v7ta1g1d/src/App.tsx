@@ -1362,6 +1362,9 @@ function Provider({ children }) {
   const loseHeart = () => {
     setHearts(prev => { const n = Math.max(0, prev - 1); ss("ga_h", n); return n; });
   };
+  const restoreHeart = () => {
+    setHearts(prev => { const n = Math.min(5, prev + 1); ss("ga_h", n); return n; });
+  };
 
   const awardBadge = id => setBadges(prev => {
     if (prev.includes(id)) return prev;
@@ -1450,7 +1453,7 @@ function Provider({ children }) {
 
 
   return (
-    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); } }}>
+    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, restoreHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); } }}>
       {children}
       <XPPopup amount={xpAnim.amount} visible={xpAnim.show}/>
       {toast && <div style={{ position:"fixed", bottom:80, left:"50%", transform:"translateX(-50%)", background:"#111", color:"#fff", padding:"12px 20px", borderRadius:999, fontWeight:700, fontSize:13, zIndex:9998, whiteSpace:"nowrap", boxShadow:"0 8px 24px rgba(0,0,0,.4)", animation:"fadeUp .3s ease" }}>{toast}</div>}
@@ -2123,7 +2126,7 @@ function CoursesPage() {
 
 // ─── LESSON PAGE ──────────────────────────────────────────────────────────────
 function LessonPage() {
-  const { lesson, course, navigate, done, completeLesson, awardBadge, badges, hearts, loseHeart, recordPerfectQuiz, recordChecklistComplete, addXP, haptic } = useApp();
+  const { lesson, course, navigate, done, completeLesson, awardBadge, badges, hearts, loseHeart, restoreHeart, recordPerfectQuiz, recordChecklistComplete, addXP, haptic } = useApp();
 
   // ── Checklist state ─────────────────────────────────────────────────────────
   const [checked, setChecked] = useState(() => {
@@ -2314,85 +2317,52 @@ function LessonPage() {
         )}
 
         {/* ── QUIZ — fully rebuilt ── */}
-        {/* No hearts left — show mistakes and offer lifeline */}
+        {/* No hearts left — show re-read message then quiz review */}
         {quizzes.length > 0 && !quizComplete && hearts <= 0 && (
           <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
             {/* Glen's encouragement */}
             <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:20 }}>
               <div style={{ fontSize:40, marginBottom:10 }}>❤️‍🩹</div>
               <h2 style={{ fontSize:17, fontWeight:900, color:"#E65100", marginBottom:8 }}>You've used all your hearts!</h2>
-              <p style={{ fontSize:13, color:"#5D4037", lineHeight:1.7, marginBottom:10 }}>
-                That's okay — Glen has been growing for 20 years and still learns something new every day! Every expert was once a beginner. 🌱
-              </p>
               <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", display:"flex", gap:10, alignItems:"flex-start", textAlign:"left", marginBottom:14 }}>
                 <VPILogo size={28}/>
-                <p style={{ fontSize:12, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>"Read through the answers below carefully, then give it one more go. I know you've got this!" — Glen</p>
+                <p style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>
+                  "Don't worry — have another read through the lesson above, study the correct answers below, then your hearts will refill tomorrow so you can try again. You've got this!" — Glen
+                </p>
               </div>
-              <button className="btn blg" style={{ width:"100%", background:"none", border:"2px solid #E65100", color:"#E65100", marginBottom:0 }} onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
+              <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }}
+                onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
                 📖 Re-read the lesson
               </button>
             </div>
 
-            {/* Show questions answered so far with correct answers */}
+            {/* Quiz review — all questions with correct answers highlighted */}
             {quizAnswers.length > 0 && (
-              <div className="card" style={{ border:"1px solid #FFCDD2" }}>
-                <h3 style={{ fontSize:14, fontWeight:800, marginBottom:12, color:"var(--td)" }}>📖 Review — check these before trying again</h3>
-                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+              <div className="card" style={{ border:"1px solid var(--g2)", background:"var(--g0)" }}>
+                <h3 style={{ fontSize:14, fontWeight:800, marginBottom:12, color:"var(--td)" }}>📖 Your answers — study these before your next attempt</h3>
+                <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                   {quizAnswers.map((a, i) => (
-                    <div key={i} style={{ background:a.correct?"#E8F5E9":"#FFEBEE", border:`1px solid ${a.correct?"#C8E6C9":"#FFCDD2"}`, borderRadius:12, padding:"11px 13px" }}>
-                      <p style={{ fontSize:12, fontWeight:700, color:"var(--td)", marginBottom:6, lineHeight:1.5 }}>{a.question || `Question ${i+1}`}</p>
-                      {!a.correct && a.opts && (
-                        <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
-                          <div style={{ display:"flex", gap:6, alignItems:"flex-start" }}>
-                            <span style={{ fontSize:13 }}>❌</span>
-                            <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts[a.selected]}</span>
-                          </div>
-                          <div style={{ display:"flex", gap:6, alignItems:"flex-start" }}>
-                            <span style={{ fontSize:13 }}>✅</span>
-                            <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts[a.correctAnswer]}</span>
-                          </div>
-                        </div>
-                      )}
-                      {a.correct && <div style={{ fontSize:12, color:"#2E7D32", fontWeight:700 }}>✅ You got this one right!</div>}
+                    <div key={i} style={{ background:"#fff", borderRadius:14, padding:"13px 14px", border:`1px solid ${a.correct?"#C8E6C9":"#FFCDD2"}` }}>
+                      <p style={{ fontSize:13, fontWeight:700, color:"var(--td)", marginBottom:10, lineHeight:1.5 }}>{a.question || `Question ${i+1}`}</p>
+                      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                        {a.opts && a.opts.map((opt, j) => {
+                          const isCorrect  = j === a.correctAnswer;
+                          const isSelected = j === a.selected;
+                          const isWrong    = isSelected && !isCorrect;
+                          if (!isCorrect && !isWrong) return null;
+                          return (
+                            <div key={j} style={{ display:"flex", gap:8, alignItems:"center", background:isCorrect?"#E8F5E9":"#FFEBEE", borderRadius:10, padding:"8px 12px", border:`1px solid ${isCorrect?"#4CAF50":"#EF5350"}` }}>
+                              <span style={{ fontSize:16, flexShrink:0 }}>{isCorrect?"✅":"❌"}</span>
+                              <span style={{ fontSize:13, fontWeight:700, color:isCorrect?"#1B5E20":"#B71C1C", textDecoration:isWrong?"line-through":"none" }}>{opt}</span>
+                              {isCorrect && <span style={{ fontSize:11, color:"#2E7D32", fontWeight:800, marginLeft:"auto", flexShrink:0 }}>Correct answer</span>}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* Lifeline button */}
-            {!lifelineUsed ? (
-              <div className="card" style={{ border:"2px solid #4CAF50", background:"#E8F5E9", textAlign:"center", padding:20 }}>
-                <div style={{ fontSize:32, marginBottom:8 }}>💚</div>
-                <h3 style={{ fontSize:15, fontWeight:900, color:"#2E7D32", marginBottom:6 }}>Glen's Lifeline</h3>
-                <p style={{ fontSize:13, color:"#388E3C", lineHeight:1.6, marginBottom:14 }}>
-                  Glen really wants you to get this — here's one more heart. Read the answers above carefully, then try the quiz again!
-                </p>
-                <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#4CAF50,#2E7D32)", color:"#fff" }}
-                  onClick={() => {
-                    setLifelineUsed(true);
-                    try { localStorage.setItem("ga_ll_" + lesson.id, "1"); } catch {}
-                    // Reset quiz state for retry
-                    try { localStorage.removeItem("ga_qc_" + lesson.id); } catch {}
-                    try { localStorage.removeItem("ga_qa_" + lesson.id); } catch {}
-                    setQuizComplete(false);
-                    setQuizAnswers([]);
-                    // Give one heart back via context
-                    addXP(0); // harmless call to force re-render after heart restored below
-                    // We can't directly set hearts but we can restore via localStorage
-                    try {
-                      const current = parseInt(localStorage.getItem("ga_h") || "0");
-                      const restored = Math.min(current + 1, 5);
-                      localStorage.setItem("ga_h", restored);
-                      window.location.reload(); // cleanest way to restore hearts from localStorage
-                    } catch {}
-                  }}>
-                  💚 Use Glen's Lifeline — Get 1 Heart Back
-                </button>
-              </div>
-            ) : (
-              <div className="card" style={{ border:"1px solid var(--cdk)", textAlign:"center", padding:16 }}>
-                <p style={{ fontSize:13, color:"var(--tl)" }}>Lifeline already used for this lesson. Your hearts will refill tomorrow — keep going! 🌱</p>
+                <p style={{ fontSize:12, color:"var(--tl)", marginTop:12, textAlign:"center" }}>💚 Your hearts refill tomorrow — come back and try again!</p>
               </div>
             )}
           </div>
@@ -2457,6 +2427,29 @@ function LessonPage() {
             <YTIcon/> {CHANNEL_NAME} on YouTube
           </a>
         </div>
+
+        {/* Next lesson button */}
+        {(() => {
+          const lessonIndex = course.lessons.findIndex(l => l.id === lesson.id);
+          const nextLesson  = course.lessons[lessonIndex + 1];
+          if (!nextLesson) return null;
+          return (
+            <div style={{ background:"#fff", border:"2px solid var(--g2)", borderRadius:20, padding:18 }}>
+              <div style={{ fontSize:10, fontWeight:800, color:"var(--g5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Up next in {course.title}</div>
+              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+                <div style={{ width:44, height:44, background:"var(--g0)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextLesson.emoji}</div>
+                <div>
+                  <div style={{ fontWeight:800, fontSize:15, color:"var(--td)" }}>{nextLesson.title}</div>
+                  <div style={{ fontSize:12, color:"var(--tl)" }}>⏱ {nextLesson.dur} · +{nextLesson.xp} XP</div>
+                </div>
+              </div>
+              <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }}
+                onClick={() => navigate("lesson", { lesson:nextLesson, course })}>
+                Next Lesson →
+              </button>
+            </div>
+          );
+        })()}
 
         {/* Complete button (if no quiz) */}
         {quizzes.length === 0 && !isDone && (
