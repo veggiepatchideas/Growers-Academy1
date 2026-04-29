@@ -2163,6 +2163,8 @@ function LessonPage() {
   const [quizComplete, setQuizComplete] = useState(() => {
     try { return localStorage.getItem("ga_qc_" + (lesson?.id||"")) === "1"; } catch { return false; }
   });
+  // Keep quizComplete in sync with localStorage in case re-renders reset it
+  const isQuizDone = quizComplete || (() => { try { return localStorage.getItem("ga_qc_" + (lesson?.id||"")) === "1"; } catch { return false; } })();
   const [quizAnswers, setQuizAnswers]   = useState(() => {
     try { const s = localStorage.getItem("ga_qa_" + (lesson?.id||"")); return s ? JSON.parse(s) : []; } catch { return []; }
   });
@@ -2174,15 +2176,17 @@ function LessonPage() {
   const handleQuizComplete = (answers) => {
     setQuizAnswers(answers);
     setQuizComplete(true);
-    const score = answers.filter(a => a.correct).length;
-    setTimeout(() => {
-      if (score > 0) addXP(score * 10);
-      if (score === (Array.isArray(lesson?.quiz) ? lesson.quiz : lesson?.quiz ? [lesson.quiz] : []).length) recordPerfectQuiz();
-    }, 300);
+    try { localStorage.setItem("ga_qc_" + lesson.id, "1"); } catch {}
+    try { localStorage.setItem("ga_qa_" + lesson.id, JSON.stringify(answers)); } catch {}
     setTimeout(() => {
       const el = document.getElementById("quiz-results");
       if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
-    }, 600);
+    }, 400);
+    setTimeout(() => {
+      const score = answers.filter(a => a.correct).length;
+      if (score > 0) addXP(score * 10);
+      if (score === quizzes.length) recordPerfectQuiz();
+    }, 800);
   };
 
   if (!lesson || !course) { navigate("courses"); return null; }
@@ -2199,7 +2203,7 @@ function LessonPage() {
   const hasQuiz      = quizzes.length > 0;
   const progressSteps = ["Read", hasChecklist && "Action", hasQuiz && "Quiz", "Done"].filter(Boolean);
   const checklistAllDone = hasChecklist && lesson.cl.every((_, i) => !!checked[i]);
-  const currentStep = quizComplete || isDone
+  const currentStep = isQuizDone || isDone
     ? progressSteps.length - 1
     : checklistAllDone && hasQuiz ? progressSteps.indexOf("Quiz")
     : checklistAllDone ? 1 : 0;
@@ -2330,13 +2334,65 @@ function LessonPage() {
         {/* ── QUIZ — fully rebuilt ── */}
 
         {/* Quiz widget */}
-        {quizzes.length > 0 && !quizComplete && (
+        {quizzes.length > 0 && !isQuizDone && (
           <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} loseHeart={loseHeart} onComplete={handleQuizComplete}/>
         )}
 
         {/* Quiz complete results */}
-        {quizComplete && (
+        {isQuizDone && (
           <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} loseHeart={loseHeart} onComplete={handleQuizComplete}/>
+        )}
+
+        {/* After quiz complete — complete button + share + next lesson */}
+        {isQuizDone && (
+          <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+            {/* Complete button */}
+            {!isDone
+              ? <button className="btn bp blg" style={{ width:"100%" }} onClick={handleComplete}>✅ Mark Lesson Complete — +{lesson.xp} XP</button>
+              : <div style={{ textAlign:"center", padding:12, background:"#E8F5E9", borderRadius:14, fontSize:13, fontWeight:700, color:"#2E7D32" }}>✅ Lesson complete!</div>
+            }
+
+            {/* Share */}
+            <div style={{ background:"#fff", border:"1px solid var(--cdk)", borderRadius:16, padding:"14px 16px", textAlign:"center" }}>
+              <p style={{ fontSize:12, color:"var(--tl)", marginBottom:10, fontWeight:600 }}>🌱 Share your progress!</p>
+              <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+                <a href={`https://twitter.com/intent/tweet?text=Just+completed+${encodeURIComponent(lesson?.title||"")}+on+The+Growers+Academy+by+${encodeURIComponent(CHANNEL_NAME)}!+🌱+${encodeURIComponent(WEBSITE_URL)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#000", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
+                  𝕏 Share
+                </a>
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ display:"inline-flex", alignItems:"center", gap:5, background:"#1877F2", color:"#fff", borderRadius:999, padding:"8px 16px", fontSize:13, fontWeight:700, textDecoration:"none" }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  Facebook
+                </a>
+              </div>
+            </div>
+
+            {/* Next lesson */}
+            {(() => {
+              const lessonIndex = course.lessons.findIndex(l => l.id === lesson.id);
+              const nextLesson  = course.lessons[lessonIndex + 1];
+              if (!nextLesson) return null;
+              return (
+                <div style={{ background:"#fff", border:"2px solid var(--g2)", borderRadius:20, padding:18 }}>
+                  <div style={{ fontSize:10, fontWeight:800, color:"var(--g5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Up next in {course.title}</div>
+                  <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+                    <div style={{ width:44, height:44, background:"var(--g0)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextLesson.emoji}</div>
+                    <div>
+                      <div style={{ fontWeight:800, fontSize:15, color:"var(--td)" }}>{nextLesson.title}</div>
+                      <div style={{ fontSize:12, color:"var(--tl)" }}>⏱ {nextLesson.dur} · +{nextLesson.xp} XP</div>
+                    </div>
+                  </div>
+                  <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }}
+                    onClick={() => navigate("lesson", { lesson:nextLesson, course })}>
+                    Next Lesson →
+                  </button>
+                </div>
+              );
+            })()}
+          </div>
         )}
 
         {/* Affiliate products */}
@@ -2389,29 +2445,6 @@ function LessonPage() {
           </a>
         </div>
 
-        {/* Next lesson button */}
-        {(() => {
-          const lessonIndex = course.lessons.findIndex(l => l.id === lesson.id);
-          const nextLesson  = course.lessons[lessonIndex + 1];
-          if (!nextLesson) return null;
-          return (
-            <div style={{ background:"#fff", border:"2px solid var(--g2)", borderRadius:20, padding:18 }}>
-              <div style={{ fontSize:10, fontWeight:800, color:"var(--g5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Up next in {course.title}</div>
-              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
-                <div style={{ width:44, height:44, background:"var(--g0)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22, flexShrink:0 }}>{nextLesson.emoji}</div>
-                <div>
-                  <div style={{ fontWeight:800, fontSize:15, color:"var(--td)" }}>{nextLesson.title}</div>
-                  <div style={{ fontSize:12, color:"var(--tl)" }}>⏱ {nextLesson.dur} · +{nextLesson.xp} XP</div>
-                </div>
-              </div>
-              <button className="btn bp blg" style={{ width:"100%", background:`linear-gradient(135deg,${course.color},${course.color}BB)` }}
-                onClick={() => navigate("lesson", { lesson:nextLesson, course })}>
-                Next Lesson →
-              </button>
-            </div>
-          );
-        })()}
-
         {/* Complete button (if no quiz) */}
         {quizzes.length === 0 && !isDone && (
           <button className="btn bp blg" style={{ width:"100%" }} onClick={handleComplete}>✓ Complete Lesson & Earn {lesson.xp} XP</button>
@@ -2433,7 +2466,6 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   const selectedRef             = useRef(null);
   const correctRef              = useRef(false);
   const answersRef              = useRef([]);
-  const displayAnswersRef       = useRef([]);
   const heartsLostRef           = useRef(0); // track locally, call loseHeart once at end
   const [, tick]                = useState(0);
   const rerender                = () => tick(n => n + 1);
@@ -2448,7 +2480,6 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     selectedRef.current       = null;
     correctRef.current        = false;
     answersRef.current        = [];
-    displayAnswersRef.current = [];
     heartsLostRef.current     = 0;
     setAnswers([]);
     try {
@@ -2485,7 +2516,6 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     selectedRef.current = optIdx;
     correctRef.current  = isCorrect;
     phaseRef.current    = "feedback";
-    displayAnswersRef.current = [...displayAnswersRef.current, { correct: isCorrect }];
     if (!isCorrect) heartsLostRef.current += 1;
     rerender();
 
@@ -2504,15 +2534,18 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
         phaseRef.current    = "question";
         rerender();
       } else {
-        // Quiz done — now call loseHeart for all wrong answers at once
-        const finalScore = newAnswers.filter(a => a.correct).length;
-        for (let i = 0; i < heartsLostRef.current; i++) { if (loseHeart) loseHeart(); }
+        // Quiz done — set results first, then handle hearts
         phaseRef.current = "results";
         setAnswers(newAnswers);
         rerender();
         try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
         try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
+        // Call onComplete first so LessonPage quizComplete state sets
         onComplete(newAnswers);
+        // Then lose hearts after — re-renders won't affect quizComplete
+        setTimeout(() => {
+          for (let i = 0; i < heartsLostRef.current; i++) { if (loseHeart) loseHeart(); }
+        }, 500);
       }
     }, isCorrect ? 1400 : 2400);
 
@@ -2592,12 +2625,10 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
         <Hearts count={hearts}/>
       </div>
 
-      {/* Progress dots */}
-      <div style={{ display:"flex", gap:5, alignItems:"center", marginBottom:14 }}>
-        {quizzes.map((_,i) => (
-          <div key={i} style={{ height:6, flex:i===qIdxRef.current&&phaseRef.current==="question"?2:1, borderRadius:999, background:i<displayAnswersRef.current.length?(displayAnswersRef.current[i]?.correct?"#4CAF50":"#EF5350"):i===qIdxRef.current?"var(--g5)":"var(--cdk)", transition:"all .3s" }}/>
-        ))}
-        <span style={{ fontSize:10, color:"var(--tl)", fontWeight:700, marginLeft:4, flexShrink:0 }}>{qIdxRef.current+1}/{totalQ}</span>
+      {/* Question counter */}
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
+        <span style={{ fontSize:12, color:"var(--tl)", fontWeight:700 }}>Question {qIdxRef.current+1} of {totalQ}</span>
+        <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g6)", borderRadius:999, padding:"3px 10px", fontWeight:700 }}>{qIdxRef.current+1}/{totalQ}</span>
       </div>
 
       {/* Type badge */}
