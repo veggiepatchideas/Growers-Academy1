@@ -2190,15 +2190,32 @@ function LessonPage() {
 
   // ── Quiz state — clean rebuild ──────────────────────────────────────────────
   const [qIdx, setQIdx]                 = useState(0);
-  const [quizComplete, setQuizComplete] = useState(false);
+  const [quizComplete, setQuizComplete] = useState(() => {
+    try { return localStorage.getItem("ga_qc_" + (lesson?.id||"")) === "1"; } catch { return false; }
+  });
   const [celebrating, setCelebrating]   = useState(false);
   const [feedbackLocked, setFeedbackLocked] = useState(false);
-  // Use refs for feedback display — immune to Provider re-renders
-  const selectedRef  = useRef(null);
-  const revealedRef  = useRef(false);
+  const selectedRef   = useRef(null);
+  const revealedRef   = useRef(false);
   const wasCorrectRef = useRef(false);
-  const answersRef   = useRef([]);
-  const [, forceRender] = useState(0); // trigger re-render when refs change
+  const answersRef    = useRef([]);
+
+  // Restore quiz state on lesson load
+  useEffect(() => {
+    try {
+      const qc = localStorage.getItem("ga_qc_" + (lesson?.id||""));
+      const qa = localStorage.getItem("ga_qa_" + (lesson?.id||""));
+      if (qc === "1") {
+        answersRef.current = qa ? JSON.parse(qa) : [];
+        setQuizComplete(true);
+      } else {
+        answersRef.current = [];
+        setQuizComplete(false);
+        setQIdx(0);
+      }
+    } catch {}
+  }, [lesson?.id]);
+  const [, forceRender] = useState(0);
   const tick = () => forceRender(n => n + 1);
 
   if (!lesson || !course) { navigate("courses"); return null; }
@@ -2242,36 +2259,40 @@ function LessonPage() {
   const handleSelect = (optIdx) => {
     if (revealedRef.current || feedbackLocked) return;
     const correct = optIdx === currentQ.a;
-    selectedRef.current  = optIdx;
+    selectedRef.current   = optIdx;
     wasCorrectRef.current = correct;
-    revealedRef.current  = true;
+    revealedRef.current   = true;
     const newAnswers = [...answersRef.current, { correct }];
     answersRef.current = newAnswers;
     setFeedbackLocked(true);
-    tick(); // force render to show feedback
+    tick();
     haptic(correct ? "medium" : "light");
-
-    // XP/heart immediately — refs mean re-render won't wipe feedback
-    if (correct) addXP(10);
-    else loseHeart();
 
     const advanceDelay = correct ? 1400 : 2400;
     const capturedQIdx = qIdx;
 
     setTimeout(() => {
       if (capturedQIdx < totalQ - 1) {
-        selectedRef.current  = null;
-        revealedRef.current  = false;
+        // Lose heart for wrong answers between questions — less disruptive here
+        if (!correct) loseHeart();
+        selectedRef.current   = null;
+        revealedRef.current   = false;
         wasCorrectRef.current = false;
         setQIdx(capturedQIdx + 1);
         setFeedbackLocked(false);
         tick();
       } else {
+        // Award all XP and hearts at end
+        const finalScore = newAnswers.filter(a => a.correct).length;
+        const wrongCount = newAnswers.filter(a => !a.correct).length;
+        if (finalScore > 0) addXP(finalScore * 10);
+        for (let i = 0; i < wrongCount; i++) loseHeart();
+        if (finalScore === totalQ) recordPerfectQuiz();
         revealedRef.current = false;
+        try { localStorage.setItem("ga_qc_" + lesson.id, "1"); } catch {}
+        try { localStorage.setItem("ga_qa_" + lesson.id, JSON.stringify(newAnswers)); } catch {}
         setQuizComplete(true);
         setFeedbackLocked(false);
-        const finalScore = newAnswers.filter(a => a.correct).length;
-        if (finalScore === totalQ) recordPerfectQuiz();
         setTimeout(() => {
           const el = document.getElementById("quiz-results");
           if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
@@ -2421,7 +2442,7 @@ function LessonPage() {
                 const isCorrect = i === currentQ.a;
                 const isSelected = i === selectedRef.current;
                 let bg = "#fff", border = "var(--cdk)", color = "var(--td)", icon = null;
-                if (revealed) {
+                if (revealedRef.current) {
                   if (isCorrect)         { bg="#E8F5E9"; border="#4CAF50"; color="#1B5E20"; icon="✅"; }
                   else if (isSelected)   { bg="#FFEBEE"; border="#EF5350"; color="#B71C1C"; icon="❌"; }
                   else                   { bg="#fafafa"; border="var(--cdk)"; color="var(--tmut)"; }
@@ -2429,7 +2450,7 @@ function LessonPage() {
 
                 return (
                   <button key={i} onClick={() => handleSelect(i)}
-                    disabled={revealed}
+                    disabled={revealedRef.current}
                     style={{
                       padding:"13px 14px",
                       border:`2px solid ${border}`,
