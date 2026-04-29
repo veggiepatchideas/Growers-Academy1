@@ -2213,7 +2213,7 @@ function LessonPage() {
     selectedRef.current   = optIdx;
     wasCorrectRef.current = correct;
     revealedRef.current   = true;
-    const newAnswers = [...answersRef.current, { correct }];
+    const newAnswers = [...answersRef.current, { correct, selected: optIdx, correctAnswer: currentQ.a, question: currentQ.q, opts: currentQ.opts }];
     answersRef.current = newAnswers;
     setFeedbackLocked(true);
     tick();
@@ -2496,6 +2496,32 @@ function LessonPage() {
               {quizScore===totalQ ? "Perfect score! Impressive growing knowledge! 🌱" : quizScore>=totalQ/2 ? "Good effort — keep learning and you'll nail it!" : "Have another read of the lesson and try again!"}
             </p>
             {quizScore > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:14, display:"inline-block" }}>+{quizScore*10} XP earned this quiz!</div>}
+
+            {/* Review incorrect answers */}
+            {answersRef.current.some(a => !a.correct) && (
+              <div style={{ textAlign:"left", borderTop:"1px solid var(--cdk)", paddingTop:14, marginBottom:14 }}>
+                <h3 style={{ fontSize:13, fontWeight:800, color:"var(--td)", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>
+                  <span style={{ fontSize:16 }}>📖</span> Review — questions you missed
+                </h3>
+                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                  {answersRef.current.filter(a => !a.correct).map((a, i) => (
+                    <div key={i} style={{ background:"#FFEBEE", border:"1px solid #FFCDD2", borderRadius:14, padding:"12px 14px" }}>
+                      <p style={{ fontSize:13, fontWeight:700, color:"#B71C1C", marginBottom:8, lineHeight:1.5 }}>{a.question}</p>
+                      <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+                          <span style={{ fontSize:14, flexShrink:0 }}>❌</span>
+                          <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts[a.selected]}</span>
+                        </div>
+                        <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+                          <span style={{ fontSize:14, flexShrink:0 }}>✅</span>
+                          <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts[a.correctAnswer]}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Complete button */}
             {!isDone
