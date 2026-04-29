@@ -2410,8 +2410,10 @@ function QuizWidget({ quizzes, lessonId, hearts, onComplete }) {
   const [answers, setAnswers]   = useState([]);
 
   const totalQ   = quizzes.length;
-  const currentQ = quizzes[qIdx];
+  const currentQ = quizzes[qIdx] || quizzes[0];
   const isTF     = currentQ?.opts?.length === 2;
+
+  if (!currentQ && phase !== "results") return null;
 
   // Restore from localStorage
   useEffect(() => {
@@ -2481,11 +2483,11 @@ function QuizWidget({ quizzes, lessonId, hearts, onComplete }) {
                   <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
                     <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
                       <span style={{ fontSize:14, flexShrink:0 }}>❌</span>
-                      <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts[a.selected]}</span>
+                      <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts?.[a.selected] || "—"}</span>
                     </div>
                     <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
                       <span style={{ fontSize:14, flexShrink:0 }}>✅</span>
-                      <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts[a.correctAnswer]}</span>
+                      <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts?.[a.correctAnswer] || "—"}</span>
                     </div>
                   </div>
                 </div>
