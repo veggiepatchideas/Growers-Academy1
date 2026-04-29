@@ -2328,59 +2328,9 @@ function LessonPage() {
         )}
 
         {/* ── QUIZ — fully rebuilt ── */}
-        {/* No hearts left — show re-read message then quiz review */}
-        {quizzes.length > 0 && !quizComplete && hearts <= 0 && (
-          <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-            {/* Glen's encouragement */}
-            <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:20 }}>
-              <div style={{ fontSize:40, marginBottom:10 }}>❤️‍🩹</div>
-              <h2 style={{ fontSize:17, fontWeight:900, color:"#E65100", marginBottom:8 }}>You've used all your hearts!</h2>
-              <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", display:"flex", gap:10, alignItems:"flex-start", textAlign:"left", marginBottom:14 }}>
-                <VPILogo size={28}/>
-                <p style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>
-                  "Don't worry — have another read through the lesson above, study the correct answers below, then your hearts will refill tomorrow so you can try again. You've got this!" — Glen
-                </p>
-              </div>
-              <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }}
-                onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
-                📖 Re-read the lesson
-              </button>
-            </div>
-
-            {/* Quiz review — all questions with correct answers highlighted */}
-            {quizAnswers.length > 0 && (
-              <div className="card" style={{ border:"1px solid var(--g2)", background:"var(--g0)" }}>
-                <h3 style={{ fontSize:14, fontWeight:800, marginBottom:12, color:"var(--td)" }}>📖 Your answers — study these before your next attempt</h3>
-                <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                  {quizAnswers.map((a, i) => (
-                    <div key={i} style={{ background:"#fff", borderRadius:14, padding:"13px 14px", border:`1px solid ${a.correct?"#C8E6C9":"#FFCDD2"}` }}>
-                      <p style={{ fontSize:13, fontWeight:700, color:"var(--td)", marginBottom:10, lineHeight:1.5 }}>{a.question || `Question ${i+1}`}</p>
-                      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-                        {a.opts && a.opts.map((opt, j) => {
-                          const isCorrect  = j === a.correctAnswer;
-                          const isSelected = j === a.selected;
-                          const isWrong    = isSelected && !isCorrect;
-                          if (!isCorrect && !isWrong) return null;
-                          return (
-                            <div key={j} style={{ display:"flex", gap:8, alignItems:"center", background:isCorrect?"#E8F5E9":"#FFEBEE", borderRadius:10, padding:"8px 12px", border:`1px solid ${isCorrect?"#4CAF50":"#EF5350"}` }}>
-                              <span style={{ fontSize:16, flexShrink:0 }}>{isCorrect?"✅":"❌"}</span>
-                              <span style={{ fontSize:13, fontWeight:700, color:isCorrect?"#1B5E20":"#B71C1C", textDecoration:isWrong?"line-through":"none" }}>{opt}</span>
-                              {isCorrect && <span style={{ fontSize:11, color:"#2E7D32", fontWeight:800, marginLeft:"auto", flexShrink:0 }}>Correct answer</span>}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontSize:12, color:"var(--tl)", marginTop:12, textAlign:"center" }}>💚 Your hearts refill tomorrow — come back and try again!</p>
-              </div>
-            )}
-          </div>
-        )}
 
         {/* Quiz widget */}
-        {quizzes.length > 0 && hearts > 0 && !quizComplete && (
+        {quizzes.length > 0 && !quizComplete && (
           <QuizWidget quizzes={quizzes} lessonId={lesson.id} hearts={hearts} loseHeart={loseHeart} onComplete={handleQuizComplete}/>
         )}
 
@@ -2613,6 +2563,23 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
             </div>
           </div>
         )}
+      </div>
+    );
+  }
+
+  // No hearts left — show inside widget so it doesn't unmount
+  if (hearts <= 0) {
+    return (
+      <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:20 }}>
+        <div style={{ fontSize:40, marginBottom:10 }}>❤️‍🩹</div>
+        <h2 style={{ fontSize:17, fontWeight:900, color:"#E65100", marginBottom:8 }}>You've used all your hearts!</h2>
+        <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", display:"flex", gap:10, alignItems:"flex-start", textAlign:"left", marginBottom:14 }}>
+          <span style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>"Don't worry — have another read through the lesson, study the answers below, then your hearts will refill tomorrow so you can try again. You've got this!" — Glen</span>
+        </div>
+        <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }}
+          onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
+          📖 Re-read the lesson
+        </button>
       </div>
     );
   }
