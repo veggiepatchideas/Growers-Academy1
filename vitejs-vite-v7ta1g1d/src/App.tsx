@@ -2485,35 +2485,47 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
   const answersRef              = useRef([]);
   const [, tick]                = useState(0);
   const rerender                = () => tick(n => n + 1);
-  const [answers, setAnswers]   = useState([]);  // for results display only
+  const [answers, setAnswers]   = useState([]);
 
-  const totalQ   = quizzes.length;
-  const currentQ = quizzes[qIdxRef.current] || quizzes[0];
-  const isTF     = currentQ?.opts?.length === 2;
+  const totalQ = quizzes.length;
 
-  if (!currentQ && phaseRef.current !== "results") return null;
-
-  // Restore from localStorage
+  // Reset all state when lessonId changes and restore from localStorage
   useEffect(() => {
+    phaseRef.current    = "question";
+    qIdxRef.current     = 0;
+    selectedRef.current = null;
+    correctRef.current  = false;
+    answersRef.current  = [];
+    setAnswers([]);
     try {
       const qc = localStorage.getItem("ga_qc_" + lessonId);
       const qa = localStorage.getItem("ga_qa_" + lessonId);
       if (qc === "1" && qa) {
         const parsed = JSON.parse(qa);
-        if (parsed.length > 0 && !parsed[0].opts) {
+        if (parsed.length > 0 && parsed[0].opts) {
+          answersRef.current = parsed;
+          setAnswers(parsed);
+          phaseRef.current = "results";
+          rerender();
+        } else {
           localStorage.removeItem("ga_qc_" + lessonId);
           localStorage.removeItem("ga_qa_" + lessonId);
-          return;
         }
-        answersRef.current = parsed;
-        setAnswers(parsed);
-        phaseRef.current = "results";
-        rerender();
       }
     } catch {}
   }, [lessonId]);
 
+  const currentQ = quizzes[qIdxRef.current] || quizzes[0];
+  const isTF     = currentQ?.opts?.length === 2;
+  if (!currentQ && phaseRef.current !== "results") return null;
+
+
   const handleSelect = (optIdx) => {
+    if (phaseRef.current !== "question") {
+      // Reset if stuck — shouldn't happen but safety net
+      if (phaseRef.current === "feedback") return; // still showing feedback
+      phaseRef.current = "question"; // reset if somehow wrong
+    }
     if (phaseRef.current !== "question") return;
     const isCorrect = optIdx === currentQ.a;
     selectedRef.current = optIdx;
@@ -2521,17 +2533,17 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     phaseRef.current    = "feedback";
     rerender();
 
-    // loseHeart after feedback is painted — delay keeps re-render from wiping feedback
-    if (!isCorrect && loseHeart) setTimeout(() => loseHeart(), 50);
-
     // Advance after user sees feedback
     const capturedQIdx = qIdxRef.current;
+    const capturedQ    = currentQ; // capture question before any re-render
     setTimeout(() => {
       const newAnswers = [...answersRef.current, {
         correct: isCorrect, selected: optIdx,
-        correctAnswer: currentQ.a, question: currentQ.q, opts: currentQ.opts
+        correctAnswer: capturedQ.a, question: capturedQ.q, opts: capturedQ.opts
       }];
       answersRef.current = newAnswers;
+      // Lose heart here — after feedback shown, at same time as advancing
+      if (!isCorrect && loseHeart) loseHeart();
 
       if (capturedQIdx < totalQ - 1) {
         qIdxRef.current     = capturedQIdx + 1;
