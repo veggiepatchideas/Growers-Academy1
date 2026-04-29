@@ -2420,7 +2420,17 @@ function QuizWidget({ quizzes, lessonId, hearts, onComplete }) {
     try {
       const qc = localStorage.getItem("ga_qc_" + lessonId);
       const qa = localStorage.getItem("ga_qa_" + lessonId);
-      if (qc === "1" && qa) { setAnswers(JSON.parse(qa)); setPhase("results"); }
+      if (qc === "1" && qa) {
+        const parsed = JSON.parse(qa);
+        // Check if answers have the full format (opts field) — if not clear them
+        if (parsed.length > 0 && !parsed[0].opts) {
+          localStorage.removeItem("ga_qc_" + lessonId);
+          localStorage.removeItem("ga_qa_" + lessonId);
+          return;
+        }
+        setAnswers(parsed);
+        setPhase("results");
+      }
     } catch {}
   }, [lessonId]);
 
