@@ -1276,6 +1276,11 @@ const css = `
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes quizCorrect{0%{transform:scale(1)}30%{transform:scale(1.04)}60%{transform:scale(0.98)}100%{transform:scale(1)}}
+  @keyframes quizWrong{0%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}100%{transform:translateX(0)}}
+  @keyframes heartBreak{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+  .quiz-correct{animation:quizCorrect .4s ease}
+  .quiz-wrong{animation:quizWrong .4s ease}
   @keyframes float3{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
   @keyframes xpPop{0%{opacity:0;transform:translateY(-10px) scale(.8)}40%{transform:translateY(0) scale(1.15)}100%{opacity:1;transform:translateY(0) scale(1)}}
   @keyframes heartShake{0%,100%{transform:scale(1)}25%{transform:scale(1.3) rotate(-10deg)}75%{transform:scale(1.3) rotate(10deg)}}
@@ -2173,7 +2178,7 @@ function LessonPage() {
     try { return localStorage.getItem("ga_ll_" + (lesson?.id||"")) === "1"; } catch { return false; }
   });
 
-  const handleQuizComplete = (answers) => {
+  const handleQuizComplete = (answers, heartsLost = 0) => {
     setQuizAnswers(answers);
     setQuizComplete(true);
     try { localStorage.setItem("ga_qc_" + lesson.id, "1"); } catch {}
@@ -2185,6 +2190,7 @@ function LessonPage() {
     setTimeout(() => {
       const score = answers.filter(a => a.correct).length;
       if (score > 0) addXP(score * 10);
+      for (let i = 0; i < heartsLost; i++) { if (loseHeart) loseHeart(); }
       if (score === quizzes.length) recordPerfectQuiz();
     }, 800);
   };
@@ -2443,26 +2449,28 @@ function LessonPage() {
 
 // ─── QUIZ WIDGET — fully self-contained, no Provider state during questions ──
 function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
-  const phaseRef                = useRef("question");
-  const qIdxRef                 = useRef(0);
-  const selectedRef             = useRef(null);
-  const correctRef              = useRef(false);
-  const answersRef              = useRef([]);
-  const heartsLostRef           = useRef(0); // track locally, call loseHeart once at end
-  const [, tick]                = useState(0);
-  const rerender                = () => tick(n => n + 1);
-  const [answers, setAnswers]   = useState([]);
+  // ALL state in refs — zero Provider re-renders during quiz
+  const phaseRef        = useRef("question"); // question | feedback | results
+  const qIdxRef         = useRef(0);
+  const selectedRef     = useRef(null);
+  const correctRef      = useRef(false);
+  const answersRef      = useRef([]);
+  const heartsLostRef   = useRef(0);
+  const animRef         = useRef(""); // quiz-correct | quiz-wrong | ""
+  const [tick, setTick] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const rerender = () => setTick(n => n + 1);
 
-  const totalQ = quizzes.length;
+  const totalQ   = quizzes.length;
 
-  // Reset all state when lessonId changes and restore from localStorage
   useEffect(() => {
-    phaseRef.current          = "question";
-    qIdxRef.current           = 0;
-    selectedRef.current       = null;
-    correctRef.current        = false;
-    answersRef.current        = [];
-    heartsLostRef.current     = 0;
+    phaseRef.current      = "question";
+    qIdxRef.current       = 0;
+    selectedRef.current   = null;
+    correctRef.current    = false;
+    answersRef.current    = [];
+    heartsLostRef.current = 0;
+    animRef.current       = "";
     setAnswers([]);
     try {
       const qc = localStorage.getItem("ga_qc_" + lessonId);
@@ -2484,22 +2492,19 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
 
   const currentQ = quizzes[qIdxRef.current] || quizzes[0];
   const isTF     = currentQ?.opts?.length === 2;
-  if (!currentQ && phaseRef.current !== "results") return null;
-
 
   const handleSelect = (optIdx) => {
-    if (phaseRef.current !== "question") {
-      // Reset if stuck — shouldn't happen but safety net
-      if (phaseRef.current === "feedback") return; // still showing feedback
-      phaseRef.current = "question"; // reset if somehow wrong
-    }
     if (phaseRef.current !== "question") return;
     const isCorrect = optIdx === currentQ.a;
     selectedRef.current = optIdx;
     correctRef.current  = isCorrect;
     phaseRef.current    = "feedback";
+    animRef.current     = isCorrect ? "quiz-correct" : "quiz-wrong";
     if (!isCorrect) heartsLostRef.current += 1;
     rerender();
+
+    // Clear animation class after it plays
+    setTimeout(() => { animRef.current = ""; rerender(); }, 500);
 
     const capturedQIdx = qIdxRef.current;
     const capturedQ    = currentQ;
@@ -2511,34 +2516,31 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
       answersRef.current = newAnswers;
 
       if (capturedQIdx < totalQ - 1) {
-        qIdxRef.current     = capturedQIdx + 1;
+        qIdxRef.current   = capturedQIdx + 1;
         selectedRef.current = null;
+        correctRef.current  = false;
+        animRef.current     = "";
         phaseRef.current    = "question";
         rerender();
       } else {
-        // Quiz done — set results first, then handle hearts
         phaseRef.current = "results";
         setAnswers(newAnswers);
         rerender();
         try { localStorage.setItem("ga_qc_" + lessonId, "1"); } catch {}
         try { localStorage.setItem("ga_qa_" + lessonId, JSON.stringify(newAnswers)); } catch {}
-        // Call onComplete first so LessonPage quizComplete state sets
-        onComplete(newAnswers);
-        // Then lose hearts after — re-renders won't affect quizComplete
-        setTimeout(() => {
-          for (let i = 0; i < heartsLostRef.current; i++) { if (loseHeart) loseHeart(); }
-        }, 500);
+        onComplete(newAnswers, heartsLostRef.current);
       }
     }, isCorrect ? 1400 : 2400);
-
   };
 
+  // ── RESULTS VIEW ────────────────────────────────────────────────────────────
   if (phaseRef.current === "results") {
-    const score = answers.filter(a => a.correct).length; // answers state used for results
+    const score = answers.filter(a => a.correct).length;
     const wrong = answers.filter(a => !a.correct);
+    const heartsLost = heartsLostRef.current;
     return (
       <div id="quiz-results" className="card" style={{ border:`2px solid ${score===totalQ?"#FFD700":score>=totalQ/2?"#4CAF50":"#FF9800"}`, background:"var(--g0)", textAlign:"center" }}>
-        <div style={{ fontSize:48, marginBottom:10 }}>{score===totalQ?"🏆":score>=totalQ/2?"🎉":"📚"}</div>
+        <div style={{ fontSize:48, marginBottom:10, animation:"pop .5s ease" }}>{score===totalQ?"🏆":score>=totalQ/2?"🎉":"📚"}</div>
         <h2 style={{ fontSize:18, fontWeight:900, marginBottom:6 }}>Quiz complete!</h2>
         <div style={{ display:"flex", justifyContent:"center", gap:8, marginBottom:10 }}>
           {answers.map((a,i) => (
@@ -2548,39 +2550,26 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
           ))}
         </div>
         <p style={{ fontSize:26, fontWeight:900, color:score===totalQ?"#E65100":score>=totalQ/2?"#2E7D32":"#FF6F00", marginBottom:4 }}>{score}/{totalQ}</p>
-        <p style={{ fontSize:13, color:"var(--tl)", marginBottom:12, lineHeight:1.5 }}>
+        <p style={{ fontSize:13, color:"var(--tl)", marginBottom:10, lineHeight:1.5 }}>
           {score===totalQ?"Perfect score! Impressive growing knowledge! 🌱":score>=totalQ/2?"Good effort — keep learning and you'll nail it!":"Have another read of the lesson and try again!"}
         </p>
-        {score > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:8, display:"inline-block" }}>+{score*10} XP earned this quiz!</div>}
+        {score > 0 && <div style={{ background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", border:"1px solid #FFD54F", borderRadius:12, padding:"8px 14px", fontSize:13, color:"#E65100", fontWeight:800, marginBottom:10, display:"inline-block" }}>+{score*10} XP earned!</div>}
 
         {/* Hearts summary */}
-        {heartsLostRef.current > 0 ? (
-          <div style={{ marginBottom:14 }}>
-            <div style={{ fontSize:13, color:"var(--tl)", marginBottom:6 }}>Hearts remaining after this quiz:</div>
-            <div style={{ display:"flex", justifyContent:"center", gap:4 }}>
-              {Array.from({length:5}).map((_,i) => (
-                <span key={i} style={{ fontSize:22, opacity: i < (hearts) ? 1 : 0.25 }}>
-                  {i < hearts ? "❤️" : "🤍"}
-                </span>
-              ))}
-            </div>
-            <div style={{ fontSize:12, color:"#EF5350", fontWeight:700, marginTop:6 }}>
-              💔 {heartsLostRef.current} heart{heartsLostRef.current > 1 ? "s" : ""} lost
-            </div>
+        <div style={{ marginBottom:14, padding:"10px 14px", background:"rgba(255,255,255,.6)", borderRadius:12 }}>
+          <div style={{ display:"flex", justifyContent:"center", gap:6, marginBottom:4 }}>
+            {Array.from({length:5}).map((_,i) => (
+              <span key={i} style={{ fontSize:20 }}>{i < (5 - heartsLost) ? "❤️" : "🤍"}</span>
+            ))}
           </div>
-        ) : (
-          <div style={{ marginBottom:14 }}>
-            <div style={{ fontSize:13, color:"var(--tl)", marginBottom:6 }}>Hearts:</div>
-            <div style={{ display:"flex", justifyContent:"center", gap:4 }}>
-              {Array.from({length:5}).map((_,i) => <span key={i} style={{ fontSize:22 }}>❤️</span>)}
-            </div>
-            <div style={{ fontSize:12, color:"#4CAF50", fontWeight:700, marginTop:6 }}>💚 No hearts lost — perfect!</div>
+          <div style={{ fontSize:12, fontWeight:700, color: heartsLost===0?"#4CAF50":"#EF5350" }}>
+            {heartsLost===0 ? "💚 No hearts lost — perfect!" : `💔 ${heartsLost} heart${heartsLost>1?"s":""} lost`}
           </div>
-        )}
+        </div>
 
         {/* Review wrong answers */}
         {wrong.length > 0 && (
-          <div style={{ textAlign:"left", borderTop:"1px solid var(--cdk)", paddingTop:14, marginBottom:14 }}>
+          <div style={{ textAlign:"left", borderTop:"1px solid var(--cdk)", paddingTop:14, marginBottom:4 }}>
             <h3 style={{ fontSize:13, fontWeight:800, color:"var(--td)", marginBottom:10, display:"flex", alignItems:"center", gap:6 }}>
               <span>📖</span> Questions you missed
             </h3>
@@ -2591,11 +2580,11 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
                   <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
                     <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
                       <span style={{ fontSize:14, flexShrink:0 }}>❌</span>
-                      <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts?.[a.selected] || "—"}</span>
+                      <span style={{ fontSize:12, color:"#B71C1C", textDecoration:"line-through", lineHeight:1.4 }}>{a.opts?.[a.selected]||"—"}</span>
                     </div>
                     <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
                       <span style={{ fontSize:14, flexShrink:0 }}>✅</span>
-                      <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts?.[a.correctAnswer] || "—"}</span>
+                      <span style={{ fontSize:12, color:"#1B5E20", fontWeight:700, lineHeight:1.4 }}>{a.opts?.[a.correctAnswer]||"—"}</span>
                     </div>
                   </div>
                 </div>
@@ -2607,14 +2596,14 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     );
   }
 
-  // No hearts left — show inside widget so it doesn't unmount
+  // ── NO HEARTS ───────────────────────────────────────────────────────────────
   if (hearts <= 0) {
     return (
       <div className="card" style={{ border:"2px solid #FF9800", background:"linear-gradient(135deg,#FFF8E1,#FFF3E0)", textAlign:"center", padding:20 }}>
         <div style={{ fontSize:40, marginBottom:10 }}>❤️‍🩹</div>
         <h2 style={{ fontSize:17, fontWeight:900, color:"#E65100", marginBottom:8 }}>You've used all your hearts!</h2>
-        <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", display:"flex", gap:10, alignItems:"flex-start", textAlign:"left", marginBottom:14 }}>
-          <span style={{ fontSize:13, color:"#BF360C", lineHeight:1.6, fontStyle:"italic" }}>"Don't worry — have another read through the lesson, study the answers below, then your hearts will refill tomorrow so you can try again. You've got this!" — Glen</span>
+        <div style={{ background:"rgba(255,143,0,.12)", border:"1px solid rgba(255,143,0,.3)", borderRadius:14, padding:"11px 14px", marginBottom:14, fontStyle:"italic", fontSize:13, color:"#BF360C", lineHeight:1.6 }}>
+          "Don't worry — read through the lesson, study the correct answers, then your hearts refill tomorrow. You've got this!" — Glen
         </div>
         <button className="btn blg" style={{ width:"100%", background:"linear-gradient(135deg,#FF9800,#E65100)", color:"#fff" }}
           onClick={() => window.scrollTo({ top:0, behavior:"smooth" })}>
@@ -2624,61 +2613,98 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
     );
   }
 
+  // ── QUESTION VIEW ────────────────────────────────────────────────────────────
+  const selected  = selectedRef.current;
+  const isCorrect = correctRef.current;
+  const phase     = phaseRef.current;
+
   return (
-    <div className="card" style={{ border:"2px solid var(--g2)", background:"var(--g0)" }}>
+    <div className={`card ${animRef.current}`} style={{ border:"2px solid var(--g2)", background:"var(--g0)" }}>
       {/* Header */}
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
         <h2 style={{ fontSize:14, fontWeight:800, color:"var(--g8)" }}>🧠 Quiz</h2>
-        <Hearts count={hearts}/>
+        <div style={{ display:"flex", gap:3 }}>
+          {Array.from({length:5}).map((_,i) => <span key={i} style={{ fontSize:16 }}>{i < hearts ? "❤️" : "🤍"}</span>)}
+        </div>
       </div>
 
       {/* Question counter */}
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
-        <span style={{ fontSize:12, color:"var(--tl)", fontWeight:700 }}>Question {qIdxRef.current+1} of {totalQ}</span>
-        <span style={{ fontSize:11, background:"var(--g0)", color:"var(--g6)", borderRadius:999, padding:"3px 10px", fontWeight:700 }}>{qIdxRef.current+1}/{totalQ}</span>
-      </div>
-
-      {/* Type badge */}
-      <div style={{ display:"inline-flex", alignItems:"center", gap:4, background:isTF?"#E3F2FD":"#FFF8E1", borderRadius:999, padding:"3px 10px", marginBottom:10 }}>
-        <span style={{ fontSize:10, fontWeight:800, color:isTF?"#1565C0":"#E65100", textTransform:"uppercase", letterSpacing:".06em" }}>{isTF?"True or False":"Multiple Choice"}</span>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
+        <span style={{ fontSize:11, fontWeight:700, color:"var(--tl)" }}>Question {qIdxRef.current+1} of {totalQ}</span>
+        <span style={{ fontSize:10, background:isTF?"#E3F2FD":"#FFF8E1", color:isTF?"#1565C0":"#E65100", borderRadius:999, padding:"3px 10px", fontWeight:800, textTransform:"uppercase", letterSpacing:".05em" }}>
+          {isTF?"True or False":"Multiple Choice"}
+        </span>
       </div>
 
       {/* Question */}
-      <p style={{ fontWeight:800, fontSize:15, lineHeight:1.5, marginBottom:14, color:"var(--td)" }}>{currentQ?.q}</p>
+      <p style={{ fontWeight:800, fontSize:15, lineHeight:1.55, marginBottom:16, color:"var(--td)" }}>{currentQ?.q}</p>
 
       {/* Options */}
-      <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+      <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
         {currentQ?.opts.map((opt, i) => {
+          const isSelected   = i === selected;
           const isCorrectOpt = i === currentQ.a;
-          const isSelected   = i === selectedRef.current;
-          let bg = "#fff", border = "var(--cdk)", color = "var(--td)";
-          if (phaseRef.current === "feedback") {
-            if (isCorrectOpt)              { bg="#E8F5E9"; border="#4CAF50"; color="#1B5E20"; }
-            else if (isSelected)           { bg="#FFEBEE"; border="#EF5350"; color="#B71C1C"; }
-            else                           { bg="#fafafa"; color="var(--tmut)"; }
-          } else if (isSelected)           { bg="var(--g0)"; border="var(--g5)"; }
+          let bg = "#fff", border = "#E0D8CC", color = "var(--td)", icon = null, scale = "scale(1)";
+
+          if (phase === "feedback") {
+            if (isCorrectOpt)       { bg="#E8F5E9"; border="#4CAF50"; color="#1B5E20"; icon="✅"; }
+            else if (isSelected)    { bg="#FFEBEE"; border="#EF5350"; color="#B71C1C"; icon="❌"; }
+            else                    { bg="#fafafa"; color="var(--tmut)"; }
+          } else if (isSelected)    { bg="var(--g0)"; border="var(--g5)"; scale="scale(1.02)"; }
+
           return (
-            <button key={i} onClick={() => handleSelect(i)} disabled={phaseRef.current==="feedback"}
-              style={{ padding:"13px 14px", border:`2px solid ${border}`, borderRadius:14, background:bg, cursor:phaseRef.current==="feedback"?"default":"pointer", textAlign:"left", fontSize:13, fontWeight:700, fontFamily:"var(--ff)", color, display:"flex", alignItems:"center", gap:10, transition:"all .2s" }}>
-              <div style={{ width:26, height:26, borderRadius:"50%", background:phaseRef.current==="feedback"&&isCorrectOpt?"#4CAF50":phaseRef.current==="feedback"&&isSelected?"#EF5350":"var(--cdk)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:phaseRef.current==="feedback"&&(isCorrectOpt||isSelected)?"#fff":"var(--tl)", flexShrink:0 }}>
-                {phaseRef.current==="feedback"&&isCorrectOpt?"✅":phaseRef.current==="feedback"&&isSelected?"❌":String.fromCharCode(65+i)}
+            <button key={i} onClick={() => handleSelect(i)}
+              disabled={phase === "feedback"}
+              style={{
+                padding:"13px 16px", border:`2px solid ${border}`, borderRadius:16,
+                background:bg, cursor:phase==="feedback"?"default":"pointer",
+                textAlign:"left", fontSize:13, fontWeight:700,
+                fontFamily:"var(--ff)", color,
+                display:"flex", alignItems:"center", gap:12,
+                transform:scale,
+                transition:"all .15s ease",
+                boxShadow: isSelected && phase==="question" ? "0 2px 8px rgba(0,0,0,.1)" : "none",
+              }}>
+              <div style={{
+                width:28, height:28, borderRadius:"50%", flexShrink:0,
+                background: phase==="feedback" && isCorrectOpt ? "#4CAF50"
+                          : phase==="feedback" && isSelected   ? "#EF5350"
+                          : "var(--cdk)",
+                display:"flex", alignItems:"center", justifyContent:"center",
+                fontSize:12, fontWeight:900,
+                color: phase==="feedback" && (isCorrectOpt||isSelected) ? "#fff" : "var(--tl)",
+                transition:"all .2s"
+              }}>
+                {icon || String.fromCharCode(65+i)}
               </div>
               <span style={{ flex:1 }}>{opt}</span>
+              {phase==="feedback" && isSelected && !isCorrectOpt && (
+                <span style={{ fontSize:10, color:"#EF5350", fontWeight:700, flexShrink:0 }}>Wrong</span>
+              )}
+              {phase==="feedback" && isCorrectOpt && (
+                <span style={{ fontSize:10, color:"#4CAF50", fontWeight:700, flexShrink:0 }}>Correct ✓</span>
+              )}
             </button>
           );
         })}
       </div>
 
-      {/* Feedback */}
-      {phaseRef.current === "feedback" && (
-        <div style={{ marginTop:12, padding:"12px 14px", borderRadius:14, background:correctRef.current?"linear-gradient(135deg,#E8F5E9,#F1F8E9)":"linear-gradient(135deg,#FFEBEE,#FFF3E0)", border:`1px solid ${correctRef.current?"#4CAF50":"#EF5350"}`, display:"flex", gap:10, alignItems:"flex-start" }}>
-          <span style={{ fontSize:22, flexShrink:0 }}>{correctRef.current?"🎉":"💡"}</span>
+      {/* Feedback message */}
+      {phase === "feedback" && (
+        <div style={{
+          marginTop:14, padding:"12px 14px", borderRadius:14,
+          background: isCorrect ? "linear-gradient(135deg,#E8F5E9,#F1F8E9)" : "linear-gradient(135deg,#FFEBEE,#FFF8E1)",
+          border:`1px solid ${isCorrect?"#4CAF50":"#EF5350"}`,
+          display:"flex", gap:10, alignItems:"flex-start",
+          animation:"fadeUp .25s ease"
+        }}>
+          <span style={{ fontSize:24, flexShrink:0 }}>{isCorrect?"🎉":"💡"}</span>
           <div>
-            <div style={{ fontWeight:900, fontSize:13, color:correctRef.current?"#2E7D32":"#C62828", marginBottom:3 }}>
-              {correctRef.current ? "Correct! +10 XP 🌟" : `Not quite — the answer was: "${currentQ?.opts[currentQ?.a]}"`}
+            <div style={{ fontWeight:900, fontSize:13, color:isCorrect?"#2E7D32":"#C62828", marginBottom:3 }}>
+              {isCorrect ? "Correct! +10 XP 🌟" : `The answer is: "${currentQ?.opts[currentQ?.a]}"`}
             </div>
             <div style={{ fontSize:11, color:"var(--tl)", fontWeight:600 }}>
-              {qIdxRef.current < totalQ-1 ? "Moving to next question..." : "Calculating your score..."}
+              {qIdxRef.current < totalQ-1 ? "Next question coming up..." : "Finishing quiz..."}
             </div>
           </div>
         </div>
