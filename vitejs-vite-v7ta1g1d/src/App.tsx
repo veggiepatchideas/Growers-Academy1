@@ -2109,7 +2109,7 @@ function CoursesPage() {
                     ["🗓️","Grow All Year Round","Never have a bare plot again — plan across all four seasons"],
                     ["🏡","Allotment Manager Insights","Crop rotation, no-dig, composting and more — with real advice from an experienced allotment site manager"],
                     ["👨‍🌾","Glen's Expert Secrets","20+ years of growing wisdom in 7 exclusive lessons"],
-                    ["📔","Free Garden Planner Diary","Get our bestselling Vegetable Garden Planner Diary completely free when you go premium — worth £9.99!"],
+                    ["📔","Free Garden Planner Diary","Worth £5 — yours completely free when you go premium!"],
                     ["💰","Save Money Growing","Which crops save the most — and how to grow them for almost free"],
                   ].map(([emoji, title, desc]) => (
                     <div key={title} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
@@ -2883,6 +2883,40 @@ function PlannerPage() {
             {s.items.map((item,i) => <div key={i} style={{ display:"flex", gap:8, marginBottom:6 }}><span style={{ color:s.tc, flexShrink:0 }}>•</span><span style={{ fontSize:13, color:s.tc, lineHeight:1.5 }}>{item}</span></div>)}
           </div>
         ))}
+        {/* Diary upsell */}
+        <div style={{ background:"linear-gradient(135deg,#1a1a2e,#16213e)", borderRadius:20, overflow:"hidden" }}>
+          <div style={{ padding:"16px 18px 6px" }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,215,0,.15)", border:"1px solid rgba(255,215,0,.3)", borderRadius:999, padding:"3px 12px", marginBottom:10 }}>
+              <span style={{ fontSize:11, fontWeight:800, color:"#FFD700", textTransform:"uppercase", letterSpacing:".06em" }}>📔 Physical Companion</span>
+            </div>
+            <h3 style={{ color:"#fff", fontWeight:900, fontSize:15, marginBottom:6, lineHeight:1.3 }}>Glen's Vegetable Garden Planner Diary</h3>
+            <p style={{ color:"rgba(255,255,255,.65)", fontSize:13, lineHeight:1.6, marginBottom:14 }}>
+              The perfect companion to this app — a month-by-month guide to what to sow, plant and harvest, with space to track your own growing journey.
+            </p>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+              <div style={{ textAlign:"center" }}>
+                <div style={{ fontSize:13, color:"rgba(255,255,255,.4)", textDecoration:"line-through" }}>£5.00</div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,.5)" }}>on its own</div>
+              </div>
+              <div style={{ fontSize:20, color:"rgba(255,255,255,.3)" }}>→</div>
+              <div style={{ textAlign:"center" }}>
+                <div style={{ fontSize:18, fontWeight:900, color:"#FFD700" }}>FREE</div>
+                <div style={{ fontSize:11, color:"#FFD700", opacity:.8 }}>with Premium</div>
+              </div>
+            </div>
+            <div style={{ display:"flex", gap:8, marginBottom:16 }}>
+              <a href={DIARY_URL} target="_blank" rel="noopener noreferrer"
+                style={{ flex:1, display:"block", background:"rgba(255,255,255,.1)", border:"1px solid rgba(255,255,255,.2)", color:"#fff", borderRadius:999, padding:"10px 14px", fontSize:12, fontWeight:700, textDecoration:"none", textAlign:"center" }}>
+                Buy for £5 →
+              </a>
+              <a href={GUMROAD_URL} target="_blank" rel="noopener noreferrer"
+                style={{ flex:2, display:"block", background:"linear-gradient(135deg,#FFD700,#FF8F00)", color:"#1a1a00", borderRadius:999, padding:"10px 14px", fontSize:12, fontWeight:900, textDecoration:"none", textAlign:"center" }}>
+                🚀 Get FREE with Premium
+              </a>
+            </div>
+          </div>
+        </div>
+
         <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:8, background:"#FF0000", color:"#fff", borderRadius:999, padding:"12px 18px", fontSize:14, fontWeight:700, textDecoration:"none", justifyContent:"center" }}><YTIcon/> Watch Glen's latest videos</a>
       </div>
     </div>
@@ -3195,7 +3229,7 @@ function UnlockPage() {
                 ["🗓️","Level 4 — Grow All Year Round","4 lessons"],
                 ["🏡","Level 5 — Allotment Master","8 lessons"],
                 ["👨‍🌾","Level 6 — Glen's Expert Secrets","7 lessons"],
-                ["📔","Free Garden Planner Diary","Delivered with your order"],
+                ["📔","Free Garden Planner Diary","Worth £5 — yours free with premium"],
               ].map(([e,t,d]) => (
                 <div key={t} style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}>
                   <div style={{ width:38, height:38, background:"var(--g0)", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{e}</div>
