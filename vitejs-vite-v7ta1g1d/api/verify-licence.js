@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        product_id: "ewkhag",
+        product_id: "iqvXTpQi-68wMeLvpNBlvg==",
         license_key: license_key.trim(),
         increment_uses_count: "false"
       })
