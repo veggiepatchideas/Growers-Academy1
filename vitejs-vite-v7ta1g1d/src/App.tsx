@@ -1313,7 +1313,19 @@ function Provider({ children }) {
   const [done, setDone]       = useState(() => ls("ga_d", []));
   const [badges, setBadges]   = useState(() => ls("ga_b", []));
   const [xp, setXP]           = useState(() => ls("ga_xp", 0));
-  const [hearts, setHearts]   = useState(() => ls("ga_h", 5));
+  const [hearts, setHearts] = useState(() => {
+    try {
+      const today = new Date().toDateString();
+      const lastH = localStorage.getItem("ga_hlast");
+      if (lastH !== today) {
+        localStorage.setItem("ga_h", "5");
+        localStorage.setItem("ga_hlast", today);
+        return 5;
+      }
+      const h = localStorage.getItem("ga_h");
+      return h ? JSON.parse(h) : 5;
+    } catch { return 5; }
+  });
   const [streak, setStreak]   = useState(() => ls("ga_s", { count:0, last:null }));
   const [todayLessons, setTL] = useState(() => ls("ga_tl", { date:"", count:0 }));
   const [perfQuiz, setPerfQ]  = useState(() => ls("ga_pq", 0));
@@ -1352,9 +1364,26 @@ function Provider({ children }) {
       if (c >= 7)  { awardBadge("streak-7");  addXP(XP_VALUES.streakSeven, false); }
       if (c >= 30) { awardBadge("streak-30"); addXP(XP_VALUES.streakThirty, false); }
     }
-    // Refill hearts daily
+    // Refill hearts daily — always reset on new day
     const lastH = ls("ga_hlast", "");
-    if (lastH !== today) { setHearts(5); ss("ga_h", 5); ss("ga_hlast", today); }
+    if (lastH !== today) {
+      setHearts(5);
+      ss("ga_h", 5);
+      ss("ga_hlast", today);
+    }
+    // Safety — if hearts somehow stuck at 0 and last refill was today, still refill
+    // (handles case where loseHeart was called after hlast was set)
+    const currentHearts = ls("ga_h", 5);
+    if (currentHearts <= 0 && lastH === today) {
+      // Check if hlast was set more than 20 hours ago
+      const lastHTime = ls("ga_hlast_time", 0);
+      const now = Date.now();
+      if (now - lastHTime > 20 * 60 * 60 * 1000) {
+        setHearts(5); ss("ga_h", 5); ss("ga_hlast", today); ss("ga_hlast_time", now);
+      }
+    } else {
+      ss("ga_hlast_time", Date.now());
+    }
   }, []);
 
   const showToast = m => { setToast(m); setTimeout(() => setToast(null), 2800); };
