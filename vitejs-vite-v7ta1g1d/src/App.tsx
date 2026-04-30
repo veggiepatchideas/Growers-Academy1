@@ -93,8 +93,9 @@ const CHANNEL_URL  = "https://www.youtube.com/@veggiepatchideas";
 const WEBSITE_URL  = "https://veggiepatchideas.co.uk";
 const CHANNEL_NAME = "Veggie Patch Ideas";
 const HOST         = "Glen";
-const GUMROAD_URL  = "https://veggiepatchideas.co.uk"; // 🔑 Replace with your Gumroad link when ready
-const DIARY_URL    = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
+const GUMROAD_URL        = "https://veggiepatchideas.co.uk"; // 🔑 Replace with your Gumroad link when ready
+const GUMROAD_PRODUCT_ID = "your-product-permalink"; // 🔑 Replace with your Gumroad product permalink
+const DIARY_URL          = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
 
 // ─── XP CONFIG ────────────────────────────────────────────────────────────────
 const XP_VALUES = {
@@ -1341,7 +1342,9 @@ function Provider({ children }) {
   const [newBadge, setNewBadge]      = useState(null); // badge popup
   const [pageAnim, setPageAnim]      = useState(false); // page transition
   const [dailyDone, setDailyDone]    = useState(() => ls("ga_dd", { date:"", done:false, score:null }));
-  const [emailCapture, setEmailCapture] = useState(() => ls("ga_ec", false)); // email captured
+  const [emailCapture, setEmailCapture] = useState(() => ls("ga_ec", false));
+  const [premium, setPremium]           = useState(() => ls("ga_prem", false));
+  const [licenceKey, setLicenceKey]     = useState(() => ls("ga_lk", ""));
 
   const toggleDarkMode = () => {
     const next = !darkMode;
@@ -1469,6 +1472,13 @@ function Provider({ children }) {
     addXP(XP_VALUES.checklistComplete);
   };
 
+  const unlockPremium = (key) => {
+    setPremium(true);
+    setLicenceKey(key);
+    ss("ga_prem", true);
+    ss("ga_lk", key);
+  };
+
   const setProfile  = p => { setProf(p); ss("ga_p", p); };
   const haptic = (type = "light") => {
     if (navigator.vibrate) {
@@ -1482,12 +1492,12 @@ function Provider({ children }) {
     window.scrollTo(0, 0);
     haptic("light");
   };
-  const reset       = () => { localStorage.clear(); setProf(null); setDone([]); setBadges([]); setXP(0); setHearts(5); setStreak({ count:0, last:null }); setPage("home"); };
+  const reset = () => { localStorage.clear(); setProf(null); setDone([]); setBadges([]); setXP(0); setHearts(5); setStreak({ count:0, last:null }); setPremium(false); setLicenceKey(""); setPage("home"); };
 
 
 
   return (
-    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, restoreHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); } }}>
+    <Ctx.Provider value={{ profile, setProfile, done, completeLesson, badges, awardBadge, xp, addXP, hearts, loseHeart, restoreHeart, streak, page, navigate, lesson, course, reset, toast, recordPerfectQuiz, recordChecklistComplete, perfQuiz, clCount, darkMode, toggleDarkMode, newBadge, pageAnim, haptic, dailyDone, setDailyDone: (d) => { setDailyDone(d); ss("ga_dd", d); }, emailCapture, setEmailCapture: (v) => { setEmailCapture(v); ss("ga_ec", v); }, premium, licenceKey, unlockPremium }}>
       {children}
       <XPPopup amount={xpAnim.amount} visible={xpAnim.show}/>
       {toast && <div style={{ position:"fixed", bottom:80, left:"50%", transform:"translateX(-50%)", background:"#111", color:"#fff", padding:"12px 20px", borderRadius:999, fontWeight:700, fontSize:13, zIndex:9998, whiteSpace:"nowrap", boxShadow:"0 8px 24px rgba(0,0,0,.4)", animation:"fadeUp .3s ease" }}>{toast}</div>}
@@ -2035,7 +2045,7 @@ function DashboardPage() {
 
 // ─── COURSES PAGE ─────────────────────────────────────────────────────────────
 function CoursesPage() {
-  const { navigate, done, xp } = useApp();
+  const { navigate, done, xp, premium } = useApp();
   const actualTotal = COURSES.filter(c=>!c.comingSoon).reduce((a,c) => a+c.lessons.length, 0);
 
   return (
@@ -2051,10 +2061,11 @@ function CoursesPage() {
         const cDone    = c.lessons.filter(l => done.includes(l.id)).length;
         const pct      = c.lessons.length > 0 ? Math.round((cDone/c.lessons.length)*100) : 0;
         const isPremium = !c.free;
-        const unlocked  = !c.comingSoon && !isPremium && (ci === 0 || COURSES.slice(0,ci).filter(x=>!x.comingSoon&&!x.free).every(x => x.lessons.every(l => done.includes(l.id))));
+        const isUnlockedByPremium = isPremium && premium;
+        const unlocked  = !c.comingSoon && (!isPremium || isUnlockedByPremium) && (ci === 0 || COURSES.slice(0,ci).filter(x=>!x.comingSoon&&(!x.free||premium)).every(x => x.lessons.every(l => done.includes(l.id))));
 
-        // ── PREMIUM LEVEL (Level 6) ──────────────────────────────────────────
-        if (isPremium) return (
+        // ── PREMIUM LEVEL ────────────────────────────────────────────────────
+        if (isPremium && !isUnlockedByPremium) return (
           <div key={c.id} style={{ marginBottom:20 }}>
             <div style={{ background:"linear-gradient(135deg,#1a0a00,#3E1F00)", border:"2px solid #FF8F0044", borderRadius:22, padding:18, overflow:"hidden", position:"relative" }}>
               <div style={{ position:"absolute", top:-30, right:-30, width:120, height:120, borderRadius:"50%", background:"rgba(255,143,0,.08)" }}/>
@@ -2111,6 +2122,9 @@ function CoursesPage() {
                   <a href={GUMROAD_URL} target="_blank" rel="noopener noreferrer" style={{ display:"block", background:"linear-gradient(135deg,var(--gold),var(--golddk))", color:"#111", borderRadius:999, padding:"14px 20px", fontSize:15, fontWeight:900, textDecoration:"none", textAlign:"center" }}>
                     💰 Unlock All 3 Premium Levels
                   </a>
+                  <button onClick={() => navigate("unlock")} style={{ border:"none", background:"none", color:"rgba(255,255,255,.5)", fontSize:12, cursor:"pointer", fontFamily:"var(--ff)", textDecoration:"underline", padding:"4px 0" }}>
+                    Already bought? Enter licence key →
+                  </button>
                   <div style={{ fontSize:11, color:"rgba(255,255,255,.35)", textAlign:"center" }}>One-time payment · Lifetime access · Never expires</div>
                 </div>
               </div>
@@ -3098,6 +3112,132 @@ function LevelCompletePage() {
 }
 
 
+// ─── UNLOCK PAGE ──────────────────────────────────────────────────────────────
+function UnlockPage() {
+  const { navigate, unlockPremium, premium } = useApp();
+  const [key, setKey]       = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState("");
+  const [success, setSuccess] = useState(false);
+
+  // If already premium just go back
+  if (premium) {
+    return (
+      <div style={{ minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:24, textAlign:"center" }}>
+        <div style={{ fontSize:64, marginBottom:16 }}>🎉</div>
+        <h1 style={{ fontSize:22, fontWeight:900, marginBottom:8 }}>You're already premium!</h1>
+        <p style={{ fontSize:14, color:"var(--tl)", marginBottom:24 }}>All levels are unlocked. Happy growing!</p>
+        <button className="btn bp blg" onClick={() => navigate("courses")}>Back to courses →</button>
+      </div>
+    );
+  }
+
+  const verifyKey = async () => {
+    if (!key.trim()) { setError("Please enter your licence key"); return; }
+    setLoading(true);
+    setError("");
+    try {
+      // Verify with Gumroad's licence key API
+      const res = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          product_permalink: GUMROAD_PRODUCT_ID,
+          license_key: key.trim(),
+          increment_uses_count: "false"
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        unlockPremium(key.trim());
+        setSuccess(true);
+        setTimeout(() => navigate("courses"), 2500);
+      } else {
+        setError("Invalid licence key — please check and try again, or contact us via the website.");
+      }
+    } catch(e) {
+      setError("Couldn't connect to verify your key. Check your internet connection and try again.");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{ minHeight:"100vh", background:"var(--cream)" }}>
+      <div style={{ background:"linear-gradient(135deg,#1a0a00,#3E1F00)", padding:"28px 20px 32px", textAlign:"center" }}>
+        <button onClick={() => navigate("courses")} style={{ position:"absolute", left:16, top:20, border:"none", background:"rgba(255,255,255,.1)", borderRadius:10, width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"#fff" }}>←</button>
+        <div style={{ fontSize:48, marginBottom:10 }}>🔓</div>
+        <h1 style={{ color:"#fff", fontSize:22, fontWeight:900, marginBottom:6 }}>Unlock Premium</h1>
+        <p style={{ color:"rgba(255,255,255,.65)", fontSize:14, lineHeight:1.5 }}>Enter your Gumroad licence key to unlock Levels 4, 5 & 6</p>
+      </div>
+
+      <div style={{ padding:"24px 20px", display:"flex", flexDirection:"column", gap:16 }}>
+        {success ? (
+          <div style={{ textAlign:"center", padding:32 }}>
+            <div style={{ fontSize:64, marginBottom:16, animation:"pop .5s ease" }}>🎉</div>
+            <h2 style={{ fontSize:20, fontWeight:900, color:"var(--g7)", marginBottom:8 }}>Premium Unlocked!</h2>
+            <p style={{ fontSize:14, color:"var(--tl)" }}>All levels are now available. Taking you to the courses...</p>
+          </div>
+        ) : (
+          <>
+            {/* What you get */}
+            <div className="card">
+              <h2 style={{ fontSize:15, fontWeight:800, marginBottom:12 }}>What you're unlocking:</h2>
+              {[
+                ["🗓️","Level 4 — Grow All Year Round","4 lessons"],
+                ["🏡","Level 5 — Allotment Master","8 lessons"],
+                ["👨‍🌾","Level 6 — Glen's Expert Secrets","7 lessons"],
+                ["📔","Free Garden Planner Diary","Delivered with your order"],
+              ].map(([e,t,d]) => (
+                <div key={t} style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}>
+                  <div style={{ width:38, height:38, background:"var(--g0)", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{e}</div>
+                  <div>
+                    <div style={{ fontWeight:700, fontSize:13 }}>{t}</div>
+                    <div style={{ fontSize:11, color:"var(--tl)" }}>{d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Key entry */}
+            <div className="card">
+              <h2 style={{ fontSize:14, fontWeight:800, marginBottom:6 }}>Enter your licence key</h2>
+              <p style={{ fontSize:12, color:"var(--tl)", marginBottom:14, lineHeight:1.5 }}>
+                Your licence key was emailed to you by Gumroad after purchase. Check your inbox or spam folder.
+              </p>
+              <input
+                type="text"
+                placeholder="e.g. XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX"
+                value={key}
+                onChange={e => { setKey(e.target.value.toUpperCase()); setError(""); }}
+                onKeyDown={e => e.key === "Enter" && verifyKey()}
+                style={{ width:"100%", padding:"12px 14px", border:`2px solid ${error?"#EF5350":"var(--cdk)"}`, borderRadius:14, fontSize:13, fontFamily:"var(--ff)", outline:"none", background:"#fafafa", marginBottom:10 }}
+              />
+              {error && <p style={{ fontSize:12, color:"#EF5350", fontWeight:700, marginBottom:10 }}>{error}</p>}
+              <button className="btn bp blg" style={{ width:"100%", opacity:loading?0.7:1 }}
+                onClick={verifyKey} disabled={loading}>
+                {loading ? "Verifying..." : "🔓 Unlock Premium Access"}
+              </button>
+            </div>
+
+            {/* Haven't bought yet */}
+            <div style={{ background:"linear-gradient(135deg,#1a0a00,#3E1F00)", borderRadius:20, padding:18, textAlign:"center" }}>
+              <p style={{ color:"rgba(255,255,255,.7)", fontSize:13, marginBottom:12 }}>Don't have a licence key yet?</p>
+              <a href={GUMROAD_URL} target="_blank" rel="noopener noreferrer"
+                style={{ display:"block", background:"linear-gradient(135deg,#FFD700,#FF8F00)", color:"#1a1a00", borderRadius:999, padding:"13px 18px", fontSize:14, fontWeight:900, textDecoration:"none" }}>
+                🚀 Get Premium Access
+              </a>
+            </div>
+
+            <p style={{ fontSize:11, color:"var(--tmut)", textAlign:"center", lineHeight:1.6 }}>
+              Having trouble? Contact us via <a href={WEBSITE_URL} style={{ color:"var(--g5)" }}>our website</a>
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function DailyChallengePage() {
   const { navigate, dailyDone, setDailyDone, addXP, haptic } = useApp();
   const [qa, setQa] = useState(null);
@@ -3255,6 +3395,7 @@ function Router() {
       case "progress":   return <ProgressPage/>;
       case "legal":      return <LegalPage/>;
       case "daily":      return <DailyChallengePage/>;
+      case "unlock":     return <UnlockPage/>;
       default:           return <HomePage/>;
     }
   };
