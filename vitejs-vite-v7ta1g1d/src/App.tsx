@@ -94,7 +94,7 @@ const WEBSITE_URL  = "https://veggiepatchideas.co.uk";
 const CHANNEL_NAME = "Veggie Patch Ideas";
 const HOST         = "Glen";
 const GUMROAD_URL        = "https://veggiepatchideas.co.uk"; // 🔑 Replace with your Gumroad link when ready
-const GUMROAD_PRODUCT_ID = "your-product-permalink"; // 🔑 Replace with your Gumroad product permalink
+const GUMROAD_PRODUCT_ID = "ewkhag"; // Gumroad product ID
 const DIARY_URL          = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
 
 // ─── XP CONFIG ────────────────────────────────────────────────────────────────
@@ -3138,14 +3138,10 @@ function UnlockPage() {
     setError("");
     try {
       // Verify with Gumroad's licence key API
-      const res = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+      const res = await fetch("/api/verify-licence", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          product_permalink: GUMROAD_PRODUCT_ID,
-          license_key: key.trim(),
-          increment_uses_count: "false"
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ license_key: key.trim() })
       });
       const data = await res.json();
       if (data.success) {
