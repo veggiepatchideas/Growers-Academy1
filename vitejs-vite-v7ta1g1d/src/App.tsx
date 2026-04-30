@@ -94,7 +94,7 @@ const WEBSITE_URL  = "https://veggiepatchideas.co.uk";
 const CHANNEL_NAME = "Veggie Patch Ideas";
 const HOST         = "Glen";
 const GUMROAD_URL        = "https://veggiepatchideas.co.uk"; // 🔑 Replace with your Gumroad link when ready
-const GUMROAD_PRODUCT_ID = "ewkhag"; // Gumroad product ID
+const GUMROAD_PRODUCT_ID = "iqvXTpQi-68wMeLvpNBlvg=="; // Gumroad product ID
 const DIARY_URL          = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
 
 // ─── XP CONFIG ────────────────────────────────────────────────────────────────
