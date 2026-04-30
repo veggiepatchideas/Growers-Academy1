@@ -2062,7 +2062,10 @@ function CoursesPage() {
         const pct      = c.lessons.length > 0 ? Math.round((cDone/c.lessons.length)*100) : 0;
         const isPremium = !c.free;
         const isUnlockedByPremium = isPremium && premium;
-        const unlocked  = !c.comingSoon && (!isPremium || isUnlockedByPremium) && (ci === 0 || COURSES.slice(0,ci).filter(x=>!x.comingSoon&&(!x.free||premium)).every(x => x.lessons.every(l => done.includes(l.id))));
+        const unlocked = !c.comingSoon && (
+          isUnlockedByPremium || // premium users always unlock paid levels
+          (!isPremium && (ci === 0 || COURSES.slice(0,ci).filter(x=>!x.comingSoon&&!x.free).every(x => x.lessons.every(l => done.includes(l.id)))))
+        );
 
         // ── PREMIUM LEVEL ────────────────────────────────────────────────────
         if (isPremium && !isUnlockedByPremium) return (
@@ -2156,7 +2159,7 @@ function CoursesPage() {
                 <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}><span style={{ fontSize:11, fontWeight:700, color:"var(--tl)" }}>{cDone}/{c.lessons.length} lessons</span><span style={{ fontSize:11, fontWeight:700, color:c.color }}>{pct}%</span></div>
                 <div style={{ height:5, background:"#eee", borderRadius:999, overflow:"hidden" }}><div style={{ height:"100%", width:`${pct}%`, background:c.color, borderRadius:999 }}/></div>
               </div>}
-              {!unlocked && !c.comingSoon && <div style={{ marginTop:7, fontSize:12, color:"var(--tmut)", fontWeight:600, textAlign:"center" }}>🔒 Complete Level {c.level-1} to unlock</div>}
+              {!unlocked && !c.comingSoon && <div style={{ marginTop:7, fontSize:12, color:"var(--tmut)", fontWeight:600, textAlign:"center" }}>{isPremium ? "🔒 Unlock premium to access" : `🔒 Complete Level ${c.level-1} to unlock`}</div>}
             </div>
             {unlocked && <div style={{ display:"flex", flexDirection:"column", gap:7, paddingLeft:6 }}>
               {c.lessons.map(l => { const isDone = done.includes(l.id); return (
