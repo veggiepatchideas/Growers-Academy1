@@ -3136,6 +3136,16 @@ function UnlockPage() {
     if (!key.trim()) { setError("Please enter your licence key"); return; }
     setLoading(true);
     setError("");
+
+    // Test key for development — remove before final launch
+    if (key.trim().toUpperCase() === "VPI-TEST-2026") {
+      unlockPremium(key.trim());
+      setSuccess(true);
+      setTimeout(() => navigate("courses"), 2500);
+      setLoading(false);
+      return;
+    }
+
     try {
       // Verify with Gumroad's licence key API
       const res = await fetch("/api/verify-licence", {
