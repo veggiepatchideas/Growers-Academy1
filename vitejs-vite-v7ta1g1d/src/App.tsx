@@ -1138,8 +1138,9 @@ function Hearts({ count, prevCount }) {
       {[...Array(5)].map((_, i) => (
         <span key={i} style={{
           fontSize:16,
+          color: i < count ? "#e53935" : "#ccc",
           filter: i < count ? "none" : "grayscale(100%)",
-          opacity: i < count ? 1 : 0.3,
+          opacity: i < count ? 1 : 0.4,
           display:"inline-block",
           animation: lost && i === count ? "heartBreak .5s ease" : "none",
         }}>❤</span>
@@ -2598,7 +2599,7 @@ function QuizWidget({ quizzes, lessonId, hearts, loseHeart, onComplete }) {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
         <h2 style={{ fontSize:14, fontWeight:800, color:"var(--g8)" }}>🧠 Quiz</h2>
         <div style={{ display:"flex", gap:3 }}>
-          {Array.from({length:5}).map((_,i) => <span key={i} style={{ fontSize:16 }}>{i < hearts ? "❤" : "🤍"}</span>)}
+          {Array.from({length:5}).map((_,i) => <span key={i} style={{ fontSize:16, color: i < hearts ? "#e53935" : "#ccc" }}>{i < hearts ? "❤" : "🤍"}</span>)}
         </div>
       </div>
 
