@@ -19,22 +19,22 @@ const MY_VIDEOS = {
   "grow-cucumbers":    "WcLkCvW_OL8",  // ✅ Cucumbers video
   "grow-courgettes":   "rBrIGucyxDo",  // ✅ Courgettes video
   "grow-beans":        "G6Yy6Y14w1w",  // ✅ Beans video
-  "grow-beetroot":     null,
+  "grow-beetroot":     "FEycOQ3t5No",  // ✅ Beetroot video
   "grow-onions-garlic":"rHes5khf9NY",  // ✅ Garlic video
-  "grow-potatoes":     null,
-  "seasonal-planning": null,
-  "winter-growing":    null,
-  "succession-sowing": null,
-  "green-manures":     null,
-  "plot-planning":     null,
-  "irrigation":        null,
-  "polytunnel":        null,
-  "pest-management":   null,
-  "seed-saving":       null,
+  "grow-potatoes":     "ycy2dW2p9fQ",  // ✅ Potatoes video
+  "seasonal-planning": "YFSlz2dSd2c",  // ✅ Seasonal planning video
+  "winter-growing":    "5LhjYC1trt0",  // ✅ Winter growing video
+  "succession-sowing": "E3c3bWg_clE",  // ✅ Successional sowing video
+  "green-manures":     "f9XMak3O3AY",  // ✅ Green manures video
+  "plot-planning":     "4kgI312U5qY",  // ✅ Plot planning video
+  "irrigation":        "-HverFmN75Q",  // ✅ Irrigation video
+  "polytunnel":        "oPfuQvhQrgY",  // ✅ Polytunnel video
+  "pest-management":   "eEC4Ave0kmg",  // ✅ Pest management video
+  "seed-saving":       "jOpODaWXVMI",  // ✅ Seed saving video
   "composting":        "_ywYgOHVHcE",  // ✅ Composting video
-  "crop-rotation":     null,
+  "crop-rotation":     "b5SUN_-4ZkY",  // ✅ Crop rotation video
   "no-dig":            "SQKjZl_S8gI",  // ✅ No-dig video
-  "fix-aphids":        null,
+  "fix-aphids":        "1gv7ouai8tM",  // ✅ Controlling aphids video
   "heatwave":          "udE8-IU8eFY",
 };
 
@@ -2260,13 +2260,16 @@ function LessonPage() {
       <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:14 }}>
 
         {/* Video */}
-        {lesson.vk && MY_VIDEOS[lesson.vk] && (
+        {lesson.vk && (
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}>
               <div style={{ width:22, height:22, background:"#FF0000", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
               <h2 style={{ fontSize:13, fontWeight:800 }}>{HOST}'s video — watch first!</h2>
             </div>
-            <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
+            {MY_VIDEOS[lesson.vk]
+              ? <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
+              : <div style={{ background:"var(--cdk)", borderRadius:14, padding:"20px 16px", textAlign:"center", color:"var(--tl)", fontSize:13 }}>📺 Video coming soon — check back shortly!</div>
+            }
           </div>
         )}
 
