@@ -2260,16 +2260,13 @@ function LessonPage() {
       <div style={{ padding:"14px 16px", display:"flex", flexDirection:"column", gap:14 }}>
 
         {/* Video */}
-        {lesson.vk && (
+        {lesson.vk && MY_VIDEOS[lesson.vk] && (
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:9 }}>
               <div style={{ width:22, height:22, background:"#FF0000", borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg></div>
               <h2 style={{ fontSize:13, fontWeight:800 }}>{HOST}'s video — watch first!</h2>
             </div>
-            {MY_VIDEOS[lesson.vk]
-              ? <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
-              : <div style={{ background:"var(--cdk)", borderRadius:14, padding:"20px 16px", textAlign:"center", color:"var(--tl)", fontSize:13 }}>📺 Video coming soon — check back shortly!</div>
-            }
+            <YTPlayer videoKey={lesson.vk} onPlay={handleVid}/>
           </div>
         )}
 
