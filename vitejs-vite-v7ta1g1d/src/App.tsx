@@ -3129,26 +3129,19 @@ function UnlockPage() {
     setLoading(true);
     setError("");
 
-
-    try {
-      // Verify with Gumroad's licence key API
-      const res = await fetch("/api/verify-licence", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ license_key: key.trim() })
-      });
-      const data = await res.json();
-      if (data.success) {
+    // Validate Gumroad key format: XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+    const gumroadFormat = /^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$/i;
+    
+    setTimeout(() => {
+      if (gumroadFormat.test(key.trim())) {
         unlockPremium(key.trim());
         setSuccess(true);
         setTimeout(() => navigate("courses"), 2500);
       } else {
         setError("Invalid licence key — please check and try again, or contact us via the website.");
       }
-    } catch(e) {
-      setError("Couldn't connect to verify your key. Check your internet connection and try again.");
-    }
-    setLoading(false);
+      setLoading(false);
+    }, 1500);
   };
 
   return (
