@@ -3167,7 +3167,7 @@ function UnlockPage() {
         <button onClick={() => navigate("courses")} style={{ position:"absolute", left:16, top:20, border:"none", background:"rgba(255,255,255,.1)", borderRadius:10, width:36, height:36, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"#fff" }}>←</button>
         <div style={{ fontSize:48, marginBottom:10 }}>🔓</div>
         <h1 style={{ color:"#fff", fontSize:22, fontWeight:900, marginBottom:6 }}>Unlock Premium</h1>
-        <p style={{ color:"rgba(255,255,255,.65)", fontSize:14, lineHeight:1.5 }}>Enter your Gumroad licence key to unlock Levels 4, 5 &amp; 6</p>
+        <p style={{ color:"rgba(255,255,255,.65)", fontSize:14, lineHeight:1.5 }}>Enter your unlock code to access Levels 4, 5 &amp; 6</p>
       </div>
 
       <div style={{ padding:"24px 20px", display:"flex", flexDirection:"column", gap:16 }}>
@@ -3202,11 +3202,11 @@ function UnlockPage() {
             <div className="card">
               <h2 style={{ fontSize:14, fontWeight:800, marginBottom:6 }}>Enter your licence key</h2>
               <p style={{ fontSize:12, color:"var(--tl)", marginBottom:14, lineHeight:1.5 }}>
-                Your licence key was emailed to you by Gumroad after purchase. Check your inbox or spam folder.
+                Your unlock code is shown on your order confirmation page and email after purchase.
               </p>
               <input
                 type="text"
-                placeholder="e.g. XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX"
+                placeholder="e.g. VPI-FOUNDING-9576"
                 value={key}
                 onChange={e => { setKey(e.target.value.toUpperCase()); setError(""); }}
                 onKeyDown={e => e.key === "Enter" && verifyKey()}
