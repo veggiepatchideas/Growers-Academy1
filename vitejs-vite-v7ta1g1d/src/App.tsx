@@ -96,7 +96,7 @@ const CHANNEL_URL  = "https://www.youtube.com/@veggiepatchideas";
 const WEBSITE_URL  = "https://veggiepatchideas.co.uk";
 const CHANNEL_NAME = "Veggie Patch Ideas";
 const HOST         = "Glen";
-const GUMROAD_URL        = "https://veggiepatchideas.gumroad.com/l/growers-academy-premium";
+const GUMROAD_URL        = "https://veggiepatchideas.co.uk/product/the-veggie-patch-bundle-founding-member/";
 const GUMROAD_PRODUCT_ID = "iqvXTpQi-68wMeLvpNBlvg=="; // Gumroad product ID
 const DIARY_URL          = "https://veggiepatchideas.co.uk/product/vegetable-garden-planner-diary/";
 
