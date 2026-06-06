@@ -1483,6 +1483,24 @@ function Provider({ children }) {
     ss("ga_prem", true);
     ss("ga_lk", key);
   };
+  // ── Auto-unlock via purchase link: ?unlock=VPI-FOUNDING-9576 ──
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("unlock");
+      if (token && token === "VPI-FOUNDING-9576") {
+        setPremium(true);
+        setLicenceKey("BUNDLE");
+        ss("ga_prem", true);
+        ss("ga_lk", "BUNDLE");
+        if (window.history && window.history.replaceState) {
+          params.delete("unlock");
+          const clean = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+          window.history.replaceState({}, document.title, clean);
+        }
+      }
+    } catch (e) {}
+  }, []);
 
   const setProfile  = p => { setProf(p); ss("ga_p", p); };
   const haptic = (type = "light") => {
@@ -3129,11 +3147,10 @@ function UnlockPage() {
     setLoading(true);
     setError("");
 
-    // Validate Gumroad key format: XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
-    const gumroadFormat = /^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$/i;
-    
+   const validToken = "VPI-FOUNDING-9576";
+
     setTimeout(() => {
-      if (gumroadFormat.test(key.trim())) {
+      if (key.trim().toUpperCase() === validToken) {
         unlockPremium(key.trim());
         setSuccess(true);
         setTimeout(() => navigate("courses"), 2500);
